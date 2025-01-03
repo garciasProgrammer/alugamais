@@ -1,7 +1,7 @@
 package br.com.alugamais.service;
 
 import br.com.alugamais.web.domain.Pagamento;
-import br.com.alugamais.web.domain.Parcela;
+import br.com.alugamais.web.domain.Parcelas;
 import br.com.alugamais.web.util.PaginacaoUtil;
 
 import java.math.BigDecimal;
@@ -10,27 +10,27 @@ import java.util.List;
 
 public interface ParcelaService {
 
-    void salvar(Parcela parcela);
+    void salvar(Parcelas parcela);
 
-    void editar(Parcela parcela);
+    void editar(Parcelas parcela);
 
     void excluir(Long id);
 
-    Parcela buscarPorId(Long id);
+    Parcelas buscarPorId(Long id);
 
-    List<Parcela> buscarTodos();
+    List<Parcelas> buscarTodos();
 
 
     PaginacaoUtil buscaPaginada(int pagina, String direcao, Long idContrato);
 
-    List<Parcela> findParcelasVencidasEAVencer(long contrato, int dias);
+    List<Parcelas> findParcelasVencidasEAVencer(long contrato, int dias);
 
 
-    List<Parcela> listaParcelas(Long contrato, int dias);
+    List<Parcelas> listaParcelas(Long contrato, int dias);
 
     List<LocalDate> findDatasPeriodo(Long contrato, int dias);
 
-    void saveAll(List<Parcela> diaries);
+    void saveAll(List<Parcelas> parcels);
 
     void atualizaSituacaoParcela(Pagamento pagamento, int dias, String situacao);
 

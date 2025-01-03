@@ -2,7 +2,7 @@ package br.com.alugamais.dao;
 
 
 import br.com.alugamais.web.domain.Pagamento;
-import br.com.alugamais.web.domain.Parcela;
+import br.com.alugamais.web.domain.Parcelas;
 import br.com.alugamais.web.util.PaginacaoUtil;
 
 import java.math.BigDecimal;
@@ -12,27 +12,27 @@ import java.util.List;
 
 public interface ParcelaDao {
 
-    void save(Parcela Parcela);
+    void save(Parcelas Parcela);
 
-    void update(Parcela Parcela);
+    void update(Parcelas Parcela);
 
     void delete(Long id);
 
-    Parcela findById(Long id);
+    Parcelas findById(Long id);
 
-    List<Parcela> findAll();
+    List<Parcelas> findAll();
 
 
 
-    PaginacaoUtil<Parcela> buscaPaginada(int pagina, String direcao, Long idContrato);
+    PaginacaoUtil<Parcelas> buscaPaginada(int pagina, String direcao, Long idContrato);
 
-    List<Parcela> findParcelasVencidasEAVencer(Long contrato, int dias);
+    List<Parcelas> findParcelasVencidasEAVencer(Long contrato, int dias);
 
-    List<Parcela> listaParcela(Long contrato, int dias);
+    List<Parcelas> listaParcela(Long contrato, int dias);
 
     List<LocalDate> findDatasPeriodo(Long contrato, int dias);
 
-    void saveAll(List<Parcela> diaries);
+    void saveAll(List<Parcelas> diaries);
 
     void atualizaSituacaoParcela(Pagamento pagamento, int dias, String situacao);
 

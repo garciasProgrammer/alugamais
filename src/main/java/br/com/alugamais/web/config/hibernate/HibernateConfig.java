@@ -56,7 +56,7 @@ public class HibernateConfig {
         em.getJpaPropertyMap().put(org.hibernate.cfg.Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect"); //dialeto para MySQL
         em.getJpaPropertyMap().put(org.hibernate.cfg.Environment.SHOW_SQL, "false");
         em.getJpaPropertyMap().put(org.hibernate.cfg.Environment.FORMAT_SQL, "false");
-        em.getJpaPropertyMap().put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, "none");
+        em.getJpaPropertyMap().put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, "create");
 
         return em;
     }

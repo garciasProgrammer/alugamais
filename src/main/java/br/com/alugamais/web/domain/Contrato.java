@@ -27,7 +27,7 @@ public class Contrato extends AbstractEntity<Long> {
 
     @Valid
     @NotNull(message = "Locador é obrigatório.")
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "locador_id_fk")
     private Locador locador;
 
@@ -86,9 +86,9 @@ public class Contrato extends AbstractEntity<Long> {
     private String periodoRenovacao;
 
 
-    @OneToMany(mappedBy = "contrato", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parcela", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Parcela> parcelas;
+    private List<Parcelas> parcelas;
 
 
     @DateTimeFormat(iso = ISO.DATE)

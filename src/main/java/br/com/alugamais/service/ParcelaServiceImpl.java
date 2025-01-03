@@ -2,7 +2,7 @@ package br.com.alugamais.service;
 
 import br.com.alugamais.dao.ParcelaDao;
 import br.com.alugamais.web.domain.Pagamento;
-import br.com.alugamais.web.domain.Parcela;
+import br.com.alugamais.web.domain.Parcelas;
 import br.com.alugamais.web.util.PaginacaoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,13 +20,13 @@ public class ParcelaServiceImpl implements ParcelaService {
     ParcelaDao dao;
 
     @Override
-    public void salvar(Parcela parcela) {
+    public void salvar(Parcelas parcela) {
         dao.save(parcela);
 
     }
 
     @Override
-    public void editar(Parcela parcela) {
+    public void editar(Parcelas parcela) {
         dao.update(parcela);
 
     }
@@ -39,14 +39,14 @@ public class ParcelaServiceImpl implements ParcelaService {
 
     @Override
     @Transactional(readOnly = true)
-    public Parcela buscarPorId(Long id) {
+    public Parcelas buscarPorId(Long id) {
 
         return dao.findById(id);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Parcela> buscarTodos() {
+    public List<Parcelas> buscarTodos() {
 
         return dao.findAll();
     }
@@ -56,11 +56,11 @@ public class ParcelaServiceImpl implements ParcelaService {
         return dao.buscaPaginada(pagina, direcao, idContrato);
     }
 
-    public List<Parcela> findParcelasVencidasEAVencer(long contrato, int dias) {
+    public List<Parcelas> findParcelasVencidasEAVencer(long contrato, int dias) {
         return dao.findParcelasVencidasEAVencer(contrato, dias);
     }
 
-    public List<Parcela> listaParcelas(Long contrato, int dias) {
+    public List<Parcelas> listaParcelas(Long contrato, int dias) {
         return dao.listaParcela(contrato, dias);
     }
 
@@ -70,8 +70,8 @@ public class ParcelaServiceImpl implements ParcelaService {
     }
 
     @Override
-    public void saveAll(List<Parcela> diaries) {
-        dao.saveAll(diaries);
+    public void saveAll(List<Parcelas> parcels) {
+        dao.saveAll(parcels);
     }
 
 

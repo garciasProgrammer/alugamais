@@ -1,8 +1,9 @@
 package br.com.alugamais.web.controller;
 
-import com.escritorio.web.config.hibernate.TenantContext;
-import com.escritorio.web.domain.CardUpdate;
-import com.escritorio.web.domain.CardUpdateItensLista;
+
+import br.com.alugamais.web.config.hibernate.TenantContext;
+import br.com.alugamais.web.domain.CardUpdate;
+import br.com.alugamais.web.domain.CardUpdateItensLista;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;

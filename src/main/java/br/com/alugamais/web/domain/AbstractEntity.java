@@ -9,10 +9,29 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 @MappedSuperclass
 public abstract class AbstractEntity<ID extends Serializable> implements Serializable{
-	
-	@Id
-	@GeneratedValue(strategy =GenerationType.IDENTITY)
-	private ID id;
+
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	public AbstractEntity() {
+		super();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public boolean hasNotId() {
+		return id == null;
+	}
+
+	public boolean hasId() {
+		return id != null;
+	}
 
 	@Override
 	public int hashCode() {
@@ -30,29 +49,18 @@ public abstract class AbstractEntity<ID extends Serializable> implements Seriali
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AbstractEntity<?> other = (AbstractEntity<?>) obj;
-		if(id==null) {
-			
-			if(other.id!=null) 				
+		AbstractEntity other = (AbstractEntity) obj;
+		if (id == null) {
+			if (other.id != null)
 				return false;
-			} else if(!id.equals(other.id)) 
-				return false;						
-			return true;			
-		}
-		
-
-	public ID getId() {
-		return id;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
-	public void setId(ID id) {
-		this.id = id;
-	}
-	
 	@Override
 	public String toString() {
-		return "id=" + id;
+		return String.format("Entidade %s id: %s", this.getClass().getName(), getId());
 	}
-	
 
 }

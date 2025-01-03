@@ -1,6 +1,6 @@
 package br.com.alugamais.web.config;
 
-import com.escritorio.web.config.hibernate.TenantContext;
+import br.com.alugamais.web.config.hibernate.TenantContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;

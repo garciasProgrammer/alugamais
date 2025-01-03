@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @Table(name = "parcela")
 @Getter
 @Setter
-public class Parcela extends AbstractEntity<Long>{
+public class Parcelas extends AbstractEntity<Long>{
 
 	@Valid
 	@ManyToOne
@@ -42,15 +42,15 @@ public class Parcela extends AbstractEntity<Long>{
 	
 	@NotNull
 	@NotBlank
-	@Column(nullable = false, unique = false)
+	@Column(nullable = false)
 	private String parcela;
 
-	@Column(unique = false)
+	@Column()
 	private String codigoPagamento;
 	
 	@NotNull
 	@NotBlank
-	@Column(nullable = false, unique = false)
+	@Column(nullable = false)
 	private String situacao;
 
 }
