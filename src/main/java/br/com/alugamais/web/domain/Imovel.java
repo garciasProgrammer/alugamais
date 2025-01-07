@@ -1,5 +1,6 @@
 package br.com.alugamais.web.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -40,7 +41,7 @@ public class Imovel extends AbstractEntity<Long>{
 
     @Valid
     @NotNull(message = "Locador é obrigatório.")
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "locador_id_fk")
     private Locador locador;
 

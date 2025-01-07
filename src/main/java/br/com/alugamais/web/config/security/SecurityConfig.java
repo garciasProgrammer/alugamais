@@ -25,14 +25,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/job/**", "/public/**", "/webjars/**", "/login","/recuperar-senha","/usuarios/recuperar-senha/**","/image/**", "/video/**", "/css/**", "/js/**").permitAll() // Permitir acesso não autenticado a /login
+                .antMatchers("/job/**", "/public/**", "/webjars/**", "/login","/recuperar-senha","/usuarios/recuperar-senha/**","/image/**", "/video/**", "/css/**", "/js/**","/assets/**").permitAll() // Permitir acesso não autenticado a /login
                 .anyRequest().authenticated() // Todas as outras requisições precisam de autenticação
                 .and()
                 .addFilterBefore(new TenantIdentificationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .formLogin()
                 .loginPage("/login") // URL do formulário de login
                 .loginProcessingUrl("/logar") // URL que processa o login (submissão do formulário)
-                .defaultSuccessUrl("/dashboard", true) // URL para redirecionar após o login bem sucedido
+                .defaultSuccessUrl("/home", true) // URL para redirecionar após o login bem sucedido
                 .failureUrl("/login?error") // URL para redirecionar após falha no login
                 .permitAll()
                 .and()

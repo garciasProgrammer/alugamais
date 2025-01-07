@@ -108,7 +108,7 @@ public class UsuarioController {
         Email email = new Email();
         email.setEmailFrom("access-manager@fleetcarservice.com.br");
         email.setEmailTo(getEmail);
-        email.setSubject("BEM VINDO AO FLEETCAR SERVICE");
+        email.setSubject("BEM VINDO AO ALUGAMAIS SERVICE");
         email.setText("<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
                 "<head>\n" +
@@ -117,21 +117,21 @@ public class UsuarioController {
                 "<style>\n" +
                 "  .container {\n" +
                 "    position: relative; \n" + /* Posicionamento relativo para o contêiner */
-                "    width: 1125px; \n" + /* Pode ser ajustado conforme necessário */
-                "    height: 750px; \n" + /* Ou um valor fixo se você tiver um tamanho específico em mente */
+                "    width: 500px; \n" + /* Pode ser ajustado conforme necessário */
+                "    height: 500px; \n" + /* Ou um valor fixo se você tiver um tamanho específico em mente */
                 "    background: url('cid:backgroundImage') no-repeat center center;\n" +  /* Imagem centralizada */
-                "    background-size: 80%; \n" + /* Imagem cobre todo o contêiner */
+                "    background-size: 100%; \n" + /* Imagem cobre todo o contêiner */
                 "  }\n" +
                 "  .content {\n" +
                 "    position: absolute;\n" +  /* Posicionamento absoluto para o texto */
-                "    top: 70%; \n" + /* Posiciona o texto a 70% abaixo do topo do contêiner */
+                "    top: 40%; \n" + /* Posiciona o texto a 40% abaixo do topo do contêiner */
                 "    width: 100%; \n" + /* A .content ocupa a largura total */
                 "    text-align: center; \n" + /* Centraliza o texto dentro da .content */
                 "  }\n" +
                 "  .text-style {\n" +
-                "    color: blue; \n" + /* Estilização do texto */
+                "    color: gray; \n" + /* Estilização do texto */
                 "    font-weight: bold; \n" + /* Texto em negrito */
-                "    font-size: 18px; \n" +
+                "    font-size: 20px; \n" +
                 "  }\n" +
                 "</style>\n" +
                 "</head>\n" +
@@ -139,14 +139,10 @@ public class UsuarioController {
                 "  <div class=\"container\">\n" +
                 "    <div class=\"content\">\n" +
                 "    <br><br><br><br><br><br><br><br><br><br>" +
-                "    <br><br><br><br><br><br><br><br><br><br>\n" +
-                "      <div class=\"text-style\">Bem vindo, " + nome + "!</div>\n" +
+                "      <div class=\"text-style\">Olá, " + nome + "!</div>\n" +
                 "      <div class=\"text-style\">Usuário: " + nomeUsuario + "</div>\n" +
                 "      <div class=\"text-style\">Sua senha é: " + senhaInicial + "</div>\n" +
-                "      <br><br><br><br><br>\n" +
-                "      <div class=\"text-style\">FLEETCAR SERVICE</div>\n" +
-                "      <br><br><br><br><br><br><br><br><br><br>" +
-                "      <br><br><br><br><br><br><br><br><br><br>\n" +
+                "     <p>Caso queira alterar sua senha, no seu primeiro acesso procure seu nome no topo da tela e clique nele, depois selecione alterar senha e troque sua senha.</p>\n" +
                 "    </div>\n" +
                 "  </div>\n" +
                 "</body>\n" +

@@ -71,7 +71,7 @@ public class EmailServiceImpl implements EmailService {
         helper.setText(html, true);
 
         // Adicione a imagem como um anexo inline
-        ClassPathResource resource = new ClassPathResource("static/image/template-email.png");
+        ClassPathResource resource = new ClassPathResource("static/image/bemvindo-alugamais.png");
         helper.addInline("backgroundImage", resource);
 
         emailSender.send(mimeMessage);
