@@ -29,7 +29,7 @@ public class Locador extends AbstractEntity<Long>{
     @PastOrPresent(message = "{PastOrPresent.locador.dataCadastro}")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column (name = "data_cadastro",nullable = false, columnDefinition = "DATE")
-    private LocalDate dataCadastro;
+    private LocalDate dataCadastro = LocalDate.now();
 
     @JsonIgnore
     @OneToMany(mappedBy = "locador")
@@ -43,17 +43,13 @@ public class Locador extends AbstractEntity<Long>{
     @NotBlank
     @Size(max = 18, min = 11)
     @Column (nullable = false, unique = true)
-    private String cpf_cnpj;
+    private String cpf;
 
     @NotBlank
     @Size(max = 14, min = 8)
     @Column (nullable = false, unique = true)
-    private String rg_inscricao;
+    private String rg;
 
-    @NotBlank
-    @Size(max = 15, min = 5)
-    @Column (nullable = false, unique = false)
-    private String tipoDePessoa;
 
     @NotBlank
     @Size(max = 150, min = 10)

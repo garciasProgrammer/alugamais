@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping(("/locatario"))
@@ -28,7 +30,9 @@ public class LocatarioController {
 
     @GetMapping("/editar/{id}")
     public String preEditar(@PathVariable("id") Long id, ModelMap model) {
-        model.addAttribute("locatario", locatarioService.buscarPorId(id));
+        Locatario locatario = locatarioService.buscarPorId(id);
+        locatario.setNome(locatario.getNome().toUpperCase());
+        model.addAttribute("locatario", locatario);
         return "locatario/cadastro";
     }
 
@@ -41,13 +45,19 @@ public class LocatarioController {
 
         locatarioService.editar(locatario);
         attr.addFlashAttribute("success", "Locatário editado com sucesso!");
-        return "redirect:/locatarios/cadastrar";
+        return "redirect:/locatario/cadastrar";
 
     }
 
     @GetMapping("/listar")
     public String listar(ModelMap model) {
-        model.addAttribute("locatarios", locatarioService.buscarTodos());
+        List<Locatario> clientes = locatarioService.buscarTodos();
+        List<Locatario> listaCLiente = new ArrayList<>();
+        for (Locatario loc : clientes) {
+            loc.setNome(loc.getNome().toUpperCase());
+            listaCLiente.add(loc);
+        }
+        model.addAttribute("locatarios", listaCLiente);
         return "locatario/lista";
     }
 
@@ -60,6 +70,6 @@ public class LocatarioController {
 
         locatarioService.salvar(locatario);
         attr.addFlashAttribute("success", "Locatário inserido com sucesso!");
-        return "redirect:/locatarios/cadastrar";
+        return "redirect:/locatario/cadastrar";
     }
 }

@@ -46,4 +46,8 @@ public class ImovelServiceImpl implements ImovelService{
 
         return dao.findAll();
     }
+    @Override
+    public List<Imovel> getImoveisPorLocador(String situacao, Long locadorId){
+        return dao.getImoveisPorLocador(situacao, locadorId);
+    }
 }

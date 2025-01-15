@@ -31,6 +31,7 @@
     <!-- Template Main CSS File -->
     <link href="/assets/css/style.css" rel="stylesheet">
 
+
     <!-- =======================================================
     * Template Name: SISGA
     * Updated: Apr 20 2024 with Bootstrap v5.3.3
@@ -53,8 +54,8 @@
 
     <div class="search-bar">
         <form class="search-form d-flex align-items-center" method="POST" action="#">
-            <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-            <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+            <input type="text" name="query" placeholder="Buscar" title="Enter buscar">
+            <button type="submit" title="Buscar"><i class="bi bi-search"></i></button>
         </form>
     </div><!-- End Search Bar -->
 
@@ -65,19 +66,21 @@
                 <a class="nav-link nav-icon search-bar-toggle " href="#">
                     <i class="bi bi-search"></i>
                 </a>
-            </li><!-- End Search Icon-->
+            </li>
+            <!-- End Search Icon-->
 
             <li class="nav-item dropdown">
 
                 <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
                     <i class="bi bi-bell"></i>
-                    <span class="badge bg-primary badge-number">4</span>
-                </a><!-- End Notification Icon -->
+                    <span class="badge bg-primary badge-number">3</span>
+                </a>
+                <!-- End Notification Icon -->
 
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
                     <li class="dropdown-header">
-                        You have 4 new notifications
-                        <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+                        Você tem 4 novas notificações
+                        <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">Ver tudo</span></a>
                     </li>
                     <li>
                         <hr class="dropdown-divider">
@@ -89,19 +92,6 @@
                             <h4>Lorem Ipsum</h4>
                             <p>Quae dolorem earum veritatis oditseno</p>
                             <p>30 min. ago</p>
-                        </div>
-                    </li>
-
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-
-                    <li class="notification-item">
-                        <i class="bi bi-x-circle text-danger"></i>
-                        <div>
-                            <h4>Atque rerum nesciunt</h4>
-                            <p>Quae dolorem earum veritatis oditseno</p>
-                            <p>1 hr. ago</p>
                         </div>
                     </li>
 
@@ -135,7 +125,7 @@
                         <hr class="dropdown-divider">
                     </li>
                     <li class="dropdown-footer">
-                        <a href="#">Show all notifications</a>
+                        <a href="#">Mostrar todas as notificações</a>
                     </li>
 
                 </ul><!-- End Notification Dropdown Items -->
@@ -152,7 +142,7 @@
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
                     <li class="dropdown-header">
                         You have 3 new messages
-                        <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+                        <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">Ver todas</span></a>
                     </li>
                     <li>
                         <hr class="dropdown-divider">
@@ -201,7 +191,7 @@
                     </li>
 
                     <li class="dropdown-footer">
-                        <a href="#">Show all messages</a>
+                        <a href="#">Mostrar todas as menssagens</a>
                     </li>
 
                 </ul><!-- End Messages Dropdown Items -->
@@ -212,13 +202,13 @@
 
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
                     <img src="/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-                    <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+                    <span class="d-none d-md-block dropdown-toggle ps-2">Thiago Garcia</span>
                 </a><!-- End Profile Iamge Icon -->
 
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
-                        <h6>Kevin Anderson</h6>
-                        <span>Web Designer</span>
+                        <h6>Thiago Garcia</h6>
+                        <span>Dev Java</span>
                     </li>
                     <li>
                         <hr class="dropdown-divider">
@@ -227,7 +217,7 @@
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
                             <i class="bi bi-person"></i>
-                            <span>My Profile</span>
+                            <span>Meu Perfil</span>
                         </a>
                     </li>
                     <li>
@@ -237,7 +227,7 @@
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
                             <i class="bi bi-gear"></i>
-                            <span>Account Settings</span>
+                            <span>Configurações da Conta</span>
                         </a>
                     </li>
                     <li>
@@ -247,7 +237,7 @@
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
                             <i class="bi bi-question-circle"></i>
-                            <span>Need Help?</span>
+                            <span>Ajuda?</span>
                         </a>
                     </li>
                     <li>
@@ -257,7 +247,7 @@
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="#">
                             <i class="bi bi-box-arrow-right"></i>
-                            <span>Sign Out</span>
+                            <span>Sair</span>
                         </a>
                     </li>
 
@@ -322,7 +312,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/locador/istar">
+                    <a href="/locador/listar">
                         <i class="bi bi-circle"></i><span>Listar Locador</span>
                     </a>
                 </li>
@@ -354,82 +344,169 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/pagamento/listar">
+                    <a href="/pgagmento/listar">
                         <i class="bi bi-circle"></i><span>Listar Pagamento</span>
                     </a>
                 </li>
             </ul>
         </li>
+        <!-- End Blank Page Nav -->
+
     </ul>
-    <!-- End Blank Page Nav -->
 
 </aside><!-- End Sidebar-->
 
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>Listar Clientes</h1>
+        <h1>Contratos</h1>
+        <div th:replace="/alert"></div>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                <li class="breadcrumb-item">Clientes</li>
-                <li class="breadcrumb-item active">Listar</li>
+                <li class="breadcrumb-item">Forms</li>
+                <li class="breadcrumb-item active">Contratos</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
 
     <section class="section">
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-10 mx-auto">
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Listar Clientes</h5>
+                        <h5 class="card-title">Contratos</h5>
 
-                        <!-- Table with stripped rows -->
-                        <table class="table datatable">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Nome</th>
-                                <th>Cpf</th>
-                                <th>Rg</th>
-                                <th>Contato</th>
-                                <th>Data de Nascimento</th>
-                                <th>Ação</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="cli : ${locatarios}">
-                                <td class="align-middle" th:text="${cli.id}">2</td>
+                        <!-- General Form Elements -->
+                        <form th:action="${contrato.id == null} ? @{/contrato/salvar} : @{/contrato/editar}"
+                              th:object="${contrato}" method="post">
+                            <div class="row mb-3">
+                                <label for="locadorSelect" class="col-sm-2 col-form-label">Locador</label>
+                                <div class="col-sm-10">
+                                    <select id="locadorSelect"
+                                            class="form-control " th:field="*{locador}"
+                                            th:classappend="${#fields.hasErrors('locador')} ? 'is-invalid'">
+                                        <option value="">Selecione...</option>
+                                        <option th:each="l : ${locadores}" th:value="${l.id}"
+                                                th:text="${l.nome}">nome do locador
+                                        </option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        <span th:errors="*{locador}"></span>
+                                    </div>
+                                </div>
+                            </div>
 
-                                <td class="align-middle" th:text="${#strings.toUpperCase(cli.nome)}"></td>
-                                <td class="align-middle" th:text="${cli.cpf}"></td>
-                                <td class="align-middle" th:text="${cli.rg}"></td>
-                                <td class="align-middle"  th:utext="'Ligação: ' + ${cli.celularPrincipalCliente} + '<br/>Whats: ' + ${cli.celularWhatsApp}">></td>
-                                <td class="align-middle"
-                                    th:text="${#temporals.format(cli.dataNascimento, 'dd/MM/yyyy')}">
-                                </td>
-                                <td class="align-middle" colspan="2">
-                                    <a class="btn btn-info btn-sm" th:href="@{/locatario/editar/{id} (id=${cli.id}) }"
-                                       role="button">
-                                        <span class="bi-brush" title="Editar" aria-hidden="true"></span>
-                                    </a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <!-- End Table with stripped rows -->
+                            <div class="row mb-3">
+                                <label for="imovelSelect" class="col-sm-2 col-form-label">Imóveis</label>
+                                <div class="col-sm-6">
+                                    <select class="form-select" id="imovelSelect" aria-label="Imóveis" disabled>
+                                        <option selected disabled>Selecionar Imóvel</option>
+                                    </select>
+                                </div>
+                            </div>
 
+                            <div class="row mb-3">
+                                <label for="endereco" class="col-sm-2 col-form-label">Endereço</label>
+                                <div class="col-sm-10">
+                                    <label for="endereco" id="endereco"
+                                           class="col-sm-2 col-form-label">Endereço...</label>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="valorMensal" class="col-sm-2 col-form-label">Valor Mensal</label>
+                                <div class="col-sm-10">
+                                    <label for="valorMensal" id="valorMensal"
+                                           class="col-sm-2 col-form-label">R$...</label>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="proprietario" class="col-sm-2 col-form-label">Proprietário</label>
+                                <div class="col-sm-10">
+                                    <label for="proprietario" id="proprietario" class="col-sm-2 col-form-label">Proprietário
+                                        ...</label>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="taxaCondominio" class="col-sm-2 col-form-label">Taxa de condomínio</label>
+                                <div class="col-sm-10">
+                                    <label for="taxaCondominio" id="taxaCondominio" class="col-sm-2 col-form-label">Taxa
+                                        de condomínio
+                                        ...</label>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="descricao" class="col-sm-2 col-form-label">Descrição</label>
+                                <div class="col-sm-10">
+                                    <label for="descricao" id="descricao" class="col-sm-2 col-form-label">Descrição
+                                        ...</label>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="locatarioSelect" class="col-sm-2 col-form-label">Locatário</label>
+                                <div class="col-sm-10">
+                                    <select id="locatarioSelect"
+                                            class="form-control " th:field="*{locatario}"
+                                            th:classappend="${#fields.hasErrors('locador')} ? 'is-invalid'">
+                                        <option value="">Selecione...</option>
+                                        <option th:each="l : ${locatarios}" th:value="${l.id}"
+                                                th:text="${l.nome}">
+                                        </option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        <span th:errors="*{locador}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h5 class="card-title">Selecionar Periodo</h5>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputDate" class="col-sm-2 col-form-label">Date Inicial</label>
+                                <div class="col-sm-10">
+                                    <input type="date" class="form-control">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputText" class="col-sm-2 col-form-label">Período</label>
+                                <div class="col-sm-10">
+                                    <select class="form-select" id="floatingSelect" aria-label="Tipo">
+                                        <option selected>Selecionar</option>
+                                        <option value="1">1 mês</option>
+                                        <option value="2">6 Meses</option>
+                                        <option value="3">1 Ano</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-5">
+                                <label class="col-sm-2 col-form-label">Período</label>
+                                <div class="col-sm-10">
+                                    <div>
+                                        <label for="customRange1" class="form-label">Quantidade de Meses</label>
+                                        <input type="range" class="form-range" id="customRange1">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3 mt-5 text-center">
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-primary">Salvar</button>
+                                </div>
+                            </div>
                     </div>
                 </div>
-
             </div>
+            </form>
+            <!-- End General Form Elements -->
+
+        </div>
+        </div>
+
+        </div>
         </div>
     </section>
 
-</main>
-<!-- End #main -->
+</main><!-- End #main -->
 
 <!-- ======= Footer ======= -->
 <footer id="footer" class="footer">
@@ -457,6 +534,98 @@
 
 <!-- Template Main JS File -->
 <script src="/assets/js/main.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const locadorSelect = document.getElementById('locadorSelect');
+        const imovelSelect = document.getElementById('imovelSelect');
+
+        locadorSelect.addEventListener('change', function () {
+            const locadorId = this.value;
+
+            // Limpa os imóveis anteriores
+            imovelSelect.innerHTML = '<option selected disabled>Carregando...</option>';
+            imovelSelect.disabled = true;
+
+            // Requisição ao back-end para buscar imóveis
+            fetch(`/imovel/livres/lista/${locadorId}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data); // Log para verificar a resposta
+
+                    // Se a resposta for um objeto e o array estiver dentro de `data`
+                    const imoveis = Array.isArray(data) ? data : data.data;
+
+                    // Atualiza o select com os imóveis
+                    imovelSelect.innerHTML = '<option selected disabled>Selecionar Imóvel</option>';
+                    imoveis.forEach(imovel => {
+                        const option = document.createElement('option');
+                        option.value = imovel.id;
+                        option.textContent = "N°" + imovel.numero + " - " + imovel.tipo + " - " + imovel.situacao;
+
+                        imovelSelect.appendChild(option);
+                    });
+                    imovelSelect.disabled = false;
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar imóveis:', error);
+                    imovelSelect.innerHTML = '<option selected disabled>Erro ao carregar imóveis</option>';
+                });
+        });
+    });
+
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log("função select")
+        const imovelSelect = document.getElementById('imovelSelect');
+
+        // Campos a serem preenchidos
+        const enderecoSpan = document.getElementById('endereco');
+        const valorMensalSpan = document.getElementById('valorMensal');
+        const proprietarioSpan = document.getElementById('proprietario');
+        const taxaCondominioSpan = document.getElementById('taxaCondominio');
+        const descricaoSpan = document.getElementById('descricao');
+
+        imovelSelect.addEventListener('change', function () {
+            const imovelId = this.value;
+            console.log("imovel select", imovelId)
+
+            // Limpar campos enquanto carrega
+            enderecoSpan.textContent = 'Carregando...';
+            valorMensalSpan.textContent = 'Carregando...';
+            proprietarioSpan.textContent = 'Carregando...';
+            taxaCondominioSpan.textContent = 'Carregando...';
+            descricaoSpan.textContent = 'Carregando...';
+
+            // Requisição para obter os detalhes do imóvel
+            fetch(`/imovel/detalhes/${imovelId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const formatarReal = valor => {
+                        return new Intl.NumberFormat('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
+                        }).format(valor || 0);
+                    };
+                    // Preenche os campos com os dados retornados
+                    enderecoSpan.textContent = data.endereco.logradouro + ", " + data.endereco.bairro + ", " + data.endereco.numero + ", " + data.endereco.cidade + " - " + data.endereco.uf || 'Não informado';
+                    valorMensalSpan.textContent = `${formatarReal(data.valor) || 'R$ 0,00'}`;
+                    proprietarioSpan.textContent = data.locador.nome || 'Não informado';
+                    taxaCondominioSpan.textContent = `${formatarReal(data.valorTaxa) || 'R$ 0,00'}`;
+                    descricaoSpan.textContent = data.descricao || 'Não informado';
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar os detalhes do imóvel:', error);
+                    enderecoSpan.textContent = 'Erro ao carregar';
+                    valorMensalSpan.textContent = 'Erro ao carregar';
+                    proprietarioSpan.textContent = 'Erro ao carregar';
+                    taxaCondominioSpan.textContent = 'Erro ao carregar';
+                    descricaoSpan.textContent = 'Erro ao carregar';
+                });
+        });
+    });
+</script>
+
 
 </body>
 

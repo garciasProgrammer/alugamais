@@ -16,7 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/pagamentos")
+@RequestMapping("/pagamento")
 public class PagamentoController {
 
     @Autowired
@@ -42,7 +42,7 @@ public class PagamentoController {
 
         pagamentoService.editar(pagamento);
         attr.addFlashAttribute("success", "Pagamento editado com sucesso!");
-        return "redirect:/pagamentos/cadastrar";
+        return "redirect:/pagamento/cadastrar";
 
     }
 
@@ -61,6 +61,6 @@ public class PagamentoController {
 
         pagamentoService.salvar(pagamento);
         attr.addFlashAttribute("success", "Pagamento inserido com sucesso!");
-        return "redirect:/pagamentos/cadastrar";
+        return "redirect:/pagamento/cadastrar";
     }
 }

@@ -29,20 +29,11 @@ public class Locatario extends AbstractEntity<Long>{
     @Column (name = "data_nascimento",nullable = false, columnDefinition = "DATE")
     private LocalDate dataNascimento;
 
-    @NotNull
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @Column (name = "data_validade_cnh", columnDefinition = "DATE")
-    private LocalDate dataValidadeCnh;
 
     @Valid
     @OneToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco_id_fk")
     private Endereco endereco;
-
-    @NotBlank
-    @Size(max = 255, min = 3)
-    @Column (nullable = false, unique = true)
-    private String cnh;
 
     @NotBlank
     @Size(max = 18, min = 14)
@@ -53,11 +44,6 @@ public class Locatario extends AbstractEntity<Long>{
     @Size(max = 15, min = 8)
     @Column (nullable = false, unique = true)
     private String rg;
-
-    @NotBlank
-    @Size(max = 3, min = 1)
-    @Column (nullable = false, unique = false)
-    private String categoria;
 
     @NotBlank
     @Size(max = 20, min = 6)
@@ -78,9 +64,6 @@ public class Locatario extends AbstractEntity<Long>{
     @Column (nullable = false, unique = false)
     private String email;
 
-    @Size(max = 255, min = 0)
-    @Column (nullable = true, unique = false)
-    private String nomeContato;
 
     @Size(max = 255, min = 3)
     @Column (nullable = false, unique = false)
@@ -90,25 +73,5 @@ public class Locatario extends AbstractEntity<Long>{
     @Size(max = 255, min = 0)
     @Column (nullable = true, unique = false)
     private String celularWhatsApp;
-
-    @Size(max = 255, min = 0)
-    @Column (nullable = true, unique = false)
-    private String celularContato;
-
-    @Size(max = 255, min = 0)
-    @Column (nullable = true, unique = false)
-    private String parentesco;
-
-    @Size(max = 255, min = 0)
-    @Column (nullable = true, unique = false)
-    private String cpfContato;
-
-    @Size(max = 2000, min=0)
-    @Column(nullable = true, unique = false)
-    private String observacao;
-
-
-    @Column (nullable = true, unique = false, columnDefinition = "LONGBLOB")
-    private byte[] fotoCliente;
 
 }

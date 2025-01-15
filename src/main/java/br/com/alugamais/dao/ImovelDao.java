@@ -15,4 +15,6 @@ public interface ImovelDao {
     Imovel findById(Long id);
 
     List<Imovel> findAll();
+
+   List<Imovel> getImoveisPorLocador(String situacao, Long locadorId);
 }

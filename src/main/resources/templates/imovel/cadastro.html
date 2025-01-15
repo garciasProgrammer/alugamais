@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -30,6 +30,7 @@
 
     <!-- Template Main CSS File -->
     <link href="/assets/css/style.css" rel="stylesheet">
+
 
     <!-- =======================================================
     * Template Name: SISGA
@@ -292,12 +293,12 @@
             <ul id="imoveis-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="/imovel/cadastrar">
-                        <i class="bi bi-circle"></i><span>Cadastro Imoveis</span>
+                        <i class="bi bi-circle"></i><span>Cadastro Imóveis</span>
                     </a>
                 </li>
                 <li>
                     <a href="/imovel/listar">
-                        <i class="bi bi-circle"></i><span>Listar Imoveis</span>
+                        <i class="bi bi-circle"></i><span>Listar Imóveis</span>
                     </a>
                 </li>
             </ul>
@@ -343,7 +344,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/pgagmento/listar">
+                    <a href="/pagamento/listar">
                         <i class="bi bi-circle"></i><span>Listar Pagamento</span>
                     </a>
                 </li>
@@ -358,12 +359,13 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>Cadastro Cliente</h1>
+        <h1>Cadastro Imóveis</h1>
+        <div th:replace="/alert"></div>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                <li class="breadcrumb-item">Clientes</li>
-                <li class="breadcrumb-item active">Cadastrar</li>
+                <li class="breadcrumb-item">Cadastrar</li>
+                <li class="breadcrumb-item active">Imoveis</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -374,92 +376,95 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Cliente</h5>
-                        <div th:replace="/alert"></div>
-                        <!-- General Form Elements -->
-                        <form th:action="${locatario.id == null} ? @{/locatario/salvar} : @{/locatario/editar}"
-                              th:object="${locatario}" method="post">
-                            <div class="form-row">
-                                <!-- Nome -->
-                                <div class="row mb-3">
-                                    <label for="inputText" class="col-sm-2 col-form-label">Nome</label>
-                                    <div class="col-sm-12">
-                                        <input id="inputText" type="text" th:field="*{nome}" placeholder="Seu nome"
-                                               class="form-control">
-                                    </div>
-                                </div>
+                        <h5 class="card-title">Imoveis</h5>
 
-                                <!-- CPF e RG -->
+                        <!-- General Form Elements -->
+                        <form th:action="${imovel.id == null} ? @{/imovel/salvar} : @{/imovel/editar}"
+                              th:object="${imovel}" method="post">
+                            <div class="form-row">
                                 <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="inputPassword" class="form-label">CPF</label>
-                                        <input id="inputPassword" type="text" th:field="*{cpf}"
-                                               placeholder="000.000.000-00" class="form-control">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="inputNumber" class="form-label">RG</label>
-                                        <input id="inputNumber" type="text" th:field="*{rg}" placeholder="Seu RG"
-                                               class="form-control">
-                                    </div>
-                                </div>
-                                <!-- Estado civil e Profissao -->
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="inputEstadoCivil" class="form-label">Estado Civil</label>
-                                        <select id="inputEstadoCivil" th:field="*{estadoCivil}" class="form-select">
-                                            <option value="" disabled selected>Selecione seu estado civil</option>
-                                            <option value="solteiro">Solteiro</option>
-                                            <option value="casado">Casado</option>
-                                            <option value="uniao_estavel">União Estável</option>
-                                            <option value="nao_informado">Prefiro não informar</option>
+                                    <div class="col-sm-6">
+                                        <label for="inputTextSituacao" class="col-sm-6 col-form-label">Situação</label>
+                                        <select class="form-select" th:field="*{situacao}" id="inputTextSituacao"
+                                                aria-label="Situacao">
+                                            <option value="Livre">Livre</option>
+                                            <option value="Alugado">Alugado</option>
+
                                         </select>
                                     </div>
-
-                                    <div class="col-md-6">
-                                        <label for="inputProfissao" class="form-label">Profissão</label>
-                                        <input id="inputProfissao" type="text" th:field="*{profissao}"
-                                               placeholder="Sua Profissão" class="form-control">
-                                    </div>
                                 </div>
-
-                                <!-- Email e Nacionalidade -->
+                            </div>
+                            <div class="form-row">
                                 <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="inputDate" class="form-label">Data de Nascimento</label>
-                                        <input id="inputDate" type="date" th:field="*{dataNascimento}"
+                                    <div class="col-sm-6">
+                                        <label for="inputTextTipo" class="col-sm-6 col-form-label">Tipo</label>
+                                        <select class="form-select" th:field="*{tipo}" id="inputTextTipo"
+                                                aria-label="Tipo">
+                                            <option value="Casa">Casa</option>
+                                            <option value="Apartamento">Apartamento</option>
+                                            <option value="Chacara">Chácara</option>
+                                            <option value="Comercial">Comercial</option>
+                                            <option value="Kitnet">Kitnet</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label for="inputTextNumeroAp"
+                                               class="col-sm-3 col-form-label">Número</label>
+                                        <input type="text" id="inputTextNumeroAp" th:field="*{numero}"
+                                               placeholder="Número imóvel"
                                                class="form-control">
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="inputNacionalidade" class="form-label">Nacionalidade</label>
-                                        <input id="inputNacionalidade" type="text" th:field="*{nacionalidade}"
-                                               placeholder="Sua Nacionalidade/país" class="form-control">
+                                    <div class="col-sm-3">
+                                        <label for="inputTextAndarAp" class="col-sm-3 col-form-label">Andar</label>
+                                        <input type="text" id="inputTextAndarAp" th:field="*{andar}"
+                                               placeholder="Andar"
+                                               class="form-control">
                                     </div>
                                 </div>
-
                             </div>
 
-                            <h5 class="card-title mt-4">Contato Telefone/Email</h5>
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="inputEmail" class="form-label">Email</label>
-                                    <input id="inputEmail" type="email" th:field="*{email}" placeholder="seu email"
-                                           class="form-control">
+                            <div class="form-row">
+                                <div class="row mb-3">
+                                    <div class="col-sm-6">
+                                        <label for="inputTextValor" class="col-sm-4 col-form-label">Valor
+                                            mensal</label>
+                                        <input type="text" id="inputTextValor" th:field="*{valor}" placeholder="R$"
+                                               class="form-control">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="inputTextTxCondominio" class="col-sm-4 col-form-label">Taxa de
+                                            Condomínio</label>
+                                        <input type="text" id="inputTextTxCondominio" th:field="*{valorTaxa}"
+                                               placeholder="R$"
+                                               class="form-control">
+                                    </div>
                                 </div>
                             </div>
                             <div class="row mb-3">
-
-                                <div class="col-md-6">
-                                    <label for="inputCelularPrincipal" class="form-label">Celular Principal</label>
-                                    <input id="inputCelularPrincipal" type="text" th:field="*{celularPrincipalCliente}"
-                                           class="form-control" placeholder="(00) 00000-0000">
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="inputCelularWhatsApp" class="form-label">Celular WhatsApp</label>
-                                    <input id="inputCelularWhatsApp" type="text" th:field="*{celularWhatsApp}"
-                                           class="form-control" placeholder="(00) 00000-0000">
+                                <label for="inputTextLocador" class="col-sm-2 col-form-label">Proprietário</label>
+                                <div class="col-sm-12">
+                                    <select id="inputTextLocador"
+                                            class="form-control select2" th:field="*{locador}"
+                                            th:classappend="${#fields.hasErrors('locador')} ? 'is-invalid'">
+                                        <option value="">Selecione...</option>
+                                        <option th:each="l : ${locadores}" th:value="${l.id}"
+                                                th:text="${l.nome}">nome do locador
+                                        </option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        <span th:errors="*{locador}"></span>
+                                    </div>
                                 </div>
                             </div>
-                            <h5 class="card-title mt-4">Endereço</h5>
+                            <div class="row mb-3">
+                                <label for="floatingTextarea" class="col-sm-2 col-form-label">Descrição</label>
+                                <div class="form-floating">
+                    <textarea class="form-control" placeholder="Descrição - descreva o imóvel" id="floatingTextarea"
+                              th:field="*{descricao}"
+                              style="height: 100px;"></textarea>
+                                </div>
+                            </div>
+                            <h5 class="card-title">Endereço</h5>
                             <div class="form-row">
                                 <!-- Rua e Bairro -->
                                 <div class="row mb-3">
@@ -509,28 +514,30 @@
                                     <label for="inputTextComplemento"
                                            class="col-sm-2 col-form-label">Complemento</label>
                                     <div class="col-sm-12">
-                                        <input id="inputTextComplemento" type="text" th:field="*{endereco.complemento}"
+                                        <input id="inputTextComplemento" type="text"
+                                               th:field="*{endereco.complemento}"
                                                placeholder="Complemento" class="form-control">
                                     </div>
                                 </div>
                             </div>
                             <!-- id do locatario e id do endereco-->
-                            <input type="hidden" id="idCliente" th:field="*{id}"/>
-                            <input type="hidden" id="endereco.id" th:field="*{endereco.id}"/>
-                            <!-- Botão de envio -->
-                            <div class="row mb-3 mt-4 text-center">
-                                <div class="col-sm-12">
-                                    <button type="submit" class="btn btn-primary">Cadastrar Cliente</button>
+                            <input type="hidden" id="idimovel" th:field="*{id}"/> <input
+                                type="hidden" id="endereco.id" th:field="*{endereco.id}"/>
+                            <div class="row mb-3 mt-5 text-center">
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-primary">Cadastrar Imovel</button>
                                 </div>
                             </div>
                         </form>
-
                     </div>
                 </div>
             </div>
             <!-- End General Form Elements -->
 
+        </div>
+        </div>
 
+        </div>
         </div>
     </section>
 
@@ -539,16 +546,13 @@
 <!-- ======= Footer ======= -->
 <footer id="footer" class="footer">
     <div class="copyright">
-        &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+        &copy; Copyright <strong><span>Pyrou Web</span></strong>. All Rights Reserved
     </div>
     <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you purchased the pro version. -->
-        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+        Designed by <a href="https://pyrou.com.br/">Ademar Farias Jr</a>
     </div>
-</footer><!-- End Footer -->
+</footer>
+<!-- End Footer -->
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
         class="bi bi-arrow-up-short"></i></a>
@@ -635,12 +639,49 @@
         }
     }
 </script>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('#inputCelularPrincipal, #inputCelularWhatsApp').mask('(00) 00000-0000');
+        console.log("ConverteValor")
+        // Aplicar a máscara
+        $('#inputTextValor').mask('000.000.000,00', {reverse: true});
+
+        // Adicionar o prefixo "R$"
+        $('#inputTextValor').on('blur', function () {
+            if ($(this).val() !== '') {
+                $(this).val('R$ ' + $(this).val());
+            }
+        });
+
+        // Remover o prefixo ao focar (opcional)
+        $('#inputTextValor').on('focus', function () {
+            const currentValue = $(this).val();
+            if (currentValue.startsWith('R$ ')) {
+                $(this).val(currentValue.replace('R$ ', ''));
+            }
+        });
+
+        // Aplicar a máscara
+        $('#inputTextTxCondominio').mask('000.000.000,00', {reverse: true});
+
+        // Adicionar o prefixo "R$"
+        $('#inputTextTxCondominio').on('blur', function () {
+            if ($(this).val() !== '') {
+                $(this).val('R$ ' + $(this).val());
+            }
+        });
+
+        // Remover o prefixo ao focar (opcional)
+        $('#inputTextTxCondominio').on('focus', function () {
+            const currentValue = $(this).val();
+            if (currentValue.startsWith('R$ ')) {
+                $(this).val(currentValue.replace('R$ ', ''));
+            }
+        });
     });
+
 </script>
 
 

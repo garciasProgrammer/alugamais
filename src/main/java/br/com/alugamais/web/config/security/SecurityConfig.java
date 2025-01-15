@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/job/**", "/public/**", "/webjars/**", "/login","/recuperar-senha","/usuarios/recuperar-senha/**","/image/**", "/video/**", "/css/**", "/js/**","/assets/**").permitAll() // Permitir acesso não autenticado a /login
+                .antMatchers("/job/**", "/public/**", "/webjars/**", "/login","/recuperar-senha","/usuarios/recuperar-senha/**","/image/**", "/video/**", "/css/**", "/js/**","/assets/**").permitAll() // Permitir acesso não autenticado
                 .anyRequest().authenticated() // Todas as outras requisições precisam de autenticação
                 .and()
                 .addFilterBefore(new TenantIdentificationFilter(), UsernamePasswordAuthenticationFilter.class)

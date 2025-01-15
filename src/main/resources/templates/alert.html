@@ -1,0 +1,50 @@
+
+<div th:if="${success} != null" class="alert-container">
+	<div class="alert alert-success alert-dismissible fade show" role="alert">
+		<i class="oi oi-check mr-2"></i>
+		<strong th:text="${success}"></strong>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+</div>
+
+<div th:if="${fail} != null" class="alert-container">
+	<div class="alert alert-danger alert-dismissible fade show" role="alert">
+		<i class="oi oi-x mr-2"></i>
+		<strong th:text="${fail}"></strong>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+</div>
+
+<div th:if="${error} != null" class="alert-container">
+	<div class="alert alert-danger alert-dismissible fade show" role="alert">
+		<i class="oi oi-warning mr-2"></i>
+		<strong th:text="${error}"></strong>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+</div>
+
+<div th:if="${warning} != null" class="alert-container">
+	<div class="alert alert-warning alert-dismissible fade show" role="alert">
+		<i class="oi oi-warning mr-2"></i>
+		<strong th:text="${warning}"></strong>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+</div>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		// Seleciona todos os alertas que têm a classe "alert-dismissible"
+		const alerts = document.querySelectorAll('.alert-dismissible');
+
+		alerts.forEach(alert => {
+			// Fecha automaticamente o alerta após 6 segundos (6000 ms)
+			setTimeout(() => {
+				alert.classList.remove('show'); // Remove a classe "show" para iniciar o fade out
+				alert.classList.add('fade');   // Garante a animação de saída
+
+				// Remove o alerta completamente do DOM após o fade (opcional)
+				setTimeout(() => alert.remove(), 150); // Tempo para a animação ser concluída
+			}, 6000);
+		});
+	});
+</script>

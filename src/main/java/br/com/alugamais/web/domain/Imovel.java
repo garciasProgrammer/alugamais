@@ -27,9 +27,9 @@ public class Imovel extends AbstractEntity<Long>{
     @Column(nullable = false, length = 50)
     private String andar;
 
-    @NotNull(message = "{NotNull.imovel.codigoCOntador}")
+    @NotNull(message = "{NotNull.imovel.andar}")
     @Column(nullable = false, length = 50)
-    private String codigoContador;
+    private String tipo;
 
     @Valid
     @OneToOne(cascade = CascadeType.ALL)
@@ -46,17 +46,22 @@ public class Imovel extends AbstractEntity<Long>{
     private Locador locador;
 
     @NotNull(message = "selecione uma situação válida")
-    @Size(max = 20, min = 6, message = "Selecione uma opção: LIVRE, ALUGADO")
+    @Size(max = 20, min = 4, message = "Selecione uma opção: LIVRE, ALUGADO")
     @Column(nullable = false, unique = false)
     private String situacao;
 
     @NotNull(message = "Selecione uma Data de cadastro.")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "data_inicial", nullable = false, columnDefinition = "DATE")
-    private LocalDate dataCadastro;
+    private LocalDate dataCadastro = LocalDate.now();
 
     @NotNull(message = "Digite um valor para a Parcela de aluguel.")
     @NumberFormat(style = NumberFormat.Style.CURRENCY, pattern = "#,##0.00")
     @Column(nullable = false, columnDefinition = "DECIMAL(20,2) DEFAULT 0.00")
     private BigDecimal valor;
+
+    @NotNull(message = "Digite um valor para a Parcela de aluguel.")
+    @NumberFormat(style = NumberFormat.Style.CURRENCY, pattern = "#,##0.00")
+    @Column(nullable = false, columnDefinition = "DECIMAL(20,2) DEFAULT 0.00")
+    private BigDecimal valorTaxa;
 }

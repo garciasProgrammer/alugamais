@@ -15,4 +15,6 @@ public interface ImovelService {
     Imovel buscarPorId(Long id);
 
     List<Imovel> buscarTodos();
+
+    List<Imovel> getImoveisPorLocador(String situacao, Long locadorId);
 }
