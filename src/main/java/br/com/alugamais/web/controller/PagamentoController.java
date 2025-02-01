@@ -2,6 +2,7 @@ package br.com.alugamais.web.controller;
 
 import br.com.alugamais.service.*;
 import br.com.alugamais.service.PagamentoService;
+import br.com.alugamais.web.config.security.CustomUserDetails;
 import br.com.alugamais.web.domain.*;
 import br.com.alugamais.web.util.DataUtil;
 import br.com.alugamais.web.util.PixUtil;
@@ -11,6 +12,7 @@ import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -90,7 +92,7 @@ public class PagamentoController {
         pagamento.setDataPagamento(LocalDate.now());
         pagamento.setTipoDePagamento("ENTRADA");
         pagamento.setTipoDeDocumento("ALUGUEL");
-        pagamento.setUsuario("Thiago Batista Garcia");
+        pagamento.setUsuario(CustomUserDetails.getUsuarioLogado());
         pagamento.setValorTotal(pagamento.getValor());
         pagamento.setTransactionId("");
         pagamento.setValorRecebido(pagamento.getValorTotalLiquido());
@@ -158,7 +160,7 @@ public class PagamentoController {
                 pix.setLessee(pagamento.getContrato().getLocatario().getId().toString());
                 pix.setContract(pagamento.getContrato().getId().toString());
                 pix.setDiscount(pagamento.getDesconto());
-                pix.setUser("Thiago Batista Garcia");
+                pix.setUser(CustomUserDetails.getUsuarioLogado());
                 pix.setFeeValue(new BigDecimal(0.00));
                 pix.setInterestValue(pagamento.getJuros());
                 pix.setPaymentMethod(pagamento.getMeioPagamento());
@@ -213,6 +215,19 @@ public class PagamentoController {
             parcelas.get(0).setCodigoPagamento(null);
             parcelas.get(0).setDataPagamento(null);
             parcelaService.editar(parcelas.get(0));
+
+            //log da atividade
+            AtividadeRecente atividadeRecente = new AtividadeRecente();
+            atividadeRecente.setTipoAtividade("ESTORNO_PAGAMENTO");
+            atividadeRecente.setDataCriacao(LocalDateTime.now());
+            atividadeRecente.setAtividade("Pagamento Estornado N°:" + pagamento.getId() +
+                    ", contrato N°:" + pagamento.getContrato().getId() +
+                    ", Cliente: " + pagamento.getContrato().getLocatario().getNome() +
+                    ", Imovel N°:" + pagamento.getContrato().getImovel().getNumero() +
+                    ", referente parcela N°: " + pagamento.getParcela() +
+                    ", valor pago R$" + pagamento.getValorTotalLiquido() +
+                    ", data pagamento: " + pagamento.getDataPagamento());
+            atividadeRecenteService.salvar(atividadeRecente);
 
             // Retornar resultado do estorno em JSON
             response.put("success", true);

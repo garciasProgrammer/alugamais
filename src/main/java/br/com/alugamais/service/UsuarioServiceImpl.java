@@ -67,12 +67,11 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 
         if (usuario != null) {
 
-
             String tenantId = TenantContext.getCurrentTenant();
             return new CustomUserDetails(usuario.getUserName(),
                     usuario.getPassword(),
                     AuthorityUtils.createAuthorityList("ROLE_" + usuario.getTipoDeUsuario().toString()),
-                    tenantId);
+                    tenantId, usuario.getNome());
 
 
         } else {

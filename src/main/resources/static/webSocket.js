@@ -1,4 +1,3 @@
-// Criar um WebSocket global
 const WebSocketManager = (function () {
     let stompClient = null;
     let isConnected = false;
@@ -10,32 +9,36 @@ const WebSocketManager = (function () {
             return;
         }
 
-        const socket = new SockJS("/ws"); // Conecta ao servidor WebSocket
-        stompClient = Stomp.over(socket);
+        console.log("⏳ Aguardando 3 segundos antes de conectar ao WebSocket...");
+        setTimeout(() => { // Adiciona delay antes de conectar
+            const socket = new SockJS("/ws"); // Conecta ao servidor WebSocket
+            stompClient = Stomp.over(socket);
 
-        stompClient.connect({}, function () {
-            console.log(`✅ Conectado ao WebSocket do tenant ${tenantId}`);
-            isConnected = true;
+            stompClient.connect({}, function () {
+                console.log(`✅ Conectado ao WebSocket do tenant ${tenantId}`);
+                isConnected = true;
 
-            // Inscreve-se no tópico do tenant para receber notificações
-            stompClient.subscribe(`/topic/${tenantId}/cards`, function (message) {
-                const data = JSON.parse(message.body);
-                console.log("🔔 Mensagem recebida via WebSocket:", data);
+                // Inscreve-se no tópico do tenant para receber notificações
+                stompClient.subscribe(`/topic/${tenantId}/cards`, function (message) {
+                    const data = JSON.parse(message.body);
+                    console.log("🔔 Mensagem recebida via WebSocket:", data);
 
-                // Exibir notificação na tela
-                exibirNotificacao(data);
-                updateCardParcels(data.contratoId)
-                iniciarContadorPix(); // Agora o contador será reiniciado corretamente
+                    // Exibir notificação na tela
+                    exibirNotificacao(data);
+                    updateCardParcels(data.contratoId);
+                    iniciarContadorPix(); // Agora o contador será reiniciado corretamente
+                });
+            }, function (error) {
+                console.error("❌ Erro na conexão WebSocket:", error);
             });
-        }, function (error) {
-            console.error("❌ Erro na conexão WebSocket:", error);
-        });
+        }, 5000); // Delay de 3 segundos antes de conectar
     }
 
     return {
         connect: connect
     };
 })();
+
 
 // Conectar automaticamente ao carregar a página
 document.addEventListener("DOMContentLoaded", function () {

@@ -22,7 +22,7 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     EmailDao dao;
 
-    @Autowired
+
     private JavaMailSender emailSender;
     @Autowired
     private ResourceLoader resourceLoader;

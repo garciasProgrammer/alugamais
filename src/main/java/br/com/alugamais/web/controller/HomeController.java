@@ -1,11 +1,10 @@
 package br.com.alugamais.web.controller;
 
-import br.com.alugamais.service.AtividadeRecenteService;
-import br.com.alugamais.service.ImovelService;
-import br.com.alugamais.service.LocatarioService;
-import br.com.alugamais.service.PagamentoService;
+import br.com.alugamais.service.*;
+import br.com.alugamais.web.config.security.CustomUserDetails;
 import br.com.alugamais.web.domain.AtividadeRecente;
 import br.com.alugamais.web.domain.Pagamento;
+import br.com.alugamais.web.domain.Usuario;
 import br.com.alugamais.web.util.ConversorDeMoedaParaBigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,6 +39,9 @@ public class HomeController {
     @Autowired
     AtividadeRecenteService atividadeRecenteService;
 
+    @Autowired
+    UsuarioService usuarioService;
+
     @GetMapping("/home")
     public String home(HttpServletRequest request, ModelMap model) {
 
@@ -51,6 +53,7 @@ public class HomeController {
         BigDecimal valorMensal = (BigDecimal) pagamentoService.getPagamentosAnoMes();
         List<Pagamento> listPgtos =  pagamentoService.getPagamentosRecebidos();
         List<AtividadeRecente> atividades = atividadeRecenteService.getAtividades();
+        Usuario usuario = usuarioService.buscarPorUserName(CustomUserDetails.getUsuarioLogado());
 
         model.addAttribute("imovelAtivo", ativos);
         model.addAttribute("porcentagemAtivo", String.format("%.2f%%", porcentagem));
@@ -59,6 +62,9 @@ public class HomeController {
         model.addAttribute("pagamentos",listPgtos);
         model.addAttribute("dataHora", LocalDateTime.now());
         model.addAttribute("atividades", atividades);
+        model.addAttribute("usuarioLogado", CustomUserDetails.getUsuarioLogado().toUpperCase());
+        model.addAttribute("usuarioNome", CustomUserDetails.getNomeUsuarioLogado().toUpperCase());
+        model.addAttribute("tipoUsuario", usuario.getTipoDeUsuario().toString());
 
         return "home";
     }
