@@ -54,4 +54,7 @@ public interface ParcelaService {
 
     long countParcelaIsentas(Long idContrato);
 
+    List<Parcelas> buscaParcelas(Long idContrato);
+
+    List<Parcelas> getParcela(Long contratoId, String numParcela);
 }

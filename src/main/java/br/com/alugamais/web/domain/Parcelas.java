@@ -1,5 +1,6 @@
 package br.com.alugamais.web.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,12 +25,13 @@ public class Parcelas extends AbstractEntity<Long>{
 	@Valid
 	@ManyToOne
 	@JoinColumn(name = "contrato_id_fk")
+	@JsonBackReference
 	private Contrato contrato;
 	
 	@NotNull
 	@NumberFormat(style = Style.CURRENCY, pattern = "#,##0.00")
 	@Column(nullable = false, columnDefinition = "DECIMAL(20,2) DEFAULT 0.00")
-	private BigDecimal ValorAluguel;
+	private BigDecimal valorAluguel;
 	
 	@NotNull
 	@DateTimeFormat(iso = ISO.DATE)

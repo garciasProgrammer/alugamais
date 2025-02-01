@@ -37,6 +37,35 @@
     * Updated: Apr 20 2024 with Bootstrap v5.3.3
     * Author: Ademar Farias Jr
     ======================================================== -->
+    <style>
+        /* Estilo do botão dropdown */
+        .dropdown-toggle {
+            display: flex;
+            justify-content: space-between; /* Espaço entre o texto e a seta */
+            align-items: center; /* Centraliza verticalmente o texto e a seta */
+            padding-right: 2rem; /* Espaço para a seta */
+            width: 100%; /* Faz o botão ocupar toda a largura */
+            text-align: left; /* Texto alinhado à esquerda */
+            position: relative; /* Necessário para posicionar a seta */
+        }
+
+        /* Seta no lado direito e centralizada */
+        .dropdown-toggle::after {
+            content: '\25BC'; /* Código da seta para baixo */
+            position: absolute;
+            right: 1rem; /* Espaço à direita */
+            top: 50%; /* Posiciona no centro vertical */
+            transform: translateY(-50%); /* Centraliza perfeitamente */
+            font-size: 1rem; /* Tamanho da seta */
+            color: #ffffff; /* Cor branco padrão */
+        }
+
+        /* Alteração de cor no hover */
+        .dropdown-toggle:hover::after {
+            color: #c7bfbf; /* cinza claro no hover */
+        }
+    </style>
+
 </head>
 
 <body>
@@ -344,7 +373,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/pgagmento/listar">
+                    <a href="/pagamento/listar">
                         <i class="bi bi-circle"></i><span>Listar Pagamento</span>
                     </a>
                 </li>
@@ -379,131 +408,285 @@
                         <h5 class="card-title">Contratos</h5>
 
                         <!-- General Form Elements -->
-                        <form th:action="${contrato.id == null} ? @{/contrato/salvar} : @{/contrato/editar}"
+                        <form id="contratoForm"
+
+                              th:action="${contrato.id == null} ? @{/contrato/salvar} : @{/contrato/editar}"
                               th:object="${contrato}" method="post">
                             <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">Situação</label>
+                                <div class="col-sm-3">
+                                    <div>
+                                        <input type="text" th:field="*{situacao}" readonly class="form-control"
+                                               id="situacao">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
                                 <label for="locadorSelect" class="col-sm-2 col-form-label">Locador</label>
-                                <div class="col-sm-10">
-                                    <select id="locadorSelect"
-                                            class="form-control " th:field="*{locador}"
-                                            th:classappend="${#fields.hasErrors('locador')} ? 'is-invalid'">
-                                        <option value="">Selecione...</option>
-                                        <option th:each="l : ${locadores}" th:value="${l.id}"
-                                                th:text="${l.nome}">nome do locador
-                                        </option>
-                                    </select>
+                                <div class="col-sm-10 position-relative">
+                                    <!-- Botão Dropdown -->
+                                    <div class="dropdown w-100">
+                                        <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start"
+                                                type="button"
+                                                id="dropdownMenuButtonLocador" data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                                th:text="${contrato.locador?.nome ?: 'Selecione...'}">
+                                            Selecione...
+                                        </button>
+                                        <!-- Dropdown Menu -->
+                                        <div class="dropdown-menu w-100" style="max-height: 300px; overflow-y: auto;">
+                                            <!-- Campo de Filtro -->
+                                            <div class="p-2">
+                                                <input type="text" class="form-control" id="locadorFilter"
+                                                       placeholder="Filtrar locadores...">
+                                            </div>
+                                            <!-- Select com Opções -->
+                                            <select id="locadorSelect" class="form-select border-0"
+                                                    th:field="*{locador}" size="5"
+                                                    style="outline: none; border: none;">
+                                                <option value="" disabled selected>Selecione...</option>
+                                                <option th:each="l : ${locadores}" th:value="${l.id}"
+                                                        th:text="${l.nome}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- Mensagem de Erro -->
                                     <div class="invalid-feedback">
                                         <span th:errors="*{locador}"></span>
                                     </div>
                                 </div>
                             </div>
-
                             <div class="row mb-3">
-                                <label for="imovelSelect" class="col-sm-2 col-form-label">Imóveis</label>
-                                <div class="col-sm-6">
-                                    <select class="form-select" id="imovelSelect" aria-label="Imóveis" disabled>
-                                        <option selected disabled>Selecionar Imóvel</option>
-                                    </select>
+                                <label for="customSelect" class="col-sm-2 col-form-label">Imóveis</label>
+                                <div class="col-sm-10 position-relative">
+                                    <div class="dropdown w-600">
+                                        <button class="btn btn-outline-secondary dropdown-toggle w-600 text-start"
+                                                type="button"
+                                                id="dropdownMenuButton"
+                                                th:text="${contrato.id != null ? #strings.concat('N°', contrato.imovel.numero, ' - Situação: ', contrato.imovel.situacao) : 'Selecione um imóvel...'}"
+
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                            Selecione um imóvel...
+                                        </button>
+                                        <div class="dropdown-menu w-100" style="max-height: 200px; overflow-y: auto;">
+                                            <div class="p-2">
+                                                <input type="text" class="form-control" id="dropdownFilter"
+                                                       placeholder="Filtrar imóveis..."/>
+                                            </div>
+                                            <select id="customSelect" th:field="*{imovel}" class="form-select border-0"
+                                                    onchange="verificarImovelEmUso(this.value)"
+                                                    size="5" style="outline: none; border: none;">
+                                                <option value="">Selecione...</option>
+                                                <option th:each="imo : ${imoveis}" th:value="${imo.id}"
+                                                        th:text="${#strings.concat('N°', imo.numero, ' - Situação: ', imo.situacao)}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <label for="endereco" class="col-sm-2 col-form-label">Endereço</label>
-                                <div class="col-sm-10">
-                                    <label for="endereco" id="endereco"
-                                           class="col-sm-2 col-form-label">Endereço...</label>
+                                <div class="col-sm-4">
+                                    <input for="endereco" id="endereco"
+                                           th:value="${contrato.id != null ? #strings.concat(contrato.imovel.endereco.logradouro, ', ', contrato.imovel.endereco.bairro, ', ', contrato.imovel.endereco.numero, ', ', contrato.imovel.endereco.cidade, ', ', contrato.imovel.endereco.uf) : ''}"
+                                           class="form-control"/>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <label for="valorMensal" class="col-sm-2 col-form-label">Valor Mensal</label>
-                                <div class="col-sm-10">
-                                    <label for="valorMensal" id="valorMensal"
-                                           class="col-sm-2 col-form-label">R$...</label>
+                                <div class="col-sm-4">
+                                    <!-- Campo visível para exibição formatada -->
+                                    <input id="valorMensal"
+                                           class="form-control"
+                                           type="text"
+                                           th:field="*{valorAluguel}"
+                                           oninput="atualizarValorReal(this)"
+                                           placeholder="R$ 0,00"/>
+
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="taxaCondominio" class="col-sm-2 col-form-label">Taxa de condomínio</label>
+                                <div class="col-sm-4">
+                                    <input for="taxaCondominio" id="taxaCondominio"
+                                           th:value="${contrato.id != null ? 'R$ ' + contrato.imovel?.valorTaxa : ''}"
+                                           class="form-control"
+                                           placeholder="R$ 0,00"/>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <label for="proprietario" class="col-sm-2 col-form-label">Proprietário</label>
                                 <div class="col-sm-10">
-                                    <label for="proprietario" id="proprietario" class="col-sm-2 col-form-label">Proprietário
-                                        ...</label>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label for="taxaCondominio" class="col-sm-2 col-form-label">Taxa de condomínio</label>
-                                <div class="col-sm-10">
-                                    <label for="taxaCondominio" id="taxaCondominio" class="col-sm-2 col-form-label">Taxa
-                                        de condomínio
-                                        ...</label>
+                                    <input for="proprietario" id="proprietario"
+                                           th:value="${contrato.id != null ? contrato.locador.nome.toUpperCase() : ''}"
+                                           class="form-control"/>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <label for="descricao" class="col-sm-2 col-form-label">Descrição</label>
                                 <div class="col-sm-10">
-                                    <label for="descricao" id="descricao" class="col-sm-2 col-form-label">Descrição
-                                        ...</label>
+                                    <input for="descricao" id="descricao"
+                                           th:value="${contrato.id != null ? contrato.imovel?.descricao : ''}"
+                                           class="form-control"/>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <label for="locatarioSelect" class="col-sm-2 col-form-label">Locatário</label>
-                                <div class="col-sm-10">
-                                    <select id="locatarioSelect"
-                                            class="form-control " th:field="*{locatario}"
-                                            th:classappend="${#fields.hasErrors('locador')} ? 'is-invalid'">
-                                        <option value="">Selecione...</option>
-                                        <option th:each="l : ${locatarios}" th:value="${l.id}"
-                                                th:text="${l.nome}">
-                                        </option>
-                                    </select>
+                                <div class="col-sm-10 position-relative">
+                                    <div class="dropdown w-100">
+                                        <!-- Botão Dropdown -->
+                                        <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start"
+                                                type="button"
+                                                id="dropdownMenuButtonLocatario" data-bs-toggle="dropdown"
+                                                th:text="${contrato.locatario?.nome ?: 'Selecione um locatário...'}"
+                                                aria-expanded="false">
+                                            Selecione...
+                                        </button>
+                                        <!-- Dropdown Menu -->
+                                        <div class="dropdown-menu w-100" style="max-height: 300px; overflow-y: auto;">
+                                            <!-- Campo de Filtro -->
+                                            <div class="p-2">
+                                                <input type="text" class="form-control" id="locatarioFilter"
+                                                       placeholder="Filtrar locatários...">
+                                            </div>
+                                            <!-- Select com Opções -->
+                                            <select id="locatarioSelect"
+                                                    class="form-select border-0" th:field="*{locatario}"
+                                                    th:classappend="${#fields.hasErrors('locatario')} ? 'is-invalid'"
+                                                    size="5">
+                                                <option value="">Selecione um locatário...</option>
+                                                <option th:each="l : ${locatarios}" th:value="${l.id}"
+                                                        th:text="${l.nome}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- Mensagem de Erro -->
                                     <div class="invalid-feedback">
-                                        <span th:errors="*{locador}"></span>
+                                        <span th:errors="*{locatario}"></span>
                                     </div>
                                 </div>
                             </div>
+
                             <div>
-                                <h5 class="card-title">Selecionar Periodo</h5>
+                                <h5 class="card-title">Selecionar Período</h5>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputDate" class="col-sm-2 col-form-label">Date Inicial</label>
-                                <div class="col-sm-10">
-                                    <input type="date" class="form-control">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label for="inputText" class="col-sm-2 col-form-label">Período</label>
-                                <div class="col-sm-10">
-                                    <select class="form-select" id="floatingSelect" aria-label="Tipo">
-                                        <option selected>Selecionar</option>
+                                <div class="col-md-3">
+                                    <label for="floatingSelect" class="form-label">Período</label>
+                                    <select class="form-select" id="floatingSelect" th:field="*{meses}"
+                                            aria-label="Tipo">
+                                        <option value="">Selecionar</option>
+                                        <!-- Meses -->
                                         <option value="1">1 mês</option>
-                                        <option value="2">6 Meses</option>
-                                        <option value="3">1 Ano</option>
+                                        <option value="2">2 meses</option>
+                                        <option value="3">3 meses</option>
+                                        <option value="4">4 meses</option>
+                                        <option value="5">5 meses</option>
+                                        <option value="6">6 meses</option>
+                                        <option value="7">7 meses</option>
+                                        <option value="8">8 meses</option>
+                                        <option value="9">9 meses</option>
+                                        <option value="10">10 meses</option>
+                                        <option value="11">11 meses</option>
+                                        <option value="12">12 meses</option>
+                                        <option value="13">13 meses</option>
+                                        <option value="14">14 meses</option>
+                                        <option value="15">15 meses</option>
+                                        <option value="16">16 meses</option>
+                                        <option value="17">17 meses</option>
+                                        <option value="18">18 meses</option>
+                                        <option value="19">19 meses</option>
+                                        <option value="20">20 meses</option>
+                                        <option value="21">21 meses</option>
+                                        <option value="22">22 meses</option>
+                                        <option value="23">23 meses</option>
+                                        <option value="24">24 meses</option>
+                                        <option value="25">25 meses</option>
+                                        <option value="26">26 meses</option>
+                                        <option value="27">27 meses</option>
+                                        <option value="28">28 meses</option>
+                                        <option value="29">29 meses</option>
+                                        <option value="30">30 meses</option>
+                                        <option value="31">31 meses</option>
+                                        <option value="32">32 meses</option>
+                                        <option value="33">33 meses</option>
+                                        <option value="34">34 meses</option>
+                                        <option value="35">35 meses</option>
+                                        <option value="36">36 meses</option>
                                     </select>
                                 </div>
-                            </div>
-                            <div class="row mb-5">
-                                <label class="col-sm-2 col-form-label">Período</label>
-                                <div class="col-sm-10">
-                                    <div>
-                                        <label for="customRange1" class="form-label">Quantidade de Meses</label>
-                                        <input type="range" class="form-range" id="customRange1">
-                                    </div>
+                                <div class="col-md-3">
+                                    <label for="inputDataInicial" class="form-label">Data Inicial</label>
+                                    <input type="date" th:field="*{dataInicial}" id="inputDataInicial"
+                                           class="form-control">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="inputDataFinal" class="form-label">Data Final</label>
+                                    <input type="date" th:field="*{dataFinal}" readonly id="inputDataFinal"
+                                           class="form-control">
+                                </div>
+                                <input type="hidden" th:field="*{dataRenovacao}" readonly id="inputDataRenovacao"
+                                       class="form-control">
+                                <div class="col-md-3">
+                                    <label for="inputDataAssinatura" class="form-label">Data Assinatura</label>
+                                    <input type="date" th:field="*{dataAssinatura}" id="inputDataAssinatura"
+                                           class="form-control">
                                 </div>
                             </div>
-                            <div class="row mb-3 mt-5 text-center">
-                                <div class="col-sm-10">
-                                    <button type="submit" class="btn btn-primary">Salvar</button>
+                            <!-- Campo Oculto para Parcelas -->
+                            <input type="hidden" id="parcelasHidden" name="parcelasHidden"/>
+                            <input type="hidden" id="contratoId" th:field="*{id}"/>
+                            <div class="row mb-3 mt-5">
+                                <div class="col-sm-12 d-flex justify-content-end gap-2">
+                                    <button type="button" class="btn btn-danger" id="buttonCancelar">Cancelar</button>
+                                    <button type="button" class="btn btn-primary" id="openModalButton">Continuar</button>
                                 </div>
                             </div>
+                        </form>
                     </div>
                 </div>
             </div>
-            </form>
             <!-- End General Form Elements -->
-
         </div>
         </div>
 
         </div>
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="parcelasModal" tabindex="-1" aria-labelledby="parcelasModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="parcelasModalLabel">Detalhes do Parcelamento</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Tabela de Parcelas -->
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Parcela</th>
+                                <th>Data de Vencimento</th>
+                                <th>Valor</th>
+                            </tr>
+                            </thead>
+                            <tbody id="parcelasTableBody">
+                            <!-- Linhas adicionadas dinamicamente -->
+                            </tbody>
+                        </table>
+                        <p class="mt-4">Deseja continuar com a criação deste contrato e seu parcelamento?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button id="confirmarContrato" type="button" class="btn btn-primary">Criar Contrato</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </section>
 
 </main><!-- End #main -->
@@ -535,10 +718,23 @@
 <!-- Template Main JS File -->
 <script src="/assets/js/main.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const locadorSelect = document.getElementById('locadorSelect');
-        const imovelSelect = document.getElementById('imovelSelect');
 
+    const locadorSelect = document.getElementById('locadorSelect');
+    const imovelSelect = document.getElementById('customSelect');
+    const imovelFilter = document.getElementById('dropdownFilter');
+    const dropdownButton = document.getElementById('dropdownMenuButton');
+
+    // Campos de detalhes do imóvel
+    const enderecoSpan = document.getElementById('endereco');
+    const valorMensalSpan = document.getElementById('valorMensal');
+    const proprietarioSpan = document.getElementById('proprietario');
+    const taxaCondominioSpan = document.getElementById('taxaCondominio');
+    const descricaoSpan = document.getElementById('descricao');
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+
+        // Função para carregar imóveis ao selecionar o locador
         locadorSelect.addEventListener('change', function () {
             const locadorId = this.value;
 
@@ -550,18 +746,12 @@
             fetch(`/imovel/livres/lista/${locadorId}`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data); // Log para verificar a resposta
-
-                    // Se a resposta for um objeto e o array estiver dentro de `data`
-                    const imoveis = Array.isArray(data) ? data : data.data;
-
                     // Atualiza o select com os imóveis
                     imovelSelect.innerHTML = '<option selected disabled>Selecionar Imóvel</option>';
-                    imoveis.forEach(imovel => {
+                    data.forEach(imovel => {
                         const option = document.createElement('option');
                         option.value = imovel.id;
-                        option.textContent = "N°" + imovel.numero + " - " + imovel.tipo + " - " + imovel.situacao;
-
+                        option.textContent = `N°${imovel.numero} - ${imovel.tipo} - ${imovel.situacao}`;
                         imovelSelect.appendChild(option);
                     });
                     imovelSelect.disabled = false;
@@ -571,26 +761,44 @@
                     imovelSelect.innerHTML = '<option selected disabled>Erro ao carregar imóveis</option>';
                 });
         });
-    });
 
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        console.log("função select")
-        const imovelSelect = document.getElementById('imovelSelect');
+        // Filtrar imóveis no campo de filtro
+        imovelFilter.addEventListener('input', function () {
+            const filterText = this.value.toLowerCase();
 
-        // Campos a serem preenchidos
-        const enderecoSpan = document.getElementById('endereco');
-        const valorMensalSpan = document.getElementById('valorMensal');
-        const proprietarioSpan = document.getElementById('proprietario');
-        const taxaCondominioSpan = document.getElementById('taxaCondominio');
-        const descricaoSpan = document.getElementById('descricao');
+            Array.from(imovelSelect.options).forEach(option => {
+                const optionText = option.textContent.toLowerCase();
+                if (optionText.includes(filterText)) {
+                    option.style.display = 'block'; // Mostra a opção
+                } else {
+                    option.style.display = 'none'; // Esconde a opção
+                }
+            });
+        });
 
+        // Atualizar botão e fechar dropdown ao selecionar um imóvel
+        customSelect.addEventListener('change', function () {
+            const selectedOption = customSelect.options[customSelect.selectedIndex];
+            if (selectedOption) {
+                // Atualiza o texto do botão com o imóvel selecionado
+                dropdownButton.textContent = selectedOption.textContent;
+
+                // Fecha o dropdown usando classes do Bootstrap
+                const dropdownInstance = bootstrap.Dropdown.getInstance(dropdownButton);
+                if (dropdownInstance) {
+                    dropdownInstance.hide();
+                }
+            }
+        });
+
+        // Atualizar botão com a opção selecionada e carregar detalhes do imóvel
         imovelSelect.addEventListener('change', function () {
-            const imovelId = this.value;
-            console.log("imovel select", imovelId)
+            const selectedOption = imovelSelect.options[imovelSelect.selectedIndex];
+            dropdownButton.textContent = selectedOption.textContent;
 
-            // Limpar campos enquanto carrega
+            const imovelId = this.value;
+
+            // Limpar campos enquanto carrega os detalhes do imóvel
             enderecoSpan.textContent = 'Carregando...';
             valorMensalSpan.textContent = 'Carregando...';
             proprietarioSpan.textContent = 'Carregando...';
@@ -607,25 +815,324 @@
                             currency: 'BRL'
                         }).format(valor || 0);
                     };
+
                     // Preenche os campos com os dados retornados
-                    enderecoSpan.textContent = data.endereco.logradouro + ", " + data.endereco.bairro + ", " + data.endereco.numero + ", " + data.endereco.cidade + " - " + data.endereco.uf || 'Não informado';
-                    valorMensalSpan.textContent = `${formatarReal(data.valor) || 'R$ 0,00'}`;
-                    proprietarioSpan.textContent = data.locador.nome || 'Não informado';
-                    taxaCondominioSpan.textContent = `${formatarReal(data.valorTaxa) || 'R$ 0,00'}`;
-                    descricaoSpan.textContent = data.descricao || 'Não informado';
+                    enderecoSpan.value = `${data.endereco.logradouro}, ${data.endereco.bairro}, ${data.endereco.numero}, ${data.endereco.cidade} - ${data.endereco.uf}` || 'Não informado';
+                    valorMensalSpan.value = formatarReal(data.valor) || 'R$ 0,00';
+                    proprietarioSpan.value = data.locador.nome || 'Não informado';
+                    taxaCondominioSpan.value = formatarReal(data.valorTaxa) || 'R$ 0,00';
+                    descricaoSpan.value = data.descricao || 'Não informado';
                 })
                 .catch(error => {
                     console.error('Erro ao carregar os detalhes do imóvel:', error);
-                    enderecoSpan.textContent = 'Erro ao carregar';
-                    valorMensalSpan.textContent = 'Erro ao carregar';
-                    proprietarioSpan.textContent = 'Erro ao carregar';
-                    taxaCondominioSpan.textContent = 'Erro ao carregar';
-                    descricaoSpan.textContent = 'Erro ao carregar';
+                    enderecoSpan.value = 'Erro ao carregar';
+                    valorMensalSpan.value = 'Erro ao carregar';
+                    proprietarioSpan.value = 'Erro ao carregar';
+                    taxaCondominioSpan.value = 'Erro ao carregar';
+                    descricaoSpan.value = 'Erro ao carregar';
                 });
         });
     });
+
+    function detalhesImovel(imovelId) {
+        // Requisição para obter os detalhes do imóvel
+        fetch(`/imovel/detalhes/${imovelId}`)
+            .then(response => response.json())
+            .then(data => {
+                const formatarReal = valor => {
+                    return new Intl.NumberFormat('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                    }).format(valor || 0);
+                };
+
+                // Preenche os campos com os dados retornados
+                enderecoSpan.value = `${data.endereco.logradouro}, ${data.endereco.bairro}, ${data.endereco.numero}, ${data.endereco.cidade} - ${data.endereco.uf}` || 'Não informado';
+                valorMensalSpan.value = formatarReal(data.valor) || 'R$ 0,00';
+                proprietarioSpan.value = data.locador.nome || 'Não informado';
+                taxaCondominioSpan.value = formatarReal(data.valorTaxa) || 'R$ 0,00';
+                descricaoSpan.value = data.descricao || 'Não informado';
+            })
+            .catch(error => {
+                console.error('Erro ao carregar os detalhes do imóvel:', error);
+                enderecoSpan.value = 'Erro ao carregar';
+                valorMensalSpan.value = 'Erro ao carregar';
+                proprietarioSpan.value = 'Erro ao carregar';
+                taxaCondominioSpan.value = 'Erro ao carregar';
+                descricaoSpan.value = 'Erro ao carregar';
+            });
+    }
+
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const rangeInput = document.getElementById('customRange1');
+        const selectInput = document.getElementById('floatingSelect');
+        const rangeValueDisplay = document.getElementById('rangeValue');
+
+        // Atualiza o valor do range e sincroniza com o select
+        rangeInput.addEventListener('input', function () {
+            const rangeValue = rangeInput.value;
+            rangeValueDisplay.textContent = rangeValue; // Atualiza o texto do span
+
+            // Atualiza o valor correspondente no select
+            Array.from(selectInput.options).forEach(option => {
+                if (option.value === rangeValue) {
+                    option.selected = true;
+                } else {
+                    option.selected = false; // Desmarca outras opções
+                }
+            });
+        });
+
+        // Atualiza o range e o span ao selecionar no dropdown
+        selectInput.addEventListener('change', function () {
+            const selectedValue = selectInput.value;
+            rangeInput.value = selectedValue; // Atualiza o range
+            rangeValueDisplay.textContent = selectedValue; // Atualiza o texto do span
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const dataInicialInput = document.getElementById('inputDataInicial');
+        const periodoSelect = document.getElementById('floatingSelect');
+        const dataFinalInput = document.getElementById('inputDataFinal');
+        const dataRenovacao = document.getElementById('inputDataRenovacao');
+
+        // Função para calcular a data final
+        function calcularDataFinal() {
+            const dataInicial = dataInicialInput.value;
+            const periodoMeses = parseInt(periodoSelect.value, 10);
+
+            if (dataInicial && periodoMeses) {
+                const dataInicialObj = new Date(dataInicial);
+                dataInicialObj.setMonth(dataInicialObj.getMonth() + periodoMeses); // Adiciona os meses
+                dataFinalInput.value = dataInicialObj.toISOString().split('T')[0]; // Formata a data final
+                dataRenovacao.value = dataFinalInput.value;
+            }
+        }
+
+        // Eventos para atualizar a data final
+        dataInicialInput.addEventListener('change', calcularDataFinal);
+        periodoSelect.addEventListener('change', calcularDataFinal);
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const locatarioFilter = document.getElementById('locatarioFilter'); // Campo de filtro
+        const locatarioSelect = document.getElementById('locatarioSelect'); // Select com opções
+        const dropdownButton = document.getElementById('dropdownMenuButtonLocatario'); // Botão do dropdown
+        const dropdownMenu = document.querySelector('.dropdown-menu'); // Menu dropdown
+
+        // Evento de filtro dinâmico
+        locatarioFilter.addEventListener('input', function () {
+            const filterText = this.value.toLowerCase();
+
+            // Filtrar as opções no select
+            Array.from(locatarioSelect.options).forEach(option => {
+                const optionText = option.textContent.toLowerCase();
+                option.style.display = optionText.includes(filterText) ? 'block' : 'none';
+            });
+        });
+
+        // Atualizar o botão e fechar o dropdown ao selecionar um item
+        locatarioSelect.addEventListener('change', function () {
+            const selectedOption = locatarioSelect.options[locatarioSelect.selectedIndex];
+            if (selectedOption) {
+                dropdownButton.textContent = selectedOption.textContent; // Atualiza o texto do botão
+
+                // Fecha o dropdown usando classes do Bootstrap
+                const dropdownInstance = bootstrap.Dropdown.getInstance(dropdownButton);
+                if (dropdownInstance) {
+                    dropdownInstance.hide();
+                }
+            }
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const locadorFilter = document.getElementById('locadorFilter'); // Campo de filtro
+        const locadorSelect = document.getElementById('locadorSelect'); // Select com opções
+        const dropdownButton = document.getElementById('dropdownMenuButtonLocador'); // Botão do dropdown
+        const dropdownMenu = document.querySelector('.dropdown-menu'); // Menu dropdown
+
+        // Evento de filtro dinâmico
+        locadorFilter.addEventListener('input', function () {
+            const filterText = this.value.toLowerCase();
+
+            // Filtrar as opções no select
+            Array.from(locadorSelect.options).forEach(option => {
+                const optionText = option.textContent.toLowerCase();
+                option.style.display = optionText.includes(filterText) ? 'block' : 'none';
+            });
+        });
+
+        // Atualizar o botão e fechar o dropdown ao selecionar um item
+        locadorSelect.addEventListener('change', function () {
+            const selectedOption = locadorSelect.options[locadorSelect.selectedIndex];
+            if (selectedOption) {
+                dropdownButton.textContent = selectedOption.textContent; // Atualiza o texto do botão
+
+                // Fecha o dropdown usando classes do Bootstrap
+                const dropdownInstance = bootstrap.Dropdown.getInstance(dropdownButton);
+                if (dropdownInstance) {
+                    dropdownInstance.hide();
+                }
+            }
+        });
+
+        // Permite focar no campo de filtro ao abrir o dropdown
+        dropdownButton.addEventListener('click', function () {
+            setTimeout(() => locadorFilter.focus(), 100); // Foca no filtro após abrir o dropdown
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const openModalButton = document.getElementById('openModalButton');
+        const parcelasModal = new bootstrap.Modal(document.getElementById('parcelasModal'));
+        const parcelasTableBody = document.getElementById('parcelasTableBody');
+
+        // Inputs principais
+        const dataInicialInput = document.getElementById('inputDataInicial');
+        const periodoSelect = document.getElementById('floatingSelect');
+        const valorMensalSpan = document.getElementById('valorMensal');
+
+        // Abrir o modal ao clicar no botão "Salvar"
+        openModalButton.addEventListener('click', function () {
+            const dataInicial = dataInicialInput.value;
+            const periodoMeses = parseInt(periodoSelect.value, 10);
+            const valorMensal = parseFloat(valorMensalSpan.value.replace('R$', '').replace(',', '.'));
+
+            if (!dataInicial || !periodoMeses || isNaN(valorMensal)) {
+                alert('Preencha todos os campos necessários para calcular as parcelas.');
+                return;
+            }
+
+            // Limpar tabela existente
+            parcelasTableBody.innerHTML = '';
+
+            // Gerar parcelas
+            const [anoInicial, mesInicial, diaInicial] = dataInicial.split('-').map(Number); // Extrai ano, mês e dia
+            const dataInicialObj = new Date(anoInicial, mesInicial - 1, diaInicial); // Cria a data sem horário
+
+            for (let i = 1; i <= periodoMeses; i++) {
+                // Gera a data de vencimento baseada no mês
+                const dataVencimento1 = new Date(dataInicialObj);
+                dataVencimento1.setMonth(dataInicialObj.getMonth() + (i - 1));
+
+                // Formata a data no padrão brasileiro (dd/MM/yyyy)
+                const dia = String(dataVencimento1.getDate()).padStart(2, '0');
+                const mes = String(dataVencimento1.getMonth() + 1).padStart(2, '0'); // Mês começa do zero
+                const ano = dataVencimento1.getFullYear();
+                const dataFormatada = `${dia}/${mes}/${ano}`;
+
+                // Corrigir o valor mensal caso esteja em centavos
+                let valorMensal = parseFloat(valorMensalSpan.value.replace('R$', '').replace('.', '').replace(',', '.'));
+                if (valorMensal < 100) {
+                    valorMensal *= 100; // Corrige valores abaixo de R$ 100
+                }
+
+                // Formata o valor no padrão brasileiro
+                const valorFormatado = new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL',
+                    minimumFractionDigits: 2,
+                }).format(valorMensal);
+
+                // Adiciona a linha na tabela
+                const row = document.createElement('tr');
+                row.innerHTML = `
+        <td>${i}</td>
+        <td>${dataFormatada}</td>
+        <td>${valorFormatado}</td>
+    `;
+                parcelasTableBody.appendChild(row);
+            }
+
+            // Exibir o modal
+            parcelasModal.show();
+        });
+    });
+</script>
+<!-- Manipula parcelas-->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log("Envia Form")
+        const parcelasTableBody = document.getElementById('parcelasTableBody');
+        const parcelasHidden = document.getElementById('parcelasHidden');
+        const confirmarButton = document.getElementById('confirmarContrato');
+        const form = document.getElementById('contratoForm')
+
+        confirmarButton.addEventListener('click', function () {
+            const parcelas = [];
+            const rows = parcelasTableBody.querySelectorAll('tr');
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                // Convertendo a data para o formato yyyy-MM-dd
+                const dataText = cells[1].textContent; // Data no formato dd/MM/yyyy
+                const [dia, mes, ano] = dataText.split('/').map(Number); // Divide em partes
+                const dataISO = new Date(ano, mes - 1, dia).toISOString().split('T')[0]; // Converte para yyyy-MM-dd
+
+                parcelas.push({
+                    parcela: parseInt(cells[0].textContent),
+                    dataVencimento: dataISO, // Usa o formato ISO
+                    valorAluguel: parseFloat(cells[2].textContent.replace('R$', '').replace('.', '').replace(',', '.'))
+                });
+            });
+
+            // Converte parcelas para JSON e insere no campo oculto
+            parcelasHidden.value = JSON.stringify(parcelas);
+            console.log(parcelasHidden.value);
+            // Submete o formulário
+            console.log('Submetendo o formulário...');
+            form.submit();
+        });
+    });
+
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputValorMensal = document.getElementById('valorMensal');
+
+        if (inputValorMensal && inputValorMensal.value) {
+            // Formata o valor existente com "R$"
+            const valorSemFormatacao = inputValorMensal.value.replace(/[^0-9,]/g, ''); // Remove R$ e outros caracteres
+            const valorNumerico = parseFloat(valorSemFormatacao.replace(',', '.')).toFixed(2).replace('.', ','); // Ajusta formato
+            inputValorMensal.value = `R$ ${valorNumerico}`;
+        }
+    });
+
+    function atualizarValorReal(input) {
+        const valorSemFormatacao = input.value.replace(/[^0-9,]/g, '').replace(',', '.'); // Remove "R$" e formata
+        const campoReal = document.getElementById('valorMensal');
+        campoReal.value = parseFloat(valorSemFormatacao) || 0; // Atualiza com o valor numérico
+    }
 </script>
 
+<script>
+    function verificarImovelEmUso(imovelId) {
+        console.log("verifica imovel")
+        if (!imovelId) {
+            return; // Não faz nada se nenhum imóvel foi selecionado
+        }
+
+        fetch(`/imovel/verificar-imovel/${imovelId}`) // Substitua pela URL correta da sua API
+            .then(response => response.json())
+            .then(data => {
+                console.log("dados, ", data)
+                if (data.situacao === 'Alugado') {
+                    alert("Este imóvel já está em uso. Por favor, escolha outro.");
+                    location.reload()
+                }
+            })
+            .catch(error => console.error("Erro ao verificar o imóvel:", error));
+    }
+
+</script>
 
 </body>
 

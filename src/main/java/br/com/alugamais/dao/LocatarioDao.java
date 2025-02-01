@@ -14,4 +14,6 @@ public interface LocatarioDao {
     Locatario findById(Long id);
 
     List<Locatario> findAll();
+
+    Object getClientes();
 }

@@ -1,6 +1,8 @@
 package br.com.alugamais.web.controller;
 
+import br.com.alugamais.service.AtividadeRecenteService;
 import br.com.alugamais.service.LocatarioService;
+import br.com.alugamais.web.domain.AtividadeRecente;
 import br.com.alugamais.web.domain.Locatario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +26,9 @@ public class LocatarioController {
 
     @Autowired
     private LocatarioService locatarioService;
+
+    @Autowired
+    private AtividadeRecenteService atividadeRecenteService;
 
     @GetMapping("/cadastrar")
     public String cadastrar(Locatario locatario) {
@@ -69,6 +76,14 @@ public class LocatarioController {
         }
 
         locatarioService.salvar(locatario);
+
+        //log da atividade
+        AtividadeRecente atividadeRecente = new AtividadeRecente();
+        atividadeRecente.setTipoAtividade("CRIACAO_DE_LOCATARIO");
+        atividadeRecente.setDataCriacao(LocalDateTime.now());
+        atividadeRecente.setAtividade("Locatário criado: "+locatario.getNome()+", data criação: "+ LocalDate.now());
+        atividadeRecenteService.salvar(atividadeRecente);
+
         attr.addFlashAttribute("success", "Locatário inserido com sucesso!");
         return "redirect:/locatario/cadastrar";
     }

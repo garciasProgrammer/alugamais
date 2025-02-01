@@ -1,6 +1,7 @@
 package br.com.alugamais.web.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,6 +16,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -72,32 +74,23 @@ public class Contrato extends AbstractEntity<Long> {
 
     @NotNull(message = "Digite uma Data de renovação")
     @DateTimeFormat(iso = ISO.DATE)
-    @Column(name = "data_renovacao", nullable = false, columnDefinition = "DATE")
+    @Column(name = "data_renovacao", columnDefinition = "DATE")
     private LocalDate dataRenovacao;
 
     @Size(max = 3, min = 1, message = "Entre com um período válido de Meses.")
     @Column(nullable = false, unique = false)
     private String meses;
 
-
-    @NotBlank(message = "Digite um período de renovação.")
-    @Size(max = 12, min = 1, message = "Digite um período de renovação entre {min} e {max} meses.")
-    @Column(nullable = false, unique = false)
-    private String periodoRenovacao;
-
-
     @OneToMany(mappedBy = "parcela", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Parcelas> parcelas;
-
-
-    @DateTimeFormat(iso = ISO.DATE)
-    @Column(name = "data_paralisacao",  nullable = false, columnDefinition = "DATE")
-    private LocalDate dataParalisacao;
+    @JsonManagedReference
+    private List<Parcelas> parcelas = new ArrayList<>();
 
     @DateTimeFormat(iso = ISO.DATE)
-    @Column(name = "data_quitacao",  nullable = false, columnDefinition = "DATE")
+    @Column(name = "data_quitacao", columnDefinition = "DATE")
     private LocalDate dataQuitacao;
+
+
 
 
 }

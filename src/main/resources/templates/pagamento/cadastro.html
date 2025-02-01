@@ -2,448 +2,1347 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>ALUGA+SERVICE</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
+    <title>ALUGA+SERVICE</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
 
-  <!-- Favicons -->
-  <link href="/assets/img/favicon.png" rel="icon">
-  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <!-- Favicons -->
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link
-    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-    rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+            rel="stylesheet">
 
-  <!-- Vendor CSS Files -->
-  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="/assets/vendor/quill/quill.snow.css" rel="stylesheet">
-  <link href="/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
-  <link href="/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-  <link href="/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="/assets/vendor/simple-datatables/style.css" rel="stylesheet">
 
-  <!-- Template Main CSS File -->
-  <link href="/assets/css/style.css" rel="stylesheet">
+    <!-- Template Main CSS File -->
+    <link href="/assets/css/style.css" rel="stylesheet">
+
+    <!-- Adiciona SockJS e STOMP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+    <script src="/websocket.js"></script>
 
 
-  <!-- =======================================================
-  * Template Name: SISGA
-  * Updated: Apr 20 2024 with Bootstrap v5.3.3
-  * Author: Ademar Farias Jr
-  ======================================================== -->
+    <!-- =======================================================
+    * Template Name: SISGA
+    * Updated: Apr 20 2024 with Bootstrap v5.3.3
+    * Author: Ademar Farias Jr
+    ======================================================== -->
+    <style>
+        table.table-hover tbody tr:hover {
+            cursor: pointer;
+        }
+    </style>
+    <style>
+        /* Estilo de input com aparência desabilitada */
+        .input-disabled {
+            background-color: #f5f5f5; /* Cinza bem claro */
+            color: #888; /* Cinza médio para o texto */
+            border: 1px solid #ccc; /* Borda cinza clara */
+            pointer-events: none; /* Impede interações como clique ou foco */
+            opacity: 1; /* Garante que o campo seja visível */
+        }
+
+        /* Para manter o cursor padrão */
+        .input-disabled::placeholder {
+            color: #aaa; /* Placeholder com tom mais claro */
+
+        }
+    </style>
 </head>
 
 <body>
 
-  <!-- ======= Header ======= -->
-  <header id="header" class="header fixed-top d-flex align-items-center">
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="/home" class="logo d-flex align-items-center">
-        <img src="/assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">ALUGA+SERVICE</span>
-      </a>
-      <i class="bi bi-list toggle-sidebar-btn"></i>
+        <a href="/home" class="logo d-flex align-items-center">
+            <img src="/assets/img/logo.png" alt="">
+            <span class="d-none d-lg-block">ALUGA+SERVICE</span>
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
     <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Buscar" title="Enter buscar">
-        <button type="submit" title="Buscar"><i class="bi bi-search"></i></button>
-      </form>
+        <form class="search-form d-flex align-items-center" method="POST" action="#">
+            <input type="text" name="query" placeholder="Buscar" title="Enter buscar">
+            <button type="submit" title="Buscar"><i class="bi bi-search"></i></button>
+        </form>
     </div><!-- End Search Bar -->
 
     <nav class="header-nav ms-auto">
-      <ul class="d-flex align-items-center">
+        <ul class="d-flex align-items-center">
 
-        <li class="nav-item d-block d-lg-none">
-          <a class="nav-link nav-icon search-bar-toggle " href="#">
-            <i class="bi bi-search"></i>
-          </a>
-        </li>
-        <!-- End Search Icon-->
-
-        <li class="nav-item dropdown">
-
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-bell"></i>
-            <span class="badge bg-primary badge-number">3</span>
-          </a>
-          <!-- End Notification Icon -->
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-            <li class="dropdown-header">
-              Você tem 4 novas notificações
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">Ver tudo</span></a>
+            <li class="nav-item d-block d-lg-none">
+                <a class="nav-link nav-icon search-bar-toggle " href="#">
+                    <i class="bi bi-search"></i>
+                </a>
             </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+            <!-- End Search Icon-->
 
-            <li class="notification-item">
-              <i class="bi bi-exclamation-circle text-warning"></i>
-              <div>
-                <h4>Lorem Ipsum</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>30 min. ago</p>
-              </div>
-            </li>
+            <li class="nav-item dropdown">
 
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+                <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                    <i class="bi bi-bell"></i>
+                    <span class="badge bg-primary badge-number">3</span>
+                </a>
+                <!-- End Notification Icon -->
 
-            <li class="notification-item">
-              <i class="bi bi-check-circle text-success"></i>
-              <div>
-                <h4>Sit rerum fuga</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>2 hrs. ago</p>
-              </div>
-            </li>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+                    <li class="dropdown-header">
+                        Você tem 4 novas notificações
+                        <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">Ver tudo</span></a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
 
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+                    <li class="notification-item">
+                        <i class="bi bi-exclamation-circle text-warning"></i>
+                        <div>
+                            <h4>Lorem Ipsum</h4>
+                            <p>Quae dolorem earum veritatis oditseno</p>
+                            <p>30 min. ago</p>
+                        </div>
+                    </li>
 
-            <li class="notification-item">
-              <i class="bi bi-info-circle text-primary"></i>
-              <div>
-                <h4>Dicta reprehenderit</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>4 hrs. ago</p>
-              </div>
-            </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
 
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li class="dropdown-footer">
-              <a href="#">Mostrar todas as notificações</a>
-            </li>
+                    <li class="notification-item">
+                        <i class="bi bi-check-circle text-success"></i>
+                        <div>
+                            <h4>Sit rerum fuga</h4>
+                            <p>Quae dolorem earum veritatis oditseno</p>
+                            <p>2 hrs. ago</p>
+                        </div>
+                    </li>
 
-          </ul><!-- End Notification Dropdown Items -->
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
 
-        </li><!-- End Notification Nav -->
+                    <li class="notification-item">
+                        <i class="bi bi-info-circle text-primary"></i>
+                        <div>
+                            <h4>Dicta reprehenderit</h4>
+                            <p>Quae dolorem earum veritatis oditseno</p>
+                            <p>4 hrs. ago</p>
+                        </div>
+                    </li>
 
-        <li class="nav-item dropdown">
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li class="dropdown-footer">
+                        <a href="#">Mostrar todas as notificações</a>
+                    </li>
 
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-chat-left-text"></i>
-            <span class="badge bg-success badge-number">3</span>
-          </a><!-- End Messages Icon -->
+                </ul><!-- End Notification Dropdown Items -->
 
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-            <li class="dropdown-header">
-              You have 3 new messages
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">Ver todas</span></a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+            </li><!-- End Notification Nav -->
 
-            <li class="message-item">
-              <a href="#">
-                <img src="/assets/img/messages-1.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>Maria Hudson</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>4 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+            <li class="nav-item dropdown">
 
-            <li class="message-item">
-              <a href="#">
-                <img src="/assets/img/messages-2.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>Anna Nelson</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>6 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+                <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                    <i class="bi bi-chat-left-text"></i>
+                    <span class="badge bg-success badge-number">3</span>
+                </a><!-- End Messages Icon -->
 
-            <li class="message-item">
-              <a href="#">
-                <img src="/assets/img/messages-3.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>David Muldon</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>8 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+                    <li class="dropdown-header">
+                        You have 3 new messages
+                        <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">Ver todas</span></a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
 
-            <li class="dropdown-footer">
-              <a href="#">Mostrar todas as menssagens</a>
-            </li>
+                    <li class="message-item">
+                        <a href="#">
+                            <img src="/assets/img/messages-1.jpg" alt="" class="rounded-circle">
+                            <div>
+                                <h4>Maria Hudson</h4>
+                                <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                                <p>4 hrs. ago</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
 
-          </ul><!-- End Messages Dropdown Items -->
+                    <li class="message-item">
+                        <a href="#">
+                            <img src="/assets/img/messages-2.jpg" alt="" class="rounded-circle">
+                            <div>
+                                <h4>Anna Nelson</h4>
+                                <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                                <p>6 hrs. ago</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
 
-        </li><!-- End Messages Nav -->
+                    <li class="message-item">
+                        <a href="#">
+                            <img src="/assets/img/messages-3.jpg" alt="" class="rounded-circle">
+                            <div>
+                                <h4>David Muldon</h4>
+                                <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                                <p>8 hrs. ago</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
 
-        <li class="nav-item dropdown pe-3">
+                    <li class="dropdown-footer">
+                        <a href="#">Mostrar todas as menssagens</a>
+                    </li>
 
-          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">Thiago Garcia</span>
-          </a><!-- End Profile Iamge Icon -->
+                </ul><!-- End Messages Dropdown Items -->
 
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-            <li class="dropdown-header">
-              <h6>Thiago Garcia</h6>
-              <span>Dev Java</span>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+            </li><!-- End Messages Nav -->
 
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-person"></i>
-                <span>Meu Perfil</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+            <li class="nav-item dropdown pe-3">
 
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>Configurações da Conta</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                    <img src="/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                    <span class="d-none d-md-block dropdown-toggle ps-2">Thiago Garcia</span>
+                </a><!-- End Profile Iamge Icon -->
 
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Ajuda?</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                    <li class="dropdown-header">
+                        <h6>Thiago Garcia</h6>
+                        <span>Dev Java</span>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
 
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Sair</span>
-              </a>
-            </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                            <i class="bi bi-person"></i>
+                            <span>Meu Perfil</span>
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
 
-          </ul><!-- End Profile Dropdown Items -->
-        </li><!-- End Profile Nav -->
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                            <i class="bi bi-gear"></i>
+                            <span>Configurações da Conta</span>
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
 
-      </ul>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
+                            <i class="bi bi-question-circle"></i>
+                            <span>Ajuda?</span>
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="#">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Sair</span>
+                        </a>
+                    </li>
+
+                </ul><!-- End Profile Dropdown Items -->
+            </li><!-- End Profile Nav -->
+
+        </ul>
     </nav><!-- End Icons Navigation -->
 
-  </header><!-- End Header -->
+</header><!-- End Header -->
 
-  <!-- ======= Sidebar ======= -->
-  <aside id="sidebar" class="sidebar">
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
-      <li class="nav-item">
-        <a class="nav-link " href="/home">
-          <i class="bi bi-grid"></i>
-          <span>Principal</span>
-        </a>
-      </li><!-- End Dashboard Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#cliente-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>Clientes</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="cliente-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="/locatario/cadastrar">
-              <i class="bi bi-circle"></i><span>Cadastro Cliente</span>
+        <li class="nav-item">
+            <a class="nav-link " href="/home">
+                <i class="bi bi-grid"></i>
+                <span>Principal</span>
             </a>
-          </li>
-          <li>
-            <a href="/locatario/listar">
-              <i class="bi bi-circle"></i><span>Listar Cliente</span>
+        </li><!-- End Dashboard Nav -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#cliente-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-menu-button-wide"></i><span>Clientes</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-          </li>
-        </ul>
-        <a class="nav-link collapsed" data-bs-target="#imoveis-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>Imóvel</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="imoveis-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="/imovel/cadastrar">
-              <i class="bi bi-circle"></i><span>Cadastro Imoveis</span>
+            <ul id="cliente-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/locatario/cadastrar">
+                        <i class="bi bi-circle"></i><span>Cadastro Cliente</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/locatario/listar">
+                        <i class="bi bi-circle"></i><span>Listar Cliente</span>
+                    </a>
+                </li>
+            </ul>
+            <a class="nav-link collapsed" data-bs-target="#imoveis-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-menu-button-wide"></i><span>Imóvel</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-          </li>
-          <li>
-            <a href="/imovel/listar">
-              <i class="bi bi-circle"></i><span>Listar Imoveis</span>
+            <ul id="imoveis-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/imovel/cadastrar">
+                        <i class="bi bi-circle"></i><span>Cadastro Imoveis</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/imovel/listar">
+                        <i class="bi bi-circle"></i><span>Listar Imoveis</span>
+                    </a>
+                </li>
+            </ul>
+            <a class="nav-link collapsed" data-bs-target="#locador-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-menu-button-wide"></i><span>Locador</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-          </li>
-        </ul>
-        <a class="nav-link collapsed" data-bs-target="#locador-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>Locador</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="locador-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="/locador/cadastrar">
-              <i class="bi bi-circle"></i><span>Cadastro Locador</span>
+            <ul id="locador-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/locador/cadastrar">
+                        <i class="bi bi-circle"></i><span>Cadastro Locador</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/locador/listar">
+                        <i class="bi bi-circle"></i><span>Listar Locador</span>
+                    </a>
+                </li>
+            </ul>
+            <a class="nav-link collapsed" data-bs-target="#contrato-nav" data-bs-toggle="collapse"
+               href="/contrato/cadastrar">
+                <i class="bi bi-menu-button-wide"></i><span>Contrato</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-          </li>
-          <li>
-            <a href="/locador/listar">
-              <i class="bi bi-circle"></i><span>Listar Locador</span>
+            <ul id="contrato-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/contrato/cadastrar">
+                        <i class="bi bi-circle"></i><span>Cadastro Contrato</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/contrato/listar">
+                        <i class="bi bi-circle"></i><span>Listar Contrato</span>
+                    </a>
+                </li>
+            </ul>
+            <a class="nav-link collapsed" data-bs-target="#pagamentos-nav" data-bs-toggle="collapse"
+               href="/pagamento/cadastrar">
+                <i class="bi bi-menu-button-wide"></i><span>Pagamentos</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-          </li>
-        </ul>
-        <a class="nav-link collapsed" data-bs-target="#contrato-nav" data-bs-toggle="collapse"
-           href="/contrato/cadastrar">
-          <i class="bi bi-menu-button-wide"></i><span>Contrato</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="contrato-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="/contrato/cadastrar">
-              <i class="bi bi-circle"></i><span>Cadastro Contrato</span>
-            </a>
-          </li>
-          <li>
-            <a href="/contrato/listar">
-              <i class="bi bi-circle"></i><span>Listar Contrato</span>
-            </a>
-          </li>
-        </ul>
-        <a class="nav-link collapsed" data-bs-target="#pagamentos-nav" data-bs-toggle="collapse"
-           href="/pagamento/cadastrar">
-          <i class="bi bi-menu-button-wide"></i><span>Pagamentos</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="pagamentos-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="/pagamento/cadastrar">
-              <i class="bi bi-circle"></i><span>Cadastrar Pagamento</span>
-            </a>
-          </li>
-          <li>
-            <a href="/pgagmento/listar">
-              <i class="bi bi-circle"></i><span>Listar Pagamento</span>
-            </a>
-          </li>
-        </ul>
-      </li>
-      <!-- End Blank Page Nav -->
+            <ul id="pagamentos-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/pagamento/cadastrar">
+                        <i class="bi bi-circle"></i><span>Cadastrar Pagamento</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/pagamento/listar">
+                        <i class="bi bi-circle"></i><span>Listar Pagamento</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <!-- End Blank Page Nav -->
 
     </ul>
 
-  </aside><!-- End Sidebar-->
+</aside><!-- End Sidebar-->
 
-  <main id="main" class="main">
+<main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Pagamento</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/home">Home</a></li>
-          <li class="breadcrumb-item active">Pagamento</li>
-        </ol>
-      </nav>
+        <h1>Pagamento</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <li class="breadcrumb-item active">Pagamento</li>
+            </ol>
+        </nav>
     </div><!-- End Page Title -->
 
     <section class="section">
-      <div class="row">
-        <div class="col-lg-10 mx-auto">
+        <div class="row">
 
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Pagamento</h5>
-
-              <!-- General Form Elements -->
-              <form>
-                <div class="row mb-3">
-                  <label for="inputText" class="col-sm-2 col-form-label">Nome</label>
-                  <div class="col-sm-10">
-                    <input type="text" placeholder="Nome" class="form-control">
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="inputText" class="col-sm-2 col-form-label">CPF</label>
-                  <div class="col-sm-10">
-                    <input type="text" placeholder="CPF" class="form-control">
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="inputText" class="col-sm-2 col-form-label">Numero do Imovel</label>
-                  <div class="col-sm-10">
-                    <input type="text" placeholder="Numero do Imovel" class="form-control">
-                  </div>
-                </div>
-
-                <div class="row mb-3 mt-5 text-center">
-                  <div class="col-sm-10">
-                    <button type="submit" class="btn btn-primary">Buscar</button>
-                  </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Selecione um Aluguel...</h5>
+                    <!-- Table with stripped rows -->
+                    <table class="table table-hover datatable">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Situação</th>
+                            <th>Cliente</th>
+                            <th>Valor ALuguel</th>
+                            <th>Taxa Condomínio</th>
+                            <th>Imóvel</th>
+                            <th>Locador</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="con : ${contratos}" th:attr="data-id=${con.id}">
+                            <td class="align-middle" th:text="${con.id}">2</td>
+                            <td class="align-middle"
+                                th:text="${con.situacao}"
+                                th:classappend="${con.situacao == 'Aberto' ? 'text-success fw-bold' : (con.situacao == 'Cancelado' ? 'text-primary fw-bold' : '')}">
+                            </td>
+                            <td class="align-middle" th:text="${#strings.toUpperCase(con.locatario.nome)}"></td>
+                            <td class="align-middle moeda" th:text="${con.valorAluguel}"></td>
+                            <td class="align-middle moeda" th:text="${con.imovel.valorTaxa}"></td>
+                            <td class="align-middle moeda"
+                                th:text="|N°: ${con.imovel.numero}  - Tipo:  ${con.imovel.tipo}|"></td>
+                            <td class="align-middle" th:text="${#strings.toUpperCase(con.locador.nome)}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!-- End Table with stripped rows -->
                 </div>
             </div>
-          </div>
+
+            <!-- End General Form Elements -->
+            <!-- Adicionado logo após os campos já existentes no lado esquerdo -->
+            <div th:replace="/alert"></div>
+
+            <!-- Div para exibir notificações -->
+            <div id="notificacao" class="alert d-none" role="alert"></div>
+
+            <div class="card d-none" id="parcelasContratoCard">
+                <div class="row mb-3">
+                    <!-- Tabela de Parcelas -->
+                    <div class="col-lg-7">
+                        <h5 class="card-title">Parcelas</h5>
+                        <div style="overflow-x: auto; max-height: 500px; overflow-y: auto; border: 1px solid #ddd; border-radius: 5px;">
+                            <table id="tabelaParcelas" class="table tab-content">
+                                <thead>
+                                <tr>
+                                    <th>Par</th>
+                                    <th>Vencimento</th>
+                                    <th>Valor</th>
+                                    <th>Situação</th>
+                                    <th>Pagamento</th>
+                                    <th>Cód. Pgto</th>
+                                    <th>Ação</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Div para exibir o resultado -->
+                        <div id="pixResult" style="margin-top: 20px; display: none; text-align: center;">
+                            <h4>Chave PIX Gerada</h4>
+                            <!-- Contador -->
+                            <p id="contadorPix" style="font-size: 18px; font-weight: bold; color: red; margin-top: 10px;"></p>
+                            <!-- QR Code Centralizado -->
+                            <img id="qrCodeImage" src="" alt="QR Code PIX"
+                                 style="max-width: 200px; margin: 10px auto; display: block;">
+                            <!-- Valor da Chave PIX -->
+                            <p id="pixKeyValue" style="font-weight: bold; margin-top: 10px;"></p>
+                            <!-- Código Copia e Cola -->
+                            <p><strong>Código Copia e Cola:</strong></p>
+                            <textarea id="copiaCola" rows="3" class="form-control" readonly
+                                      style="width: 80%; margin: 10px auto;"></textarea>
+
+                            <!-- Botão para copiar -->
+                            <button id="copyButton" class="btn btn-primary" style="margin-top: 10px;">Copiar Código
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <!-- Dados e Registro de Pagamento -->
+                    <div class="col-lg-5">
+                        <h5 class="card-title" id="tituloContrato">Registrar Pagamento</h5>
+                        <form id="pagamentoForm" th:action="@{/pagamento/salvar}"
+                              th:object="${pagamento}" method="post">
+                            <!-- Dados do Imóvel -->
+                            <h6 class="mt-3 fw-bold text-primary">Dados Imóvel</h6>
+                            <div class="row mb-3">
+                                <div class="col-sm-6">
+                                    <label for="imovelNumero" class="col-form-label">N°</label>
+                                    <input type="text" id="imovelNumero" class="form-control" disabled
+                                           placeholder="Número">
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="imovelTipo" class="col-form-label">Tipo</label>
+                                    <input type="text" id="imovelTipo" class="form-control" disabled placeholder="Tipo">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-12">
+                                    <label for="locadorNome" class="col-form-label">Locador</label>
+                                    <input type="text" id="locadorNome" class="form-control" disabled
+                                           placeholder="Nome">
+                                    <input type="hidden" id="locadorPagamento" th:field="*{locador}">
+                                </div>
+                            </div>
+
+
+                            <!-- Dados do Locatário -->
+                            <h6 class="mt-3 fw-bold text-primary">Dados Locatário</h6>
+                            <div class="row mb-3">
+                                <div class="col-sm-8">
+                                    <label for="locatarioNome" class="col-form-label">Nome - Cpf</label>
+                                    <input type="text" id="locatarioNome" class="form-control" disabled
+                                           placeholder="Nome">
+                                    <input type="hidden" id="locatarioPagamento" th:field="*{locatario}">
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="locatarioCelular" class="col-form-label">Celular</label>
+                                    <input type="text" id="locatarioCelular" class="form-control" disabled
+                                           placeholder="Celular">
+                                </div>
+                            </div>
+
+                            <!-- Dados de Pagamento -->
+                            <h6 class="mt-3 fw-bold text-primary">Dados Pagamento</h6>
+                            <div class="row mb-3">
+                                <div class="col-sm-2">
+                                    <label for="numeroParcela" class="col-form-label">Parcela N°</label>
+                                    <input type="text" id="numeroParcela" th:field="*{parcela}"
+                                           class="form-control input-disabled" readonly placeholder="N° Parcela">
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="dataVencimento" class="col-form-label">Data Vencimento</label>
+                                    <input type="date" id="dataVencimento" th:field="*{dataVencimento}"
+                                           class="form-control input-disabled" readonly placeholder="Data vencimento">
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="formaPgto" class="col-form-label">Forma de Pgto</label>
+                                    <select id="formaPgto" th:field="*{meioPagamento}" class="form-select">
+                                        <option value="boleto">Boleto</option>
+                                        <option value="cartao">Cartão de Crédito</option>
+                                        <option value="pix">PIX</option>
+                                        <option value="transferencia">Transferência Bancária</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-6">
+                                    <label for="valorDevido" class="col-form-label">Valor Original</label>
+                                    <input type="text" id="valorDevido" th:field="*{valor}"
+                                           class="form-control input-disabled" readonly placeholder="R$ 0,00">
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="valorTaxa" class="col-form-label">Valor Taxa Cond.</label>
+                                    <input type="text" id="valorTaxa" class="form-control input-disabled" readonly
+                                           placeholder="R$ 0,00">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+
+                                <div class="col-sm-4">
+                                    <label for="diasEmAtraso" class="col-form-label">Dias em atraso</label>
+                                    <input type="text" id="diasEmAtraso" class="form-control input-disabled" readonly
+                                           placeholder="-">
+                                </div>
+
+                                <div class="col-sm-8">
+                                    <label for="valorJuros" class="col-form-label">Valor Juros</label>
+                                    <input type="text" id="valorJuros" th:field="*{juros}"
+                                           class="form-control input-disabled" readonly placeholder="R$ 0,00">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="valorDesconto" class="col-sm-3 col-form-label">Valor Desconto</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="valorDesconto" th:field="*{desconto}"
+                                           onblur="calculaValorTotalLiquido(), formataMoedaFinal(this)" value="0.00"
+                                           class="form-control"
+                                           placeholder="R$ 0,00"
+                                           oninput="mascaraMoeda(this)">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="valorPago" class="col-sm-3 col-form-label">Valor a Pagar</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="valorPago" th:field="*{valorTotalLiquido}"
+                                           class="form-control input-disabled" readonly placeholder="R$ 0,00">
+                                </div>
+                            </div>
+                            <div class="row text-end">
+                                <input type="hidden" id="pagamentoId" th:field="*{id}">
+                                <input type="hidden" id="contratoPagamento" th:field="*{contrato}">
+
+                                <div class="col-sm-12 d-flex justify-content-end align-items-center gap-2">
+                                    <!-- Botão Gerar Chave PIX -->
+                                    <button id="gerarPixBtn" type="submit" class="btn btn-primary"
+                                            style="display: none;">Gerar Chave
+                                        PIX
+                                    </button>
+
+                                    <!-- Botão Registrar Pagamento -->
+                                    <button id="gerarPagamentoBtn" type="submit" class="btn btn-success">Registrar
+                                        Pagamento
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-        </form>
-        <!-- End General Form Elements -->
+        </div>
 
-      </div>
-      </div>
-
-      </div>
-      </div>
+        </div>
+        </div>
     </section>
+    <!-- Modal de Sucesso -->
+    <div class="modal fade" id="modalSucesso" tabindex="-1" aria-labelledby="modalSucessoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="modalucessoLabel">Pagamento Registrado!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>O pagamento foi registrado com sucesso.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de Insucesso -->
+    <div class="modal fade" id="modalInsucesso" tabindex="-1" aria-labelledby="modalInsucessoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="modalInsucessoLabel">Pagamento Não Registrado!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>O pagamento não foi registrado. Tente novamente com os dados corretos.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">TENTAR NOVAMENTE</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  </main><!-- End #main -->
+    <!-- Modal de Confirmação Estorno-->
+    <div class="modal fade" id="modalConfirmacao" tabindex="-1" aria-labelledby="modalConfirmacaoLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-white">
+                    <h5 class="modal-title" id="modalConfirmacaoLabel">Confirmar Estorno</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja estornar este pagamento?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="btnConfirmarEstorno" class="btn btn-warning">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de Sucesso no Estorno -->
+    <div class="modal fade" id="modalSucessoEstorno" tabindex="-1" aria-labelledby="modalSucessoEstornoLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="modalSucessoEstornoLabel">Estorno Realizado!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>O estorno foi realizado com sucesso para o pagamento selecionado.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <!-- ======= Footer ======= -->
-  <footer id="footer" class="footer">
+    <!-- Modal de Insucesso no Estorno -->
+    <div class="modal fade" id="modalInsucessoEstorno" tabindex="-1" aria-labelledby="modalInsucessoEstornoLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="modalInsucessoEstornoLabel">Erro no Estorno!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Não foi possível realizar o estorno. Por favor, tente novamente mais tarde.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para exibir o PDF -->
+    <div id="pdfModal"
+         style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000;">
+        <div style="position: relative; width: 80%; height: 80%; margin: 5% auto; background: white; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+
+            <!-- Header do Modal -->
+            <div style="padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ccc;">
+                <h3 style="margin: 0;">Visualização do Recibo</h3>
+                <div style="display: flex; gap: 10px;">
+                    <button id="enviarWhatsappBtn" onclick="enviarReciboViaWhatsapp()"
+                            style="display: flex; align-items: center; background-color: #25D366; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; gap: 8px;">
+                        <i class="fa-brands fa-whatsapp"></i>
+                        ENVIAR VIA WHATSAPP
+                    </button>
+                    <button onclick="fecharModal()"
+                            style="background-color: red; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer;">
+                        Fechar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Exibição do PDF -->
+            <iframe id="pdfViewer" style="width: 100%; height: calc(100% - 70px); border: none; flex: 1;"></iframe>
+        </div>
+    </div>
+
+    <!-- Font Awesome para ícones -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Modal de Sucesso no Envio via WhatsApp -->
+    <div class="modal fade" id="modalSucessoEnvio" tabindex="-1" aria-labelledby="modalSucessoEnvioLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="modalSucessoEnvioLabel">Envio Realizado com Sucesso!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>O recibo foi enviado via WhatsApp com sucesso!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de Insucesso no Envio via WhatsApp -->
+    <div class="modal fade" id="modalErroEnvio" tabindex="-1" aria-labelledby="modalErroEnvioLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="modalErroEnvioLabel">Erro ao Enviar!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Ocorreu um erro ao tentar enviar o recibo via WhatsApp. Por favor, tente novamente.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</main><!-- End #main -->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
     <div class="copyright">
-      &copy; Copyright <strong><span>Pyrou Web</span></strong>. All Rights Reserved
+        &copy; Copyright <strong><span>Pyrou Web</span></strong>. All Rights Reserved
     </div>
     <div class="credits">
-      Designed by <a href="https://pyrou.com.br/">Ademar Farias Jr</a>
+        Designed by <a href="https://pyrou.com.br/">Ademar Farias Jr</a>
     </div>
-  </footer>
-  <!-- End Footer -->
+</footer>
+<!-- End Footer -->
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-      class="bi bi-arrow-up-short"></i></a>
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
 
-  <!-- Vendor JS Files -->
-  <script src="/assets/vendor/apexcharts/apexcharts.min.js"></script>
-  <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="/assets/vendor/chart.js/chart.umd.js"></script>
-  <script src="/assets/vendor/echarts/echarts.min.js"></script>
-  <script src="/assets/vendor/quill/quill.js"></script>
-  <script src="/assets/vendor/simple-datatables/simple-datatables.js"></script>
-  <script src="/assets/vendor/tinymce/tinymce.min.js"></script>
-  <script src="/assets/vendor/php-email-form/validate.js"></script>
+<!-- Vendor JS Files -->
+<script src="/assets/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/chart.js/chart.umd.js"></script>
+<script src="/assets/vendor/echarts/echarts.min.js"></script>
+<script src="/assets/vendor/quill/quill.js"></script>
+<script src="/assets/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="/assets/vendor/tinymce/tinymce.min.js"></script>
+<script src="/assets/vendor/php-email-form/validate.js"></script>
 
-  <!-- Template Main JS File -->
-  <script src="/assets/js/main.js"></script>
+<!-- Template Main JS File -->
+<script src="/assets/js/main.js"></script>
 
+
+<script>
+    <!-- carrega dados de parcelas ao clicar em uma linha da tabela de contratos-->
+    const tabelaLinhas = document.querySelectorAll('.datatable tbody tr');
+    const parcelasContratoCard = document.getElementById('parcelasContratoCard');
+
+    tabelaLinhas.forEach(linha => {
+        linha.addEventListener('click', () => {
+            limpaCampos();
+            const contratoId = linha.getAttribute('data-id');
+            if (contratoId) {
+                // Faz uma requisição AJAX para buscar os dados
+                fetch(`/pagamento/extrato-financeiro/${contratoId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erro ao carregar os dados do contrato.');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Exibe o card e preenche os dados
+                        parcelasContratoCard.classList.remove('d-none');
+                        preencherCard(data);
+                    })
+                    .catch(error => {
+                        console.error('Erro ao carregar os dados:', error);
+                    });
+            }
+        });
+
+        linha.addEventListener('click', () => {
+            console.log('Linha clicada:', linha);
+            const contratoId = linha.getAttribute('data-id');
+            console.log('Contrato ID:', contratoId);
+        });
+    });
+
+    /**
+     * Preenche o card com os dados retornados de parcelas e contrato
+     * @param {Object} data - Dados retornados do servidor
+     */
+    function preencherCard(data) {
+
+        const tituloContrato = document.getElementById('tituloContrato');
+        if (tituloContrato) {
+            tituloContrato.innerText = `Registrar Pagamento - Contrato N° ${data.contrato.id}`;
+        }
+        document.getElementById('locatarioNome').value = data.contrato.locatario.nome || '';
+        document.getElementById('locadorNome').value = data.contrato.locador.nome || '';
+        document.getElementById('locatarioCelular').value = data.contrato.locatario.celularWhatsApp || '';
+        document.getElementById('imovelNumero').value = data.contrato.imovel.numero || '';
+        document.getElementById('imovelTipo').value = data.contrato.imovel.tipo || '';
+
+        const tabelaParcelas = document.getElementById('tabelaParcelas');
+        const tbody = tabelaParcelas.querySelector('tbody');
+        tbody.innerHTML = ''; // Limpa as linhas anteriores
+        data.parcelas.sort((a, b) => a.parcela - b.parcela);
+        // Identifica o último pagamento recebido
+        const ultimaRecebida = data.parcelas
+            .filter(parcela => parcela.situacao === 'RECEBIDA')
+            .pop(); // Última parcela recebida
+
+        data.parcelas.forEach(item => {
+            const row = document.createElement('tr');
+            const isRecebida = item.situacao === 'RECEBIDA';
+            const situacaoParcela = item.situacao === 'RECEBIDA'
+                ? 'text-success' // Verde
+                : item.situacao === 'EM ATRASO'
+                    ? 'text-danger'  // Vermelho
+                    : 'text-primary'; // Azul para ABERTA e outras situações
+            row.innerHTML = `
+                <td>${item.parcela}</td>
+                <td>${item.dataVencimento.split('T')[0].split('-').reverse().join('/')}</td>
+                <td>${new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(item.valorAluguel)}</td>
+                <td class="${situacaoParcela}">${item.situacao}</td>
+                <td>${item.dataPagamento ? item.dataPagamento.split('T')[0].split('-').reverse().join('/') : '-'}</td>
+                <td>${item.codigoPagamento ? item.codigoPagamento : '-'}</td>
+                <td>
+                    <button
+                        class="btn btn-success btn-sm"
+                        onclick="pagarParcela(${data.contrato.id}, ${item.parcela})"
+                        ${isRecebida ? 'disabled' : ''}>
+                        <i class="bi bi-currency-dollar"></i> Pagar
+                    </button>
+                    <button
+                        class="btn btn-primary btn-sm"
+                        onclick="gerarRecibo(${item.codigoPagamento})"
+                        ${isRecebida ? '' : 'disabled'}>
+                        <i class="bi bi-receipt"></i> Recibo
+                    </button>
+                     <button
+                    class="btn btn-warning btn-sm"
+                    onclick="estornarPagamento(${item.codigoPagamento})"
+                    ${item === ultimaRecebida ? '' : 'disabled'}>
+                    <i class="bi bi-arrow-counterclockwise"></i> Estorno
+                </button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+</script>
+<!-- funções para coluna de ações das parcelas -->
+<script>
+    function pagarParcela(contratoId, parcelaId) {
+        fetch(`/pagamento/dados-parcela/${contratoId}/parcela/${parcelaId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao processar o pagamento.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("dados recebidos da parcela: ", data)
+                preencherValorParcelaEJuros(data)
+            })
+            .catch(error => {
+                console.error('Erro ao pagar a parcela:', error);
+            });
+    }
+
+    function gerarRecibo(codigoPagamento) {
+        fetch(`/report/recibo/aluguel/${codigoPagamento}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao gerar o recibo.');
+                }
+
+                // Obtém o código do pagamento do cabeçalho da resposta
+                const codigoPagamento = response.headers.get('codigoPagamento');
+
+                // Armazena o código no botão do WhatsApp como um atributo de dados
+                const enviarWhatsappBtn = document.getElementById('enviarWhatsappBtn');
+                enviarWhatsappBtn.setAttribute('data-codigo-pagamento', codigoPagamento);
+
+                return response.blob();
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const pdfViewer = document.getElementById('pdfViewer');
+                pdfViewer.src = url;
+                abrirModal();
+            })
+            .catch(error => {
+                console.error('Erro ao gerar o recibo:', error);
+            });
+    }
+
+
+    /**
+     * Preenche o dadosParcela para pagamento com os dados retornados de parcelas
+     * @param {Object} data - Dados retornados do servidor
+     */
+    function preencherValorParcelaEJuros(data) {
+        document.getElementById('valorDevido').value = new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        }).format(data.valorAluguel) || 0.00;
+        document.getElementById('valorJuros').value = new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        }).format(data.juros) || 0.00;
+        document.getElementById('valorTaxa').value = new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        }).format(data.taxaCond) || 0.00;
+        document.getElementById('numeroParcela').value = data.parcela || '-';
+        document.getElementById('diasEmAtraso').value = data.diasEmAtraso || '-';
+        document.getElementById('dataVencimento').value = data.dataVencimento || 'dd/mm/aaaa';
+        document.getElementById('locadorPagamento').value = data.locadorPagamento.id;
+        document.getElementById('locatarioPagamento').value = data.locatarioPagamento.id;
+        document.getElementById('contratoPagamento').value = data.contratoPagamento.id;
+    }
+
+    function calculaValorTotalLiquido() {
+        // Função auxiliar para converter valores no formato brasileiro para números
+        function parseBrazilianCurrency(value) {
+            if (!value) return 0.0; // Valor vazio retorna 0
+            // Remove espaços, caracteres inválidos, e ajusta separadores
+            const cleanedValue = value.replace(/[^\d,.-]/g, '').replace(/\./g, '').replace(',', '.');
+            return parseFloat(cleanedValue); // Converte para número
+        }
+
+        // Obtém os valores preenchidos nos campos
+        const valorAluguel = parseBrazilianCurrency(document.getElementById('valorDevido').value);
+        const juros = parseBrazilianCurrency(document.getElementById('valorJuros').value);
+        const taxaCond = parseBrazilianCurrency(document.getElementById('valorTaxa').value);
+        const desconto = parseBrazilianCurrency(document.getElementById('valorDesconto').value);
+
+        // Calcula o valor total líquido
+        const valorTotalLiquido = (valorAluguel + juros + taxaCond) - desconto;
+
+        // Exibe o valor total líquido no campo apropriado, formatado
+        document.getElementById('valorPago').value = new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        }).format(valorTotalLiquido);
+    }
+
+
+    function limpaCampos() {
+
+        document.getElementById('locatarioNome').value = '';
+        document.getElementById('locatarioCelular').value = '';
+        document.getElementById('imovelNumero').value = '';
+        document.getElementById('imovelTipo').value = '';
+        document.getElementById('valorDevido').value = 'R$ 0,00';
+        document.getElementById('valorJuros').value = 'R$ 0,00';
+        document.getElementById('valorTaxa').value = 'R$ 0,00';
+        document.getElementById('numeroParcela').value = '-';
+        document.getElementById('diasEmAtraso').value = '-';
+        document.getElementById('locadorNome').value = '';
+        document.getElementById('dataVencimento').value = '';
+        document.getElementById('valorDesconto').value = 'R$ 0.00';
+        document.getElementById('valorPago').value = 'R$ 0.00';
+    }
+
+    function abrirModal() {
+        const modal = document.getElementById('pdfModal');
+        modal.style.display = 'block';
+    }
+
+    function fecharModal() {
+        const modal = document.getElementById('pdfModal');
+        modal.style.display = 'none';
+
+        // Limpa o conteúdo do iframe
+        const pdfViewer = document.getElementById('pdfViewer');
+        pdfViewer.src = '';
+    }
+
+    function enviarReciboViaWhatsapp() {
+        // Obtém o código do pagamento do atributo de dados
+        const enviarWhatsappBtn = document.getElementById('enviarWhatsappBtn');
+        const codigoPagamento = enviarWhatsappBtn.getAttribute('data-codigo-pagamento');
+        console.log("Código do pagamento (WhatsApp): ", codigoPagamento);
+
+        if (!codigoPagamento) {
+            alert('Código do pagamento não encontrado.');
+            return;
+        }
+
+        fetch(`/report/recibo/whats/aluguel/${codigoPagamento}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(errorMessage => {
+                        throw new Error(errorMessage);
+                    });
+                }
+                return response.text();
+            })
+            .then(successMessage => {
+                // Exibe o modal de sucesso
+                const modalSucessoEnvioWhats = new bootstrap.Modal(document.getElementById('modalSucessoEnvio'));
+                modalSucessoEnvioWhats.show();
+                console.log(successMessage);
+            })
+            .catch(error => {
+                // Exibe o modal de erro
+                const modalErroEnvioWhats = new bootstrap.Modal(document.getElementById('modalErroEnvio'));
+                modalErroEnvioWhats.show();
+                console.error(error.message);
+            });
+    }
+</script>
+<script>
+    document.querySelectorAll('button[type="submit"]').forEach(button => {
+        button.addEventListener('click', function (event) {
+            event.preventDefault(); // Evita o envio padrão do formulário
+
+            const pixResultDiv = document.getElementById('pixResult');
+            const qrCodeImage = document.getElementById('qrCodeImage');
+            const copiaColaTextArea = document.getElementById('copiaCola');
+
+            // Identifica qual botão foi clicado
+            const isRegistrarPagamento = this.id === 'gerarPagamentoBtn'; // Verifica se o botão clicado é o Registrar Pagamento
+            const actionValue = isRegistrarPagamento ? 'true' : 'false';
+
+            const form = document.getElementById('pagamentoForm'); // Pega o formulário pelo ID
+            const formData = new FormData(form);
+            // Define o valor de 'action' no FormData
+            formData.append('action', actionValue);
+
+            // Verificação dos dados no FormData
+            console.log("Dados enviados:");
+            for (let [key, value] of formData.entries()) {
+                console.log(`${key}: ${value}`);
+            }
+
+            // Adiciona o valor ao caminho da URL do formulário
+            const actionUrl = `${form.action}`;
+
+            fetch(actionUrl, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao salvar pagamento.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // Exibe o modal de sucesso
+                        if (data.isAction) {
+                            const modal = new bootstrap.Modal(document.getElementById('modalSucesso'));
+                            modal.show();
+                        } else {
+                            // Exibe o resultado no DOM-->
+                            console.log("mostra QrCOde")
+                            pixResultDiv.style.display = 'block';
+                            qrCodeImage.src = `data:image/png;base64,${data.qrCode}`; // Supõe que o QR Code é retornado como Base64
+                            copiaColaTextArea.value = data.copiaCola; // Exibe o código "Copia e Cola"
+                            pixKeyValue.textContent = `Valor da Chave PIX: `+ new Intl.NumberFormat('pt-BR', {
+                                style: 'currency',
+                                currency: 'BRL'
+                            }).format(data.valorPix);
+                            iniciarContadorPix();
+                        }
+
+                        // Atualiza o card inferior com os novos dados do contrato
+                        carregarCardInferior(data.contratoId);
+                    } else {
+                        const modal = new bootstrap.Modal(document.getElementById('modalInsucesso'));
+                        modal.show();
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    const modal = new bootstrap.Modal(document.getElementById('modalInsucesso'));
+                    modal.show();
+                });
+        });
+    });
+
+    function carregarCardInferior(contratoId) {
+        fetch(`/pagamento/extrato-financeiro/${contratoId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao carregar dados do contrato.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                limpaCampos();
+                preencherCard(data); // Chama sua função existente para atualizar o card
+            })
+            .catch(error => {
+                console.error('Erro ao carregar card inferior:', error);
+            });
+    }
+</script>
+<!-- copiar e colar chave copia e cola -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const copyButton = document.getElementById('copyButton');
+        const copiaColaTextArea = document.getElementById('copiaCola');
+
+        // Evento de clique no botão de copiar
+        copyButton.addEventListener('click', () => {
+            // Seleciona e copia o conteúdo do textarea
+            copiaColaTextArea.select();
+            document.execCommand('copy'); // Método para copiar o texto selecionado
+
+            // Alerta ou mensagem de feedback para o usuário
+            alert('Código Copia e Cola copiado com sucesso!');
+        });
+    });
+
+</script>
+<script>
+    // Formata o valor enquanto o usuário digita
+    function mascaraMoeda(element) {
+        let valor = element.value;
+
+        // Remove tudo que não é número ou vírgula
+        valor = valor.replace(/\D/g, "");
+
+        // Adiciona vírgula para valores decimais
+        valor = (valor / 100).toFixed(2) + "";
+        valor = valor.replace(".", ",");
+
+        // Adiciona separadores de milhar
+        valor = valor.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+        element.value = "R$ " + valor;
+    }
+
+    // Corrige o formato ao sair do campo (blur)
+    function formataMoedaFinal(element) {
+        let valor = element.value;
+
+        // Remove o prefixo "R$" e espaços
+        valor = valor.replace("R$", "").trim();
+
+        // Corrige o formato final (adicionando moeda se necessário)
+        element.value = "R$ " + valor;
+    }
+
+</script>
+<script>
+    function estornarPagamento(codigoPagamento) {
+        // Exibe o modal de confirmação
+        const modalConfirmacao = new bootstrap.Modal(document.getElementById('modalConfirmacao'));
+        modalConfirmacao.show();
+
+        // Botão de confirmação no modal
+        const btnConfirmar = document.getElementById('btnConfirmarEstorno');
+        btnConfirmar.onclick = function () {
+            fetch(`/pagamento/estornar/${codigoPagamento}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao processar o estorno.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // Exibe o modal de sucesso no estorno
+                        const modalSucesso = new bootstrap.Modal(document.getElementById('modalSucessoEstorno'));
+                        modalSucesso.show();
+
+                        // Atualiza os dados do card inferior
+                        carregarCardInferior(data.contratoId);
+                    } else {
+                        // Exibe o modal de insucesso no estorno
+                        const modalInsucesso = new bootstrap.Modal(document.getElementById('modalInsucessoEstorno'));
+                        modalInsucesso.show();
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro no estorno:', error);
+
+                    // Exibe o modal de insucesso no estorno
+                    const modalInsucesso = new bootstrap.Modal(document.getElementById('modalInsucessoEstorno'));
+                    modalInsucesso.show();
+                })
+                .finally(() => {
+                    // Fecha o modal de confirmação, caso esteja aberto
+                    modalConfirmacao.hide();
+                });
+        };
+    }
+</script>
+<!--Botão de gerar chave pix, mostrar ou não mostrar-->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const meioPgtoSelect = document.getElementById('formaPgto'); // Seletor de pagamento
+        const gerarPixBtn = document.getElementById('gerarPixBtn'); // Botão Gerar PIX
+
+        meioPgtoSelect.addEventListener('change', () => {
+            if (meioPgtoSelect.value === 'pix') {
+                gerarPixBtn.style.display = 'inline-block'; // Exibe o botão
+            } else {
+                gerarPixBtn.style.display = 'none'; // Oculta o botão
+            }
+        });
+    });
+
+</script>
+<!--contador de tempo chave pix-->
+<script>
+    let intervaloContadorPix; // Variável global para armazenar o intervalo do contador
+
+    function iniciarContadorPix() {
+        const contadorElement = document.getElementById("contadorPix");
+
+        if (!contadorElement) {
+            console.warn("⚠️ Elemento do contador não encontrado!");
+            return;
+        }
+
+        // Para qualquer contador anterior que ainda esteja rodando
+        if (intervaloContadorPix) {
+            clearInterval(intervaloContadorPix);
+        }
+
+        // Define o tempo de expiração (30 minutos a partir de agora)
+        const agora = new Date();
+        const expiraEm = new Date(agora.getTime() + 30 * 60000); // 30 minutos em milissegundos
+
+        function atualizarContador() {
+            const agora = new Date();
+            const diferenca = expiraEm - agora;
+
+            if (diferenca <= 0) {
+                contadorElement.innerHTML = "⏳ Chave pix expirada!";
+                clearInterval(intervalo);
+                return;
+            }
+
+            const minutos = Math.floor(diferenca / (1000 * 60));
+            const segundos = Math.floor((diferenca % (1000 * 60)) / 1000);
+
+            contadorElement.innerHTML = `⏳ Expira em: ${minutos}m ${segundos}s`;
+        }
+
+        // Atualiza o contador a cada segundo
+        // Inicia o contador e armazena o intervalo globalmente para resetar quando necessário
+        intervaloContadorPix = setInterval(atualizarContador, 1000);
+        atualizarContador(); // Chamada inicial para exibir imediatamente
+    }
+</script>
 </body>
 
 </html>

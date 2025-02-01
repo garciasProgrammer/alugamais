@@ -1,6 +1,8 @@
 package br.com.alugamais.service;
 
+import br.com.alugamais.dao.AtividadeRecenteDao;
 import br.com.alugamais.dao.ImovelDao;
+import br.com.alugamais.web.domain.AtividadeRecente;
 import br.com.alugamais.web.domain.Imovel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,20 +12,20 @@ import java.util.List;
 
 @Service
 @Transactional
-public class ImovelServiceImpl implements ImovelService {
+public class AtividadeRecenteServiceImpl implements AtividadeRecenteService {
 
     @Autowired
-    ImovelDao dao;
+    AtividadeRecenteDao dao;
 
     @Override
-    public void salvar(Imovel Imovel) {
-        dao.save(Imovel);
+    public void salvar(AtividadeRecente atividadeRecente) {
+        dao.save(atividadeRecente);
 
     }
 
     @Override
-    public void editar(Imovel Imovel) {
-        dao.update(Imovel);
+    public void editar(AtividadeRecente atividadeRecente) {
+        dao.update(atividadeRecente);
 
     }
 
@@ -35,29 +37,19 @@ public class ImovelServiceImpl implements ImovelService {
 
     @Override
     @Transactional(readOnly = true)
-    public Imovel buscarPorId(Long id) {
+    public AtividadeRecente buscarPorId(Long id) {
 
         return dao.findById(id);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Imovel> buscarTodos() {
+    public List<AtividadeRecente> buscarTodos() {
 
         return dao.findAll();
     }
 
-    @Override
-    public List<Imovel> getImoveisPorLocador(List<String> situacao, Long locadorId) {
-        return dao.getImoveisPorLocador(situacao, locadorId);
-    }
-
-    @Override
-    public Object getImoveisALugados() {
-        return dao.getImoveisALugados();
-    }
-
-    public Object getImoveisAlugadosPorcentagem() {
-        return dao.getImoveisAlugadosPorcentagem();
+    public List<AtividadeRecente> getAtividades(){
+        return dao.getAtividades();
     }
 }

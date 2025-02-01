@@ -55,4 +55,8 @@ public interface ParcelaDao {
     long countParcelaRestante(Long idContrato);
 
     long countParcelaIsentas(Long idContrato);
+
+    List<Parcelas> buscaParcelas(Long idContrato);
+
+    List<Parcelas> getParcela(Long contratoId, String numParcela);
 }

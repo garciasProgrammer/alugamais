@@ -15,4 +15,6 @@ public interface LocatarioService {
     Locatario buscarPorId(Long id);
 
     List<Locatario> buscarTodos();
+
+    Object getClientes();
 }

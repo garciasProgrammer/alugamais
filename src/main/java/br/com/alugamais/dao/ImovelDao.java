@@ -16,5 +16,9 @@ public interface ImovelDao {
 
     List<Imovel> findAll();
 
-   List<Imovel> getImoveisPorLocador(String situacao, Long locadorId);
+   List<Imovel> getImoveisPorLocador(List<String> situacao, Long locadorId);
+
+    Object getImoveisALugados();
+
+    Object getImoveisAlugadosPorcentagem();
 }

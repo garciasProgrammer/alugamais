@@ -45,6 +45,15 @@ public class ParcelaDaoImpl extends AbstractDao<Parcelas, Long> implements Parce
         return new PaginacaoUtil<>(tamanho, pagina, totalDePaginas, direcao, Parcelas);
     }
 
+    public List<Parcelas> buscaParcelas(Long idContrato) {
+
+        List<Parcelas> Parcelas = getEntityManager()
+                .createQuery("select d from Parcelas d  WHERE d.contrato.id =:idContrato  order by d.parcela asc", Parcelas.class)
+                .setParameter("idContrato", idContrato)
+                .getResultList();
+        return Parcelas;
+    }
+
     public int getUltimaParcelaParcelaPaga(Long IdContrato) {
 
         try {
@@ -103,7 +112,7 @@ public class ParcelaDaoImpl extends AbstractDao<Parcelas, Long> implements Parce
 
     public BigDecimal sumTotalContrato(Long idContrato) {
         return getEntityManager()
-                .createQuery("select SUM(d.ValorAluguel) from Parcelas d where d.contrato.id=" + idContrato, BigDecimal.class)
+                .createQuery("select SUM(d.valorAluguel) from Parcelas d where d.contrato.id=" + idContrato, BigDecimal.class)
                 .getSingleResult();
     }
 
@@ -150,7 +159,7 @@ public class ParcelaDaoImpl extends AbstractDao<Parcelas, Long> implements Parce
 
     public BigDecimal extratoParcelasContrato(Long contratoId, String situacao) {
 
-        BigDecimal valor = getEntityManager().createQuery("SELECT SUM(d.ValorAluguel) FROM Parcelas d WHERE d.situacao=:situacao AND d.contrato.id=:contratoId", BigDecimal.class)
+        BigDecimal valor = getEntityManager().createQuery("SELECT SUM(d.valorAluguel) FROM Parcelas d WHERE d.situacao=:situacao AND d.contrato.id=:contratoId", BigDecimal.class)
                 .setParameter("contratoId", contratoId)
                 .setParameter("situacao", situacao)
                 .getSingleResult();
@@ -160,7 +169,7 @@ public class ParcelaDaoImpl extends AbstractDao<Parcelas, Long> implements Parce
 
     public BigDecimal faturamentoParcelaEmpresa(Long locadorId) {
         try {
-            List<BigDecimal> valor = getEntityManager().createQuery("select sum(d.ValorAluguel) as total_Parcelas from Parcelas d left join Contrato c on d.contrato.id = c.id " +
+            List<BigDecimal> valor = getEntityManager().createQuery("select sum(d.valorAluguel) as total_Parcelas from Parcelas d left join Contrato c on d.contrato.id = c.id " +
                             "left join Locador l on c.locador.id = l.id " +
                             "where d.situacao in ('A VENCER', 'VENCIDA') " +
                             "and c.situacao = 'ABERTO' " +
@@ -213,6 +222,18 @@ public class ParcelaDaoImpl extends AbstractDao<Parcelas, Long> implements Parce
                         "where d.contrato.id=:idContrato and d.situacao ='ISENTA'", Long.class)
                 .setParameter("idContrato", idContrato)
                 .getSingleResult();
+    }
+
+    public List<Parcelas> getParcela(Long contratoId, String numParcela) {
+        List<Parcelas> parcela = getEntityManager().createQuery("SELECT p " +
+                        "FROM Parcelas p " +
+                        "WHERE p.contrato.id=:contratoId " +
+                        "AND p.parcela=:numParcela", Parcelas.class)
+                .setParameter("contratoId", contratoId)
+                .setParameter("numParcela", numParcela)
+                .getResultList();
+
+        return parcela;
     }
 
 }

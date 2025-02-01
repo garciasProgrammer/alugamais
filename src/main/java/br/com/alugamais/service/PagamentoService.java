@@ -15,4 +15,8 @@ public interface PagamentoService {
     Pagamento buscarPorId(Long id);
 
     List<Pagamento> buscarTodos();
+
+    Object getPagamentosAnoMes();
+
+   List<Pagamento> getPagamentosRecebidos();
 }

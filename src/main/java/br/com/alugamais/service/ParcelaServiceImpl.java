@@ -128,4 +128,14 @@ public class ParcelaServiceImpl implements ParcelaService {
     public long countParcelaIsentas(Long idContrato){
         return dao.countParcelaIsentas(idContrato);
     }
+
+    @Override
+    public List<Parcelas> buscaParcelas(Long idContrato){
+        return dao.buscaParcelas(idContrato);
+    }
+
+    @Override
+    public List<Parcelas> getParcela(Long contratoId, String numParcela){
+        return dao.getParcela(contratoId, numParcela);
+    }
 }

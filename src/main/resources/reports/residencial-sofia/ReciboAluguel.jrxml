@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.0.final using JasperReports Library version 6.21.0-4f56c4f36cd19e17675219a9ac4692d5f0f13b06  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1432554c-6817-49f2-b521-97fd3c225791">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="288"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="residencial_sofia"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="codigoPgto" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="valorPagoPorExtenso" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT *,loc.nome as nomeLoc,loct.nome as nomeLoct  FROM contrato con
+                   INNER JOIN locador loc ON con.locador_id_fk = loc.id 
+                   INNER JOIN imovel imv ON con.imovel_id_fk = imv.id 
+                   INNER JOIN locatario loct ON con.cliente_id_fk = loct.id 
+                   INNER JOIN pagamento pgo ON pgo.contrato_id_fk = con.id 
+                   WHERE pgo.id=$P!{codigoPgto}]]>
+	</queryString>
+	<field name="id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="data_assinatura" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="data_assinatura"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_assinatura"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
+	</field>
+	<field name="data_final" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="data_final"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_final"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
+	</field>
+	<field name="data_inicial" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="data_inicial"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_inicial"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
+	</field>
+	<field name="data_quitacao" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="data_quitacao"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_quitacao"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
+	</field>
+	<field name="meses" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="meses"/>
+		<property name="com.jaspersoft.studio.field.label" value="meses"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
+	</field>
+	<field name="situacao" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="situacao"/>
+		<property name="com.jaspersoft.studio.field.label" value="situacao"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
+	</field>
+	<field name="valorAluguel" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="valorAluguel"/>
+		<property name="com.jaspersoft.studio.field.label" value="valorAluguel"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
+	</field>
+	<field name="imovel_id_fk" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="imovel_id_fk"/>
+		<property name="com.jaspersoft.studio.field.label" value="imovel_id_fk"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
+	</field>
+	<field name="locador_id_fk" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="locador_id_fk"/>
+		<property name="com.jaspersoft.studio.field.label" value="locador_id_fk"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
+	</field>
+	<field name="cliente_id_fk" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="cliente_id_fk"/>
+		<property name="com.jaspersoft.studio.field.label" value="cliente_id_fk"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
+	</field>
+	<field name="data_renovacao" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="data_renovacao"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_renovacao"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
+	</field>
+	<field name="COLUMN_13" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locador"/>
+	</field>
+	<field name="celularLocador" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="celularLocador"/>
+		<property name="com.jaspersoft.studio.field.label" value="celularLocador"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locador"/>
+	</field>
+	<field name="data_cadastro" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="data_cadastro"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_cadastro"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locador"/>
+	</field>
+	<field name="email" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="email"/>
+		<property name="com.jaspersoft.studio.field.label" value="email"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locador"/>
+	</field>
+	<field name="nome" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locador"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="endereco_id_fk" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="endereco_id_fk"/>
+		<property name="com.jaspersoft.studio.field.label" value="endereco_id_fk"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locador"/>
+	</field>
+	<field name="cpf" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cpf"/>
+		<property name="com.jaspersoft.studio.field.label" value="cpf"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locador"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="rg" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="rg"/>
+		<property name="com.jaspersoft.studio.field.label" value="rg"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locador"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="taxa_juros" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="taxa_juros"/>
+		<property name="com.jaspersoft.studio.field.label" value="taxa_juros"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locador"/>
+	</field>
+	<field name="COLUMN_22" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="imovel"/>
+	</field>
+	<field name="andar" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="andar"/>
+		<property name="com.jaspersoft.studio.field.label" value="andar"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="imovel"/>
+	</field>
+	<field name="descricao" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="descricao"/>
+		<property name="com.jaspersoft.studio.field.label" value="descricao"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="imovel"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numero" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numero"/>
+		<property name="com.jaspersoft.studio.field.label" value="numero"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="imovel"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="COLUMN_26" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="situacao"/>
+		<property name="com.jaspersoft.studio.field.label" value="situacao"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="imovel"/>
+	</field>
+	<field name="valor" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="valor"/>
+		<property name="com.jaspersoft.studio.field.label" value="valor"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="imovel"/>
+	</field>
+	<field name="COLUMN_28" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="endereco_id_fk"/>
+		<property name="com.jaspersoft.studio.field.label" value="endereco_id_fk"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="imovel"/>
+	</field>
+	<field name="COLUMN_29" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="locador_id_fk"/>
+		<property name="com.jaspersoft.studio.field.label" value="locador_id_fk"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="imovel"/>
+	</field>
+	<field name="tipo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tipo"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="imovel"/>
+	</field>
+	<field name="valorTaxa" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="valorTaxa"/>
+		<property name="com.jaspersoft.studio.field.label" value="valorTaxa"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="imovel"/>
+	</field>
+	<field name="COLUMN_32" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="data_inicial"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_inicial"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="imovel"/>
+	</field>
+	<field name="COLUMN_33" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locatario"/>
+	</field>
+	<field name="celularPrincipalCliente" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="celularPrincipalCliente"/>
+		<property name="com.jaspersoft.studio.field.label" value="celularPrincipalCliente"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locatario"/>
+	</field>
+	<field name="celularWhatsApp" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="celularWhatsApp"/>
+		<property name="com.jaspersoft.studio.field.label" value="celularWhatsApp"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locatario"/>
+	</field>
+	<field name="COLUMN_36" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cpf"/>
+		<property name="com.jaspersoft.studio.field.label" value="cpf"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locatario"/>
+	</field>
+	<field name="data_nascimento" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="data_nascimento"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_nascimento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locatario"/>
+	</field>
+	<field name="COLUMN_38" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="email"/>
+		<property name="com.jaspersoft.studio.field.label" value="email"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locatario"/>
+	</field>
+	<field name="estadoCivil" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="estadoCivil"/>
+		<property name="com.jaspersoft.studio.field.label" value="estadoCivil"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locatario"/>
+	</field>
+	<field name="nacionalidade" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nacionalidade"/>
+		<property name="com.jaspersoft.studio.field.label" value="nacionalidade"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locatario"/>
+	</field>
+	<field name="COLUMN_41" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locatario"/>
+	</field>
+	<field name="profissao" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="profissao"/>
+		<property name="com.jaspersoft.studio.field.label" value="profissao"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locatario"/>
+	</field>
+	<field name="COLUMN_43" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="rg"/>
+		<property name="com.jaspersoft.studio.field.label" value="rg"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locatario"/>
+	</field>
+	<field name="COLUMN_44" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="endereco_id_fk"/>
+		<property name="com.jaspersoft.studio.field.label" value="endereco_id_fk"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locatario"/>
+	</field>
+	<field name="COLUMN_45" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pagamento"/>
+	</field>
+	<field name="data_cancelado" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="data_cancelado"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_cancelado"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pagamento"/>
+	</field>
+	<field name="data_pagamento" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="data_pagamento"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_pagamento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pagamento"/>
+	</field>
+	<field name="desconto" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="desconto"/>
+		<property name="com.jaspersoft.studio.field.label" value="desconto"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pagamento"/>
+	</field>
+	<field name="COLUMN_49" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="descricao"/>
+		<property name="com.jaspersoft.studio.field.label" value="descricao"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pagamento"/>
+	</field>
+	<field name="juros" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="juros"/>
+		<property name="com.jaspersoft.studio.field.label" value="juros"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pagamento"/>
+	</field>
+	<field name="qtdParcela" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="qtdParcela"/>
+		<property name="com.jaspersoft.studio.field.label" value="qtdParcela"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pagamento"/>
+	</field>
+	<field name="tipo_de_documento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tipo_de_documento"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipo_de_documento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pagamento"/>
+	</field>
+	<field name="tipoDePagamento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tipoDePagamento"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipoDePagamento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pagamento"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="usuario" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="usuario"/>
+		<property name="com.jaspersoft.studio.field.label" value="usuario"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pagamento"/>
+	</field>
+	<field name="usuario_cancelador" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="usuario_cancelador"/>
+		<property name="com.jaspersoft.studio.field.label" value="usuario_cancelador"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pagamento"/>
+	</field>
+	<field name="COLUMN_56" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="valor"/>
+		<property name="com.jaspersoft.studio.field.label" value="valor"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pagamento"/>
+	</field>
+	<field name="valorRecebido" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="valorRecebido"/>
+		<property name="com.jaspersoft.studio.field.label" value="valorRecebido"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pagamento"/>
+	</field>
+	<field name="valorTotal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="valorTotal"/>
+		<property name="com.jaspersoft.studio.field.label" value="valorTotal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pagamento"/>
+	</field>
+	<field name="valorTotalLiquido" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="valorTotalLiquido"/>
+		<property name="com.jaspersoft.studio.field.label" value="valorTotalLiquido"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pagamento"/>
+	</field>
+	<field name="contrato_id_fk" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="contrato_id_fk"/>
+		<property name="com.jaspersoft.studio.field.label" value="contrato_id_fk"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pagamento"/>
+	</field>
+	<field name="COLUMN_61" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="locador_id_fk"/>
+		<property name="com.jaspersoft.studio.field.label" value="locador_id_fk"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pagamento"/>
+	</field>
+	<field name="locatario_id_fk" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="locatario_id_fk"/>
+		<property name="com.jaspersoft.studio.field.label" value="locatario_id_fk"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pagamento"/>
+	</field>
+	<field name="parcela" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="parcela"/>
+		<property name="com.jaspersoft.studio.field.label" value="parcela"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pagamento"/>
+	</field>
+	<field name="meio_pagamento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="meio_pagamento"/>
+		<property name="com.jaspersoft.studio.field.label" value="meio_pagamento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pagamento"/>
+	</field>
+	<field name="data_vencimento" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="data_vencimento"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_vencimento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pagamento"/>
+	</field>
+	<field name="nomeLoc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome"/>
+		<property name="com.jaspersoft.studio.field.label" value="nomeLoc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locador"/>
+	</field>
+	<field name="nomeLoct" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome"/>
+		<property name="com.jaspersoft.studio.field.label" value="nomeLoct"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locatario"/>
+	</field>
+	<background>
+		<band height="802" splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="399" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement mode="Transparent" x="0" y="0" width="555" height="399" uuid="62ec1ef5-9c3a-40c6-a6c6-8eb3317d13f6"/>
+			</rectangle>
+			<rectangle radius="10">
+				<reportElement x="12" y="12" width="530" height="70" forecolor="#FFFFFF" backcolor="#006699" uuid="da80fa49-f132-41c4-aa5c-20cd922aacb2"/>
+			</rectangle>
+			<rectangle radius="10">
+				<reportElement mode="Transparent" x="323" y="87" width="219" height="80" uuid="89edfc6e-a5cd-4532-aaf8-60206fd362c8"/>
+			</rectangle>
+			<rectangle radius="10">
+				<reportElement mode="Transparent" x="12" y="213" width="530" height="138" uuid="0eda63b3-8dd5-477e-8db9-f1aa564f6e08"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="12" y="26" width="530" height="43" forecolor="#FFFFFF" uuid="f704d82f-7ff3-404e-b568-9112bd1bf1e1"/>
+				<textElement textAlignment="Center">
+					<font fontName="Monotype Corsiva" size="38" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RESIDENCIAL SOFIA]]></text>
+			</staticText>
+			<rectangle radius="10">
+				<reportElement mode="Transparent" x="12" y="87" width="289" height="80" uuid="962ee741-db08-4f6d-b3e7-bb21963b0dec"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="30" y="87" width="100" height="20" uuid="d7c4ff0b-5216-408d-aff4-9451d06f4193"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Locador]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="30" y="107" width="245" height="20" uuid="2bb6c5c3-926b-4313-a276-9adbf2afff06"/>
+				<textFieldExpression><![CDATA[$F{nomeLoc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="30" y="127" width="100" height="20" uuid="0c302957-e700-4e77-9c99-35bbd5cd4610"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Locatário]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="30" y="147" width="245" height="20" uuid="242d8b2d-79ae-4ce8-a55e-9c64d85f9a76"/>
+				<textFieldExpression><![CDATA[$F{nomeLoct}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="30" y="213" width="127" height="20" uuid="5eebd2de-9acb-404e-8c64-5588e4008932"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descrição do Pagamento]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="30" y="233" width="499" height="118" uuid="4a050e8b-d6a2-4535-bcc2-74ef05a283cf"/>
+				<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="30" y="372" width="245" height="1" uuid="366cd14f-9b85-446c-afa3-5142647ee448"/>
+			</line>
+			<line>
+				<reportElement x="284" y="373" width="245" height="1" uuid="49674e43-9f06-445c-b3ce-e05f2b668f8b"/>
+			</line>
+			<staticText>
+				<reportElement x="284" y="374" width="245" height="18" uuid="9dea0e67-0a6f-47cf-9edd-09a2a9404d8d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Locatário]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="323" y="97" width="219" height="60" uuid="128b88fd-0a2f-4828-a19b-6d46a2ded9ca"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valorTotalLiquido}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="333" y="87" width="100" height="20" uuid="6ffbbf95-76a1-4453-b4bf-70de751502bb"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor Pago]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="374" width="245" height="18" uuid="f9c0021e-1e9f-4b56-bfae-3a48af1561e6"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Locador]]></text>
+			</staticText>
+			<rectangle radius="10">
+				<reportElement mode="Transparent" x="12" y="178" width="530" height="29" uuid="78efbdb8-7126-42c1-aaae-98cc2ae2cea9"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="30" y="178" width="127" height="15" uuid="443d7697-28d0-4bf8-ad32-66cb3f122509"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor por Extenso]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="139" y="187" width="390" height="20" uuid="233a53f9-21f7-41df-a2d9-9ed9e4931908"/>
+				<textFieldExpression><![CDATA[$P{valorPagoPorExtenso}+"    *******************************"]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="481">
+			<rectangle radius="10">
+				<reportElement x="11" y="24" width="530" height="70" forecolor="#006699" backcolor="#006699" uuid="abea5459-2762-43ab-b528-3d5176b7e312"/>
+			</rectangle>
+			<rectangle radius="10">
+				<reportElement mode="Transparent" x="323" y="105" width="219" height="81" uuid="497d8715-99f8-4e4a-be31-46630ff0dc27"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="12" y="38" width="530" height="43" forecolor="#FFFFFF" uuid="14261641-039d-40c9-97e7-ac7045abc3d7"/>
+				<textElement textAlignment="Center">
+					<font fontName="Monotype Corsiva" size="38" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RESIDENCIAL SOFIA]]></text>
+			</staticText>
+			<rectangle radius="10">
+				<reportElement mode="Transparent" x="11" y="105" width="289" height="81" uuid="ba5c8aa0-56e8-46b3-94ea-7aa0cce44153"/>
+			</rectangle>
+			<textField>
+				<reportElement x="39" y="126" width="245" height="20" uuid="7e904eb3-e37f-4dac-a272-a3c6e015b3eb"/>
+				<textFieldExpression><![CDATA[$F{nomeLoc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="39" y="166" width="245" height="20" uuid="6e745daf-5a2c-4b5e-bb66-f95c33f2cb91"/>
+				<textFieldExpression><![CDATA[$F{nomeLoct}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="39" y="106" width="100" height="20" uuid="534a5901-f37a-48de-9267-86c6e7bfb870"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Locador]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="146" width="100" height="20" uuid="fd6bf6e0-64be-42a8-b268-418ece09c13f"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Locatário]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="323" y="116" width="219" height="60" uuid="4e88023d-c23f-4088-bf9b-a5454520aa7a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valorTotalLiquido}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="333" y="106" width="100" height="20" uuid="396c5718-07d5-433d-ba86-097b883be2d4"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor Pago]]></text>
+			</staticText>
+			<rectangle radius="10">
+				<reportElement mode="Transparent" x="11" y="236" width="530" height="126" uuid="b9e1aaed-c70d-4ac0-88d8-43e891f492a4"/>
+			</rectangle>
+			<textField>
+				<reportElement x="30" y="256" width="499" height="106" uuid="08ca3332-585e-46d3-8dec-8584216ac616"/>
+				<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="30" y="236" width="127" height="20" uuid="8650e642-d80a-48cd-8ac3-b5550516f32b"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descrição do Pagamento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="284" y="379" width="245" height="20" uuid="fa2f358a-b837-4a87-a25b-6fe50c6ee69f"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Locatário]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="381" width="245" height="18" uuid="ff411103-7628-4edb-be40-c8638ff284b7"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Locador]]></text>
+			</staticText>
+			<line>
+				<reportElement x="30" y="379" width="245" height="1" uuid="10ff524a-39bf-4f86-8e04-13ec60cfa4e0"/>
+			</line>
+			<line>
+				<reportElement x="284" y="378" width="245" height="1" uuid="2bacdfcc-2a80-430c-9c6c-d2aa7e9a9b18"/>
+			</line>
+			<rectangle radius="10">
+				<reportElement mode="Transparent" x="0" y="10" width="555" height="389" uuid="ceba8d44-ef40-49ea-aa29-c1f98cb85300"/>
+			</rectangle>
+			<rectangle radius="10">
+				<reportElement mode="Transparent" x="11" y="198" width="530" height="29" uuid="5163fcd3-579b-4139-9d03-c4981e815e08"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="30" y="198" width="127" height="14" uuid="a938cc4e-c7b1-4ceb-86e6-709b8b00596b"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor por Extenso]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="130" y="207" width="390" height="20" uuid="ee69aea4-4b92-4ffc-9a91-16f97119a62c"/>
+				<textFieldExpression><![CDATA[$P{valorPagoPorExtenso}+"    *******************************"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

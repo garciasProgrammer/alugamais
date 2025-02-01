@@ -6,13 +6,18 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CardUpdate {
-    private Object tipo;
-    private Object valor;
+    private Object titulo;
+    private Object mensagem;
+    private Object action;
+
+    private Object contratoId;
 
 
-    public CardUpdate(Object tipo, Object valor) {
-        this.tipo = tipo;
-        this.valor = valor;
+    public CardUpdate(Object titulo, Object mensagem, Object action, Object contratoId) {
+        this.titulo = titulo;
+        this.mensagem = mensagem;
+        this.action = action;
+        this.contratoId = contratoId;
     }
 
 

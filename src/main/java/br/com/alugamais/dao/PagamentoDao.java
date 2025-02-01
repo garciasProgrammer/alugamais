@@ -15,4 +15,8 @@ public interface PagamentoDao {
     Pagamento findById(Long id);
 
     List<Pagamento> findAll();
+
+    Object getPagamentosAnoMes();
+
+    List<Pagamento> getPagamentosRecebidos();
 }

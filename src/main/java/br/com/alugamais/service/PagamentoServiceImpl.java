@@ -46,4 +46,12 @@ public class PagamentoServiceImpl implements PagamentoService{
 
         return dao.findAll();
     }
+
+    public Object getPagamentosAnoMes(){
+        return dao.getPagamentosAnoMes();
+    }
+
+    public List<Pagamento> getPagamentosRecebidos(){
+        return dao.getPagamentosRecebidos();
+    }
 }

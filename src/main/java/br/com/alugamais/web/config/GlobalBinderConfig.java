@@ -1,6 +1,8 @@
 package br.com.alugamais.web.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.math.BigDecimal;
@@ -9,18 +11,31 @@ import java.math.BigDecimal;
 public class GlobalBinderConfig implements WebMvcConfigurer {
 
     @Override
-    public void addFormatters(org.springframework.format.FormatterRegistry registry) {
-        registry.addConverter(String.class, BigDecimal.class, source -> {
-            if (source == null || source.isEmpty()) {
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverter(new StringToBigDecimalConverter());
+    }
+
+    static class StringToBigDecimalConverter implements Converter<String, BigDecimal> {
+        @Override
+        public BigDecimal convert(String source) {
+            if (source == null || source.trim().isEmpty()) {
                 return null;
             }
             try {
-                // Remove prefixo e ajusta o formato
-                String valorLimpo = source.replace("R$", "").replace(".", "").replace(",", ".").trim();
+                // Limpeza do valor
+                String valorLimpo = source.replace("R$", "")
+                        .replaceAll("[^0-9,.]", "")
+                        .replace(".", "")
+                        .replace(",", ".")
+                        .trim();
+                // Log para depuração
+                System.out.println("Convertendo valor: " + source + " para: " + valorLimpo);
                 return new BigDecimal(valorLimpo);
-            } catch (Exception e) {
-                throw new IllegalArgumentException("Valor inválido: " + source);
+            } catch (NumberFormatException e) {
+                // Log do erro para depuração
+                System.err.println("Erro ao converter valor: " + source);
+                throw new IllegalArgumentException("Valor inválido para conversão em BigDecimal: " + source, e);
             }
-        });
+        }
     }
 }

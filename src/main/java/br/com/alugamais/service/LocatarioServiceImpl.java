@@ -46,4 +46,8 @@ public class LocatarioServiceImpl implements LocatarioService {
 
         return dao.findAll();
     }
+
+    public Object getClientes(){
+        return dao.getClientes();
+    }
 }
