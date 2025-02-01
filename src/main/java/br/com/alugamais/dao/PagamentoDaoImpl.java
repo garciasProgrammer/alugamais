@@ -16,7 +16,7 @@ public class PagamentoDaoImpl extends AbstractDao<Pagamento, Long> implements Pa
                         "where date_format(data_pagamento, '%Y%m')=date_format(now(), '%Y%m')")
                 .getSingleResult();
 
-        return valor != null ? ((Number) valor) : new BigDecimal(0.00);
+        return valor != null ? ((Number) valor) : new BigDecimal(0);
 
     }
 
