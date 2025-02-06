@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALUGAMAIS SERVICE</title>
+
+    <!-- Definir base para URLs relativas -->
+    <base th:href="@{/}">
+
+    <!-- Favicons -->
+    <link rel="icon" th:href="@{/img/favicon.png}">
+    <link rel="apple-touch-icon" th:href="@{/img/apple-touch-icon.png}">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link rel="stylesheet" th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/boxicons/css/boxicons.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/quill/quill.snow.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/quill/quill.bubble.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/remixicon/remixicon.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/simple-datatables/style.css}">
+
+    <!-- Template Main CSS File -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+<header th:replace="fragments/header :: cabecalho"></header>
+<div class="layout-main">
+    <aside>
+        <nav th:replace="fragments/sidebar :: nav-sidebar"></nav>
+    </aside>
+    <main layout:fragment="corpo"></main>
+</div>
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+    <i class="bi bi-arrow-up-short"></i>
+</a>
+
+<!-- Vendor JS Files -->
+<script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/vendor/apexcharts/apexcharts.min.js}"></script>
+<script th:src="@{/assets/vendor/chart.js/chart.umd.js}"></script>
+<script th:src="@{/assets/vendor/echarts/echarts.min.js}"></script>
+<script th:src="@{/assets/vendor/quill/quill.js}"></script>
+<script th:src="@{/assets/vendor/simple-datatables/simple-datatables.js}"></script>
+<script th:src="@{/assets/vendor/tinymce/tinymce.min.js}"></script>
+<script th:src="@{/assets/vendor/php-email-form/validate.js}"></script>
+
+<!-- Template Main JS File -->
+<script th:src="@{/js/main.js}"></script>
+<script th:src="@{/js/custom-scripts.js}"></script>
+
+
+</div>
+
+
+<!-- init js contrato cadastro-->
+<script type="text/javascript">
+
+    function formatarCpfCnpj(input) {
+        let value = input.value.replace(/\D/g, ''); // Remove tudo que não for número
+
+        if (value.length <= 11) {
+            // Formata como CPF (000.000.000-00)
+            value = value.replace(/^(\d{3})(\d)/, "$1.$2");
+            value = value.replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3");
+            value = value.replace(/\.(\d{3})(\d)/, ".$1-$2");
+        } else {
+            // Formata como CNPJ (00.000.000/0000-00)
+            value = value.replace(/^(\d{2})(\d)/, "$1.$2");
+            value = value.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3");
+            value = value.replace(/\.(\d{3})(\d)/, ".$1/$2");
+            value = value.replace(/(\d{4})(\d)/, "$1-$2");
+        }
+
+        input.value = value;
+    }
+
+
+
+    const locadorSelect = document.getElementById('locadorSelect');
+    const imovelSelect = document.getElementById('customSelect');
+    const imovelFilter = document.getElementById('dropdownFilter');
+    const dropdownButton = document.getElementById('dropdownMenuButton');
+
+    // Campos de detalhes do imóvel
+    const enderecoSpan = document.getElementById('endereco');
+    const valorMensalSpan = document.getElementById('valorMensal');
+    const proprietarioSpan = document.getElementById('proprietario');
+    const taxaCondominioSpan = document.getElementById('taxaCondominio');
+    const descricaoSpan = document.getElementById('descricao');
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+
+        // Função para carregar imóveis ao selecionar o locador
+        locadorSelect.addEventListener('change', function () {
+            const locadorId = this.value;
+
+            // Limpa os imóveis anteriores
+            imovelSelect.innerHTML = '<option selected disabled>Carregando...</option>';
+            imovelSelect.disabled = true;
+
+            // Requisição ao back-end para buscar imóveis
+            fetch(`/imovel/livres/lista/${locadorId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Atualiza o select com os imóveis
+                    imovelSelect.innerHTML = '<option selected disabled>Selecionar Imóvel</option>';
+                    data.forEach(imovel => {
+                        const option = document.createElement('option');
+                        option.value = imovel.id;
+                        option.textContent = `N°${imovel.numero} - ${imovel.tipo} - ${imovel.situacao}`;
+                        imovelSelect.appendChild(option);
+                    });
+                    imovelSelect.disabled = false;
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar imóveis:', error);
+                    imovelSelect.innerHTML = '<option selected disabled>Erro ao carregar imóveis</option>';
+                });
+        });
+
+        // Filtrar imóveis no campo de filtro
+        imovelFilter.addEventListener('input', function () {
+            const filterText = this.value.toLowerCase();
+
+            Array.from(imovelSelect.options).forEach(option => {
+                const optionText = option.textContent.toLowerCase();
+                if (optionText.includes(filterText)) {
+                    option.style.display = 'block'; // Mostra a opção
+                } else {
+                    option.style.display = 'none'; // Esconde a opção
+                }
+            });
+        });
+
+        // Atualizar botão e fechar dropdown ao selecionar um imóvel
+        customSelect.addEventListener('change', function () {
+            const selectedOption = customSelect.options[customSelect.selectedIndex];
+            if (selectedOption) {
+                // Atualiza o texto do botão com o imóvel selecionado
+                dropdownButton.textContent = selectedOption.textContent;
+
+                // Fecha o dropdown usando classes do Bootstrap
+                const dropdownInstance = bootstrap.Dropdown.getInstance(dropdownButton);
+                if (dropdownInstance) {
+                    dropdownInstance.hide();
+                }
+            }
+        });
+
+        // Atualizar botão com a opção selecionada e carregar detalhes do imóvel
+        imovelSelect.addEventListener('change', function () {
+            const selectedOption = imovelSelect.options[imovelSelect.selectedIndex];
+            dropdownButton.textContent = selectedOption.textContent;
+
+            const imovelId = this.value;
+
+            // Limpar campos enquanto carrega os detalhes do imóvel
+            enderecoSpan.textContent = 'Carregando...';
+            valorMensalSpan.textContent = 'Carregando...';
+            proprietarioSpan.textContent = 'Carregando...';
+            taxaCondominioSpan.textContent = 'Carregando...';
+            descricaoSpan.textContent = 'Carregando...';
+
+            // Requisição para obter os detalhes do imóvel
+            fetch(`/imovel/detalhes/${imovelId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const formatarReal = valor => {
+                        return new Intl.NumberFormat('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
+                        }).format(valor || 0);
+                    };
+
+                    // Preenche os campos com os dados retornados
+                    enderecoSpan.value = `${data.endereco.logradouro}, ${data.endereco.bairro}, ${data.endereco.numero}, ${data.endereco.cidade} - ${data.endereco.uf}` || 'Não informado';
+                    valorMensalSpan.value = formatarReal(data.valor) || 'R$ 0,00';
+                    proprietarioSpan.value = data.locador.nome || 'Não informado';
+                    taxaCondominioSpan.value = formatarReal(data.valorTaxa) || 'R$ 0,00';
+                    descricaoSpan.value = data.descricao || 'Não informado';
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar os detalhes do imóvel:', error);
+                    enderecoSpan.value = 'Erro ao carregar';
+                    valorMensalSpan.value = 'Erro ao carregar';
+                    proprietarioSpan.value = 'Erro ao carregar';
+                    taxaCondominioSpan.value = 'Erro ao carregar';
+                    descricaoSpan.value = 'Erro ao carregar';
+                });
+        });
+    });
+
+    function detalhesImovel(imovelId) {
+        // Requisição para obter os detalhes do imóvel
+        fetch(`/imovel/detalhes/${imovelId}`)
+            .then(response => response.json())
+            .then(data => {
+                const formatarReal = valor => {
+                    return new Intl.NumberFormat('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                    }).format(valor || 0);
+                };
+
+                // Preenche os campos com os dados retornados
+                enderecoSpan.value = `${data.endereco.logradouro}, ${data.endereco.bairro}, ${data.endereco.numero}, ${data.endereco.cidade} - ${data.endereco.uf}` || 'Não informado';
+                valorMensalSpan.value = formatarReal(data.valor) || 'R$ 0,00';
+                proprietarioSpan.value = data.locador.nome || 'Não informado';
+                taxaCondominioSpan.value = formatarReal(data.valorTaxa) || 'R$ 0,00';
+                descricaoSpan.value = data.descricao || 'Não informado';
+            })
+            .catch(error => {
+                console.error('Erro ao carregar os detalhes do imóvel:', error);
+                enderecoSpan.value = 'Erro ao carregar';
+                valorMensalSpan.value = 'Erro ao carregar';
+                proprietarioSpan.value = 'Erro ao carregar';
+                taxaCondominioSpan.value = 'Erro ao carregar';
+                descricaoSpan.value = 'Erro ao carregar';
+            });
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const rangeInput = document.getElementById('customRange1');
+        const selectInput = document.getElementById('floatingSelect');
+        const rangeValueDisplay = document.getElementById('rangeValue');
+
+        // Atualiza o valor do range e sincroniza com o select
+        rangeInput.addEventListener('input', function () {
+            const rangeValue = rangeInput.value;
+            rangeValueDisplay.textContent = rangeValue; // Atualiza o texto do span
+
+            // Atualiza o valor correspondente no select
+            Array.from(selectInput.options).forEach(option => {
+                if (option.value === rangeValue) {
+                    option.selected = true;
+                } else {
+                    option.selected = false; // Desmarca outras opções
+                }
+            });
+        });
+
+        // Atualiza o range e o span ao selecionar no dropdown
+        selectInput.addEventListener('change', function () {
+            const selectedValue = selectInput.value;
+            rangeInput.value = selectedValue; // Atualiza o range
+            rangeValueDisplay.textContent = selectedValue; // Atualiza o texto do span
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const dataInicialInput = document.getElementById('inputDataInicial');
+        const periodoSelect = document.getElementById('floatingSelect');
+        const dataFinalInput = document.getElementById('inputDataFinal');
+        const dataRenovacao = document.getElementById('inputDataRenovacao');
+
+        // Função para calcular a data final
+        function calcularDataFinal() {
+            const dataInicial = dataInicialInput.value;
+            const periodoMeses = parseInt(periodoSelect.value, 10);
+
+            if (dataInicial && periodoMeses) {
+                const dataInicialObj = new Date(dataInicial);
+                dataInicialObj.setMonth(dataInicialObj.getMonth() + periodoMeses); // Adiciona os meses
+                dataFinalInput.value = dataInicialObj.toISOString().split('T')[0]; // Formata a data final
+                dataRenovacao.value = dataFinalInput.value;
+            }
+        }
+
+        // Eventos para atualizar a data final
+        dataInicialInput.addEventListener('change', calcularDataFinal);
+        periodoSelect.addEventListener('change', calcularDataFinal);
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const locatarioFilter = document.getElementById('locatarioFilter'); // Campo de filtro
+        const locatarioSelect = document.getElementById('locatarioSelect'); // Select com opções
+        const dropdownButton = document.getElementById('dropdownMenuButtonLocatario'); // Botão do dropdown
+        const dropdownMenu = document.querySelector('.dropdown-menu'); // Menu dropdown
+
+        // Evento de filtro dinâmico
+        locatarioFilter.addEventListener('input', function () {
+            const filterText = this.value.toLowerCase();
+
+            // Filtrar as opções no select
+            Array.from(locatarioSelect.options).forEach(option => {
+                const optionText = option.textContent.toLowerCase();
+                option.style.display = optionText.includes(filterText) ? 'block' : 'none';
+            });
+        });
+
+        // Atualizar o botão e fechar o dropdown ao selecionar um item
+        locatarioSelect.addEventListener('change', function () {
+            const selectedOption = locatarioSelect.options[locatarioSelect.selectedIndex];
+            if (selectedOption) {
+                dropdownButton.textContent = selectedOption.textContent; // Atualiza o texto do botão
+
+                // Fecha o dropdown usando classes do Bootstrap
+                const dropdownInstance = bootstrap.Dropdown.getInstance(dropdownButton);
+                if (dropdownInstance) {
+                    dropdownInstance.hide();
+                }
+            }
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const locadorFilter = document.getElementById('locadorFilter'); // Campo de filtro
+        const locadorSelect = document.getElementById('locadorSelect'); // Select com opções
+        const dropdownButton = document.getElementById('dropdownMenuButtonLocador'); // Botão do dropdown
+        const dropdownMenu = document.querySelector('.dropdown-menu'); // Menu dropdown
+
+        // Evento de filtro dinâmico
+        locadorFilter.addEventListener('input', function () {
+            const filterText = this.value.toLowerCase();
+
+            // Filtrar as opções no select
+            Array.from(locadorSelect.options).forEach(option => {
+                const optionText = option.textContent.toLowerCase();
+                option.style.display = optionText.includes(filterText) ? 'block' : 'none';
+            });
+        });
+
+        // Atualizar o botão e fechar o dropdown ao selecionar um item
+        locadorSelect.addEventListener('change', function () {
+            const selectedOption = locadorSelect.options[locadorSelect.selectedIndex];
+            if (selectedOption) {
+                dropdownButton.textContent = selectedOption.textContent; // Atualiza o texto do botão
+
+                // Fecha o dropdown usando classes do Bootstrap
+                const dropdownInstance = bootstrap.Dropdown.getInstance(dropdownButton);
+                if (dropdownInstance) {
+                    dropdownInstance.hide();
+                }
+            }
+        });
+
+        // Permite focar no campo de filtro ao abrir o dropdown
+        dropdownButton.addEventListener('click', function () {
+            setTimeout(() => locadorFilter.focus(), 100); // Foca no filtro após abrir o dropdown
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const openModalButton = document.getElementById('openModalButton');
+        const parcelasModal = new bootstrap.Modal(document.getElementById('parcelasModal'));
+        const parcelasTableBody = document.getElementById('parcelasTableBody');
+
+        // Inputs principais
+        const dataInicialInput = document.getElementById('inputDataInicial');
+        const periodoSelect = document.getElementById('floatingSelect');
+        const valorMensalSpan = document.getElementById('valorMensal');
+
+        // Abrir o modal ao clicar no botão "Salvar"
+        openModalButton.addEventListener('click', function () {
+            const dataInicial = dataInicialInput.value;
+            const periodoMeses = parseInt(periodoSelect.value, 10);
+            const valorMensal = parseFloat(valorMensalSpan.value.replace('R$', '').replace(',', '.'));
+
+            if (!dataInicial || !periodoMeses || isNaN(valorMensal)) {
+                alert('Preencha todos os campos necessários para calcular as parcelas.');
+                return;
+            }
+
+            // Limpar tabela existente
+            parcelasTableBody.innerHTML = '';
+
+            // Gerar parcelas
+            const [anoInicial, mesInicial, diaInicial] = dataInicial.split('-').map(Number); // Extrai ano, mês e dia
+            const dataInicialObj = new Date(anoInicial, mesInicial - 1, diaInicial); // Cria a data sem horário
+
+            for (let i = 1; i <= periodoMeses; i++) {
+                // Gera a data de vencimento baseada no mês
+                const dataVencimento1 = new Date(dataInicialObj);
+                dataVencimento1.setMonth(dataInicialObj.getMonth() + (i - 1));
+
+                // Formata a data no padrão brasileiro (dd/MM/yyyy)
+                const dia = String(dataVencimento1.getDate()).padStart(2, '0');
+                const mes = String(dataVencimento1.getMonth() + 1).padStart(2, '0'); // Mês começa do zero
+                const ano = dataVencimento1.getFullYear();
+                const dataFormatada = `${dia}/${mes}/${ano}`;
+
+                // Corrigir o valor mensal caso esteja em centavos
+                let valorMensal = parseFloat(valorMensalSpan.value.replace('R$', '').replace('.', '').replace(',', '.'));
+                if (valorMensal < 100) {
+                    valorMensal *= 100; // Corrige valores abaixo de R$ 100
+                }
+
+                // Formata o valor no padrão brasileiro
+                const valorFormatado = new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL',
+                    minimumFractionDigits: 2,
+                }).format(valorMensal);
+
+                // Adiciona a linha na tabela
+                const row = document.createElement('tr');
+                row.innerHTML = `
+        <td>${i}</td>
+        <td>${dataFormatada}</td>
+        <td>${valorFormatado}</td>
+    `;
+                parcelasTableBody.appendChild(row);
+            }
+
+            // Exibir o modal
+            parcelasModal.show();
+        });
+    });
+
+<!-- Manipula parcelas-->
+
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log("Envia Form")
+        const parcelasTableBody = document.getElementById('parcelasTableBody');
+        const parcelasHidden = document.getElementById('parcelasHidden');
+        const confirmarButton = document.getElementById('confirmarContrato');
+        const form = document.getElementById('contratoForm')
+
+        confirmarButton.addEventListener('click', function () {
+            const parcelas = [];
+            const rows = parcelasTableBody.querySelectorAll('tr');
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                // Convertendo a data para o formato yyyy-MM-dd
+                const dataText = cells[1].textContent; // Data no formato dd/MM/yyyy
+                const [dia, mes, ano] = dataText.split('/').map(Number); // Divide em partes
+                const dataISO = new Date(ano, mes - 1, dia).toISOString().split('T')[0]; // Converte para yyyy-MM-dd
+
+                parcelas.push({
+                    parcela: parseInt(cells[0].textContent),
+                    dataVencimento: dataISO, // Usa o formato ISO
+                    valorAluguel: parseFloat(cells[2].textContent.replace('R$', '').replace('.', '').replace(',', '.'))
+                });
+            });
+
+            // Converte parcelas para JSON e insere no campo oculto
+            parcelasHidden.value = JSON.stringify(parcelas);
+            console.log(parcelasHidden.value);
+            // Submete o formulário
+            console.log('Submetendo o formulário...');
+            form.submit();
+        });
+    });
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputValorMensal = document.getElementById('valorMensal');
+
+        if (inputValorMensal && inputValorMensal.value) {
+            // Formata o valor existente com "R$"
+            const valorSemFormatacao = inputValorMensal.value.replace(/[^0-9,]/g, ''); // Remove R$ e outros caracteres
+            const valorNumerico = parseFloat(valorSemFormatacao.replace(',', '.')).toFixed(2).replace('.', ','); // Ajusta formato
+            inputValorMensal.value = `R$ ${valorNumerico}`;
+        }
+    });
+
+    function atualizarValorReal(input) {
+        const valorSemFormatacao = input.value.replace(/[^0-9,]/g, '').replace(',', '.'); // Remove "R$" e formata
+        const campoReal = document.getElementById('valorMensal');
+        campoReal.value = parseFloat(valorSemFormatacao) || 0; // Atualiza com o valor numérico
+    }
+
+    function verificarImovelEmUso(imovelId) {
+        console.log("verifica imovel")
+        if (!imovelId) {
+            return; // Não faz nada se nenhum imóvel foi selecionado
+        }
+
+        fetch(`/imovel/verificar-imovel/${imovelId}`) // Substitua pela URL correta da sua API
+            .then(response => response.json())
+            .then(data => {
+                console.log("dados, ", data)
+                if (data.situacao === 'Alugado') {
+                    alert("Este imóvel já está em uso. Por favor, escolha outro.");
+                    location.reload()
+                }
+            })
+            .catch(error => console.error("Erro ao verificar o imóvel:", error));
+    }
+
+
+<!-- end js contrato cadastro-->
+
+<!-- init js imovel cadastro-->
+
+    function pesquisacep(valor) {
+
+        //Nova variável "cep" somente com dígitos.
+        var cep = valor.replace(/\D/g, '');
+
+        //Verifica se campo cep possui valor informado.
+        if (cep != "") {
+
+            //Expressão regular para validar o CEP.
+            var validacep = /^[0-9]{8}$/;
+
+            //Valida o formato do CEP.
+            if (validacep.test(cep)) {
+
+                //Preenche os campos com "..." enquanto consulta webservice.
+                document.getElementById('inputTextRua').value = "...";
+                document.getElementById('inputTextBairro').value = "...";
+                document.getElementById('inputTextCidade').value = "...";
+                document.getElementById('inputTextEstado').value = "...";
+
+                //Cria um elemento javascript.
+                var script = document.createElement('script');
+
+                //Sincroniza com o callback.
+                script.src = 'https://viacep.com.br/ws/' + cep
+                    + '/json/?callback=meu_callback';
+
+                //Insere script no documento e carrega o conteúdo.
+                document.body.appendChild(script);
+
+            } //end if.
+            else {
+                //cep é inválido.
+                limpa_formulário_cep();
+                alert("Formato de CEP inválido.");
+            }
+        } //end if.
+        else {
+            //cep sem valor, limpa formulário.
+            limpa_formulário_cep();
+        }
+    };
+
+    function limpa_formulário_cep() {
+        //Limpa valores do formulário de cep.
+        document.getElementById('inputTextRua').value = "";
+        document.getElementById('inputTextBairro').value = "";
+        document.getElementById('inputTextCidade').value = "";
+        document.getElementById('inputTextEstado').value = "";
+
+    }
+
+    function meu_callback(conteudo) {
+        if (!("erro" in conteudo)) {
+            //Atualiza os campos com os valores.
+            document.getElementById('inputTextRua').value = (conteudo.logradouro);
+            document.getElementById('inputTextBairro').value = (conteudo.bairro);
+            document.getElementById('inputTextCidade').value = (conteudo.localidade);
+            document.getElementById('inputTextEstado').value = (conteudo.uf);
+
+        } //end if.
+        else {
+            //CEP não Encontrado.
+            limpa_formulário_cep();
+            alert("CEP não encontrado.");
+        }
+    }
+
+    
+    $(document).ready(function () {
+        console.log("ConverteValor")
+        // Aplicar a máscara
+        $('#inputTextValor').mask('000.000.000,00', {reverse: true});
+
+        // Adicionar o prefixo "R$"
+        $('#inputTextValor').on('blur', function () {
+            if ($(this).val() !== '') {
+                $(this).val('R$ ' + $(this).val());
+            }
+        });
+
+        // Remover o prefixo ao focar (opcional)
+        $('#inputTextValor').on('focus', function () {
+            const currentValue = $(this).val();
+            if (currentValue.startsWith('R$ ')) {
+                $(this).val(currentValue.replace('R$ ', ''));
+            }
+        });
+
+        // Aplicar a máscara
+        $('#inputTextTxCondominio').mask('000.000.000,00', {reverse: true});
+
+        // Adicionar o prefixo "R$"
+        $('#inputTextTxCondominio').on('blur', function () {
+            if ($(this).val() !== '') {
+                $(this).val('R$ ' + $(this).val());
+            }
+        });
+
+        // Remover o prefixo ao focar (opcional)
+        $('#inputTextTxCondominio').on('focus', function () {
+            const currentValue = $(this).val();
+            if (currentValue.startsWith('R$ ')) {
+                $(this).val(currentValue.replace('R$ ', ''));
+            }
+        });
+    });
+    
+<!--end js imovel cadastro-->
+
+<!--init js listagem de imoveis-->
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Seleciona todas as células com a classe "moeda"
+        const moedaElements = document.querySelectorAll('.moeda');
+
+        // Função para formatar valores como moeda brasileira
+        function formatarParaReal(valor) {
+            if (!valor) return '';
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(valor);
+        }
+
+        // Aplica a formatação a cada elemento
+        moedaElements.forEach(el => {
+            const valor = parseFloat(el.textContent); // Converte o texto para número
+            if (!isNaN(valor)) {
+                el.textContent = formatarParaReal(valor); // Formata e substitui o conteúdo
+            }
+        });
+    });
+
+<!--end js listagem de imoveis-->
+
+<!--init js cadastro Locador-->
+
+    function pesquisacep(valor) {
+
+        //Nova variável "cep" somente com dígitos.
+        var cep = valor.replace(/\D/g, '');
+
+        //Verifica se campo cep possui valor informado.
+        if (cep != "") {
+
+            //Expressão regular para validar o CEP.
+            var validacep = /^[0-9]{8}$/;
+
+            //Valida o formato do CEP.
+            if (validacep.test(cep)) {
+
+                //Preenche os campos com "..." enquanto consulta webservice.
+                document.getElementById('inputTextRua').value = "...";
+                document.getElementById('inputTextBairro').value = "...";
+                document.getElementById('inputTextCidade').value = "...";
+                document.getElementById('inputTextEstado').value = "...";
+
+                //Cria um elemento javascript.
+                var script = document.createElement('script');
+
+                //Sincroniza com o callback.
+                script.src = 'https://viacep.com.br/ws/' + cep
+                    + '/json/?callback=meu_callback';
+
+                //Insere script no documento e carrega o conteúdo.
+                document.body.appendChild(script);
+
+            } //end if.
+            else {
+                //cep é inválido.
+                limpa_formulário_cep();
+                alert("Formato de CEP inválido.");
+            }
+        } //end if.
+        else {
+            //cep sem valor, limpa formulário.
+            limpa_formulário_cep();
+        }
+    };
+
+    function limpa_formulário_cep() {
+        //Limpa valores do formulário de cep.
+        document.getElementById('inputTextRua').value = "";
+        document.getElementById('inputTextBairro').value = "";
+        document.getElementById('inputTextCidade').value = "";
+        document.getElementById('inputTextEstado').value = "";
+
+    }
+
+    function meu_callback(conteudo) {
+        if (!("erro" in conteudo)) {
+            //Atualiza os campos com os valores.
+            document.getElementById('inputTextRua').value = (conteudo.logradouro);
+            document.getElementById('inputTextBairro').value = (conteudo.bairro);
+            document.getElementById('inputTextCidade').value = (conteudo.localidade);
+            document.getElementById('inputTextEstado').value = (conteudo.uf);
+
+        } //end if.
+        else {
+            //CEP não Encontrado.
+            limpa_formulário_cep();
+            alert("CEP não encontrado.");
+        }
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#inputCelular').mask('(00) 00000-0000');
+    });
+</script>
+<!--end js cadastro Locador-->
+
+<!--init js locatario cadastro-->
+<script>
+    function pesquisacep(valor) {
+
+        //Nova variável "cep" somente com dígitos.
+        var cep = valor.replace(/\D/g, '');
+
+        //Verifica se campo cep possui valor informado.
+        if (cep != "") {
+
+            //Expressão regular para validar o CEP.
+            var validacep = /^[0-9]{8}$/;
+
+            //Valida o formato do CEP.
+            if (validacep.test(cep)) {
+
+                //Preenche os campos com "..." enquanto consulta webservice.
+                document.getElementById('inputTextRua').value = "...";
+                document.getElementById('inputTextBairro').value = "...";
+                document.getElementById('inputTextCidade').value = "...";
+                document.getElementById('inputTextEstado').value = "...";
+
+                //Cria um elemento javascript.
+                var script = document.createElement('script');
+
+                //Sincroniza com o callback.
+                script.src = 'https://viacep.com.br/ws/' + cep
+                    + '/json/?callback=meu_callback';
+
+                //Insere script no documento e carrega o conteúdo.
+                document.body.appendChild(script);
+
+            } //end if.
+            else {
+                //cep é inválido.
+                limpa_formulário_cep();
+                alert("Formato de CEP inválido.");
+            }
+        } //end if.
+        else {
+            //cep sem valor, limpa formulário.
+            limpa_formulário_cep();
+        }
+    };
+
+    function limpa_formulário_cep() {
+        //Limpa valores do formulário de cep.
+        document.getElementById('inputTextRua').value = "";
+        document.getElementById('inputTextBairro').value = "";
+        document.getElementById('inputTextCidade').value = "";
+        document.getElementById('inputTextEstado').value = "";
+
+    }
+
+    function meu_callback(conteudo) {
+        if (!("erro" in conteudo)) {
+            //Atualiza os campos com os valores.
+            document.getElementById('inputTextRua').value = (conteudo.logradouro);
+            document.getElementById('inputTextBairro').value = (conteudo.bairro);
+            document.getElementById('inputTextCidade').value = (conteudo.localidade);
+            document.getElementById('inputTextEstado').value = (conteudo.uf);
+
+        } //end if.
+        else {
+            //CEP não Encontrado.
+            limpa_formulário_cep();
+            alert("CEP não encontrado.");
+        }
+    }
+
+
+
+    $(document).ready(function () {
+        $('#inputCelularPrincipal, #inputCelularWhatsApp').mask('(00) 00000-0000');
+    });
+
+<!--end js locatario cadastro-->
+
+<!--init js pagamento cadastro-->
+
+    <!-- carrega dados de parcelas ao clicar em uma linha da tabela de contratos-->
+    const tabelaLinhas = document.querySelectorAll('.datatable tbody tr');
+    const parcelasContratoCard = document.getElementById('parcelasContratoCard');
+
+    tabelaLinhas.forEach(linha => {
+        linha.addEventListener('click', () => {
+            limpaCampos();
+            const contratoId = linha.getAttribute('data-id');
+            if (contratoId) {
+                // Faz uma requisição AJAX para buscar os dados
+                fetch(`/pagamento/extrato-financeiro/${contratoId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erro ao carregar os dados do contrato.');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Exibe o card e preenche os dados
+                        parcelasContratoCard.classList.remove('d-none');
+                        preencherCard(data);
+                    })
+                    .catch(error => {
+                        console.error('Erro ao carregar os dados:', error);
+                    });
+            }
+        });
+
+        linha.addEventListener('click', () => {
+            console.log('Linha clicada:', linha);
+            const contratoId = linha.getAttribute('data-id');
+            console.log('Contrato ID:', contratoId);
+        });
+    });
+
+    /**
+     * Preenche o card com os dados retornados de parcelas e contrato
+     * @param {Object} data - Dados retornados do servidor
+     */
+    function preencherCard(data) {
+
+        const tituloContrato = document.getElementById('tituloContrato');
+        if (tituloContrato) {
+            tituloContrato.innerText = `Registrar Pagamento - Contrato N° ${data.contrato.id}`;
+        }
+        document.getElementById('locatarioNome').value = data.contrato.locatario.nome || '';
+        document.getElementById('locadorNome').value = data.contrato.locador.nome || '';
+        document.getElementById('locatarioCelular').value = data.contrato.locatario.celularWhatsApp || '';
+        document.getElementById('imovelNumero').value = data.contrato.imovel.numero || '';
+        document.getElementById('imovelTipo').value = data.contrato.imovel.tipo || '';
+
+        const tabelaParcelas = document.getElementById('tabelaParcelas');
+        const tbody = tabelaParcelas.querySelector('tbody');
+        tbody.innerHTML = ''; // Limpa as linhas anteriores
+        data.parcelas.sort((a, b) => a.parcela - b.parcela);
+        // Identifica o último pagamento recebido
+        const ultimaRecebida = data.parcelas
+            .filter(parcela => parcela.situacao === 'RECEBIDA')
+            .pop(); // Última parcela recebida
+
+        data.parcelas.forEach(item => {
+            const row = document.createElement('tr');
+            const isRecebida = item.situacao === 'RECEBIDA';
+            const situacaoParcela = item.situacao === 'RECEBIDA'
+                ? 'text-success' // Verde
+                : item.situacao === 'EM ATRASO'
+                    ? 'text-danger'  // Vermelho
+                    : 'text-primary'; // Azul para ABERTA e outras situações
+            row.innerHTML = `
+                <td>${item.parcela}</td>
+                <td>${item.dataVencimento.split('T')[0].split('-').reverse().join('/')}</td>
+                <td>${new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(item.valorAluguel)}</td>
+                <td class="${situacaoParcela}">${item.situacao}</td>
+                <td>${item.dataPagamento ? item.dataPagamento.split('T')[0].split('-').reverse().join('/') : '-'}</td>
+                <td>${item.codigoPagamento ? item.codigoPagamento : '-'}</td>
+                <td>
+                    <button
+                        class="btn btn-success btn-sm"
+                        onclick="pagarParcela(${data.contrato.id}, ${item.parcela})"
+                        ${isRecebida ? 'disabled' : ''}>
+                        <i class="bi bi-currency-dollar"></i> Pagar
+                    </button>
+                    <button
+                        class="btn btn-primary btn-sm"
+                        onclick="gerarRecibo(${item.codigoPagamento})"
+                        ${isRecebida ? '' : 'disabled'}>
+                        <i class="bi bi-receipt"></i> Recibo
+                    </button>
+                     <button
+                    class="btn btn-warning btn-sm"
+                    onclick="estornarPagamento(${item.codigoPagamento})"
+                    ${item === ultimaRecebida ? '' : 'disabled'}>
+                    <i class="bi bi-arrow-counterclockwise"></i> Estorno
+                </button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+<!-- funções para coluna de ações das parcelas -->
+
+
+    function gerarContrato(codigoContrato) {
+
+        fetch(`/report/contrato/aluguel/${codigoContrato}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao gerar o contrato.');
+                }
+
+                // Obtém o código do pagamento do cabeçalho da resposta
+                const codigoContrato = response.headers.get('codigoContrato');
+
+                // Armazena o código no botão do WhatsApp como um atributo de dados
+                const enviarWhatsappBtn = document.getElementById('enviarWhatsappBtn');
+                enviarWhatsappBtn.setAttribute('data-codigo-contrato', codigoContrato);
+
+                return response.blob();
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const pdfViewer = document.getElementById('pdfViewer');
+                pdfViewer.src = url;
+                abrirModal();
+            })
+            .catch(error => {
+                console.error('Erro ao gerar o contrato:', error);
+            });
+    }
+
+
+    function pagarParcela(contratoId, parcelaId) {
+        fetch(`/pagamento/dados-parcela/${contratoId}/parcela/${parcelaId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao processar o pagamento.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("dados recebidos da parcela: ", data)
+                preencherValorParcelaEJuros(data)
+            })
+            .catch(error => {
+                console.error('Erro ao pagar a parcela:', error);
+            });
+    }
+
+    function gerarRecibo(codigoPagamento) {
+
+        fetch(`/report/recibo/aluguel/${codigoPagamento}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao gerar o recibo.');
+                }
+
+                // Obtém o código do pagamento do cabeçalho da resposta
+                const codigoPagamento = response.headers.get('codigoPagamento');
+
+                // Armazena o código no botão do WhatsApp como um atributo de dados
+                const enviarWhatsappBtn = document.getElementById('enviarWhatsappBtn');
+                enviarWhatsappBtn.setAttribute('data-codigo-pagamento', codigoPagamento);
+
+                return response.blob();
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const pdfViewer = document.getElementById('pdfViewer');
+                pdfViewer.src = url;
+                abrirModal();
+            })
+            .catch(error => {
+                console.error('Erro ao gerar o recibo:', error);
+            });
+    }
+
+
+    /**
+     * Preenche o dadosParcela para pagamento com os dados retornados de parcelas
+     * @param {Object} data - Dados retornados do servidor
+     */
+    function preencherValorParcelaEJuros(data) {
+        document.getElementById('valorDevido').value = new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        }).format(data.valorAluguel) || 0.00;
+        document.getElementById('valorJuros').value = new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        }).format(data.juros) || 0.00;
+        document.getElementById('valorTaxa').value = new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        }).format(data.taxaCond) || 0.00;
+        document.getElementById('numeroParcela').value = data.parcela || '-';
+        document.getElementById('diasEmAtraso').value = data.diasEmAtraso || '-';
+        document.getElementById('dataVencimento').value = data.dataVencimento || 'dd/mm/aaaa';
+        document.getElementById('locadorPagamento').value = data.locadorPagamento.id;
+        document.getElementById('locatarioPagamento').value = data.locatarioPagamento.id;
+        document.getElementById('contratoPagamento').value = data.contratoPagamento.id;
+    }
+
+    function calculaValorTotalLiquido() {
+        // Função auxiliar para converter valores no formato brasileiro para números
+        function parseBrazilianCurrency(value) {
+            if (!value) return 0.0; // Valor vazio retorna 0
+            // Remove espaços, caracteres inválidos, e ajusta separadores
+            const cleanedValue = value.replace(/[^\d,.-]/g, '').replace(/\./g, '').replace(',', '.');
+            return parseFloat(cleanedValue); // Converte para número
+        }
+
+        // Obtém os valores preenchidos nos campos
+        const valorAluguel = parseBrazilianCurrency(document.getElementById('valorDevido').value);
+        const juros = parseBrazilianCurrency(document.getElementById('valorJuros').value);
+        const taxaCond = parseBrazilianCurrency(document.getElementById('valorTaxa').value);
+        const desconto = parseBrazilianCurrency(document.getElementById('valorDesconto').value);
+
+        // Calcula o valor total líquido
+        const valorTotalLiquido = (valorAluguel + juros + taxaCond) - desconto;
+
+        // Exibe o valor total líquido no campo apropriado, formatado
+        document.getElementById('valorPago').value = new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        }).format(valorTotalLiquido);
+    }
+
+
+    function limpaCampos() {
+
+        document.getElementById('locatarioNome').value = '';
+        document.getElementById('locatarioCelular').value = '';
+        document.getElementById('imovelNumero').value = '';
+        document.getElementById('imovelTipo').value = '';
+        document.getElementById('valorDevido').value = 'R$ 0,00';
+        document.getElementById('valorJuros').value = 'R$ 0,00';
+        document.getElementById('valorTaxa').value = 'R$ 0,00';
+        document.getElementById('numeroParcela').value = '-';
+        document.getElementById('diasEmAtraso').value = '-';
+        document.getElementById('locadorNome').value = '';
+        document.getElementById('dataVencimento').value = '';
+        document.getElementById('valorDesconto').value = 'R$ 0.00';
+        document.getElementById('valorPago').value = 'R$ 0.00';
+    }
+
+    function abrirModal() {
+        const modal = document.getElementById('pdfModal');
+        modal.style.display = 'block';
+    }
+
+    function fecharModal() {
+        const modal = document.getElementById('pdfModal');
+        modal.style.display = 'none';
+
+        // Limpa o conteúdo do iframe
+        const pdfViewer = document.getElementById('pdfViewer');
+        pdfViewer.src = '';
+    }
+
+    function enviarReciboViaWhatsapp() {
+        // Obtém o código do pagamento do atributo de dados
+        const enviarWhatsappBtn = document.getElementById('enviarWhatsappBtn');
+        const codigoPagamento = enviarWhatsappBtn.getAttribute('data-codigo-pagamento');
+        console.log("Código do pagamento (WhatsApp): ", codigoPagamento);
+
+        if (!codigoPagamento) {
+            alert('Código do pagamento não encontrado.');
+            return;
+        }
+
+        fetch(`/report/recibo/whats/aluguel/${codigoPagamento}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(errorMessage => {
+                        throw new Error(errorMessage);
+                    });
+                }
+                return response.text();
+            })
+            .then(successMessage => {
+                // Exibe o modal de sucesso
+                const modalSucessoEnvioWhats = new bootstrap.Modal(document.getElementById('modalSucessoEnvio'));
+                modalSucessoEnvioWhats.show();
+                console.log(successMessage);
+            })
+            .catch(error => {
+                // Exibe o modal de erro
+                const modalErroEnvioWhats = new bootstrap.Modal(document.getElementById('modalErroEnvio'));
+                modalErroEnvioWhats.show();
+                console.error(error.message);
+            });
+    }
+
+    function enviarContratoViaWhatsapp() {
+        // Obtém o código do pagamento do atributo de dados
+        const enviarWhatsappBtn = document.getElementById('enviarWhatsappBtn');
+        const codigoPagamento = enviarWhatsappBtn.getAttribute('data-codigo-contrato');
+        console.log("Código do Contrato (WhatsApp): ", codigoPagamento);
+
+        if (!codigoPagamento) {
+            alert('Código do Contrato não encontrado.');
+            return;
+        }
+
+        fetch(`/report/contrato/whats/aluguel/${codigoPagamento}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(errorMessage => {
+                        throw new Error(errorMessage);
+                    });
+                }
+                return response.text();
+            })
+            .then(successMessage => {
+                // Exibe o modal de sucesso
+                const modalSucessoEnvioWhats = new bootstrap.Modal(document.getElementById('modalSucessoEnvio'));
+                modalSucessoEnvioWhats.show();
+                console.log(successMessage);
+            })
+            .catch(error => {
+                // Exibe o modal de erro
+                const modalErroEnvioWhats = new bootstrap.Modal(document.getElementById('modalErroEnvio'));
+                modalErroEnvioWhats.show();
+                console.error(error.message);
+            });
+    }
+
+    document.querySelectorAll('#pagamentoForm button[type="submit"]').forEach(button => {
+        button.addEventListener('click', function (event) {
+            event.preventDefault(); // Evita o envio padrão do formulário
+
+            const pixResultDiv = document.getElementById('pixResult');
+            const qrCodeImage = document.getElementById('qrCodeImage');
+            const copiaColaTextArea = document.getElementById('copiaCola');
+
+            // Identifica qual botão foi clicado
+            const isRegistrarPagamento = this.id === 'gerarPagamentoBtn'; // Verifica se o botão clicado é o Registrar Pagamento
+            const actionValue = isRegistrarPagamento ? 'true' : 'false';
+
+            const form = document.getElementById('pagamentoForm'); // Pega o formulário pelo ID
+            const formData = new FormData(form);
+            // Define o valor de 'action' no FormData
+            formData.append('action', actionValue);
+
+            // Verificação dos dados no FormData
+            console.log("Dados enviados:");
+            for (let [key, value] of formData.entries()) {
+                console.log(`${key}: ${value}`);
+            }
+
+            // Adiciona o valor ao caminho da URL do formulário
+            const actionUrl = `${form.action}`;
+
+            fetch(actionUrl, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao salvar pagamento.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // Exibe o modal de sucesso
+                        if (data.isAction) {
+                            const modal = new bootstrap.Modal(document.getElementById('modalSucesso'));
+                            modal.show();
+                        } else {
+                            // Exibe o resultado no DOM-->
+                            console.log("mostra QrCOde")
+                            pixResultDiv.style.display = 'block';
+                            qrCodeImage.src = `data:image/png;base64,${data.qrCode}`; // Supõe que o QR Code é retornado como Base64
+                            copiaColaTextArea.value = data.copiaCola; // Exibe o código "Copia e Cola"
+                            pixKeyValue.textContent = `Valor da Chave PIX: ` + new Intl.NumberFormat('pt-BR', {
+                                style: 'currency',
+                                currency: 'BRL'
+                            }).format(data.valorPix);
+                            iniciarContadorPix();
+                        }
+
+                        // Atualiza o card inferior com os novos dados do contrato
+                        carregarCardInferior(data.contratoId);
+                    } else {
+                        const modal = new bootstrap.Modal(document.getElementById('modalInsucesso'));
+                        modal.show();
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    const modal = new bootstrap.Modal(document.getElementById('modalInsucesso'));
+                    modal.show();
+                });
+        });
+    });
+
+    function carregarCardInferior(contratoId) {
+        fetch(`/pagamento/extrato-financeiro/${contratoId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao carregar dados do contrato.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                limpaCampos();
+                preencherCard(data); // Chama sua função existente para atualizar o card
+            })
+            .catch(error => {
+                console.error('Erro ao carregar card inferior:', error);
+            });
+    }
+
+<!-- copiar e colar chave copia e cola -->
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const copyButton = document.getElementById('copyButton');
+        const copiaColaTextArea = document.getElementById('copiaCola');
+
+        // Evento de clique no botão de copiar
+        copyButton.addEventListener('click', () => {
+            // Seleciona e copia o conteúdo do textarea
+            copiaColaTextArea.select();
+            document.execCommand('copy'); // Método para copiar o texto selecionado
+
+            // Alerta ou mensagem de feedback para o usuário
+            alert('Código Copia e Cola copiado com sucesso!');
+        });
+    });
+
+
+    // Formata o valor enquanto o usuário digita
+    function mascaraMoeda(element) {
+        let valor = element.value;
+
+        // Remove tudo que não é número ou vírgula
+        valor = valor.replace(/\D/g, "");
+
+        // Adiciona vírgula para valores decimais
+        valor = (valor / 100).toFixed(2) + "";
+        valor = valor.replace(".", ",");
+
+        // Adiciona separadores de milhar
+        valor = valor.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+        element.value = "R$ " + valor;
+    }
+
+    // Corrige o formato ao sair do campo (blur)
+    function formataMoedaFinal(element) {
+        let valor = element.value;
+
+        // Remove o prefixo "R$" e espaços
+        valor = valor.replace("R$", "").trim();
+
+        // Corrige o formato final (adicionando moeda se necessário)
+        element.value = "R$ " + valor;
+    }
+
+
+    function estornarPagamento(codigoPagamento) {
+        // Exibe o modal de confirmação
+        const modalConfirmacao = new bootstrap.Modal(document.getElementById('modalConfirmacao'));
+        modalConfirmacao.show();
+
+        // Botão de confirmação no modal
+        const btnConfirmar = document.getElementById('btnConfirmarEstorno');
+        btnConfirmar.onclick = function () {
+            fetch(`/pagamento/estornar/${codigoPagamento}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao processar o estorno.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // Exibe o modal de sucesso no estorno
+                        const modalSucesso = new bootstrap.Modal(document.getElementById('modalSucessoEstorno'));
+                        modalSucesso.show();
+
+                        // Atualiza os dados do card inferior
+                        carregarCardInferior(data.contratoId);
+                    } else {
+                        // Exibe o modal de insucesso no estorno
+                        const modalInsucesso = new bootstrap.Modal(document.getElementById('modalInsucessoEstorno'));
+                        modalInsucesso.show();
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro no estorno:', error);
+
+                    // Exibe o modal de insucesso no estorno
+                    const modalInsucesso = new bootstrap.Modal(document.getElementById('modalInsucessoEstorno'));
+                    modalInsucesso.show();
+                })
+                .finally(() => {
+                    // Fecha o modal de confirmação, caso esteja aberto
+                    modalConfirmacao.hide();
+                });
+        };
+    }
+
+<!--Botão de gerar chave pix, mostrar ou não mostrar-->
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const meioPgtoSelect = document.getElementById('formaPgto'); // Seletor de pagamento
+        const gerarPixBtn = document.getElementById('gerarPixBtn'); // Botão Gerar PIX
+
+        meioPgtoSelect.addEventListener('change', () => {
+            if (meioPgtoSelect.value === 'pix') {
+                gerarPixBtn.style.display = 'inline-block'; // Exibe o botão
+            } else {
+                gerarPixBtn.style.display = 'none'; // Oculta o botão
+            }
+        });
+    });
+
+
+<!--contador de tempo chave pix-->
+
+    let intervaloContadorPix; // Variável global para armazenar o intervalo do contador
+
+    function iniciarContadorPix() {
+        const contadorElement = document.getElementById("contadorPix");
+
+        if (!contadorElement) {
+            console.warn("⚠️ Elemento do contador não encontrado!");
+            return;
+        }
+
+        // Para qualquer contador anterior que ainda esteja rodando
+        if (intervaloContadorPix) {
+            clearInterval(intervaloContadorPix);
+        }
+
+        // Define o tempo de expiração (30 minutos a partir de agora)
+        const agora = new Date();
+        const expiraEm = new Date(agora.getTime() + 30 * 60000); // 30 minutos em milissegundos
+
+        function atualizarContador() {
+            const agora = new Date();
+            const diferenca = expiraEm - agora;
+
+            if (diferenca <= 0) {
+                contadorElement.innerHTML = "⏳ Chave pix expirada!";
+                clearInterval(intervalo);
+                return;
+            }
+
+            const minutos = Math.floor(diferenca / (1000 * 60));
+            const segundos = Math.floor((diferenca % (1000 * 60)) / 1000);
+
+            contadorElement.innerHTML = `⏳ Expira em: ${minutos}m ${segundos}s`;
+        }
+
+        // Atualiza o contador a cada segundo
+        // Inicia o contador e armazena o intervalo globalmente para resetar quando necessário
+        intervaloContadorPix = setInterval(atualizarContador, 1000);
+        atualizarContador(); // Chamada inicial para exibir imediatamente
+    }
+<!-- end js pagamento cadastro-->
+
+    function mostrarAguarde() {
+        // Exibe o modal de aguarde
+        let modalAguarde = new bootstrap.Modal(document.getElementById('modalAguarde'));
+        modalAguarde.show();
+
+        // Simula um carregamento antes de abrir o modal do recibo (substitua por sua lógica real)
+        setTimeout(() => {
+            let modalRecibo = new bootstrap.Modal(document.getElementById('pdfViewer'));
+            modalRecibo.show();
+        }, 2000); // Tempo de espera (ajuste conforme necessário)
+    }
+
+    // Fecha o modal de "Aguarde" quando o modal de recibo abrir
+    document.getElementById('pdfViewer').addEventListener('shown.bs.modal', function () {
+        let modalAguarde = bootstrap.Modal.getInstance(document.getElementById('modalAguarde'));
+        if (modalAguarde) {
+            modalAguarde.hide();
+        }
+    });
+</script>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+</head>
+
+<body>
+
+<main id="main" class="main" layout:fragment="corpo">
+
+    <div class="pagetitle">
+        <h1>Cadastro de Usuário</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <li class="breadcrumb-item">Usuários</li>
+                <li class="breadcrumb-item active">Cadastrar</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Novo Usuário</h5>
+                        <div th:replace="fragments/alert"></div>
+
+                        <!-- Formulário de Cadastro -->
+                        <form id="formCadastroUsuario" th:action="${novoUsuario.id == null} ? @{/usuario/salvar} : @{/usuario/editar}" th:object="${novoUsuario}" method="post">
+
+                            <!-- Nome Completo -->
+                            <div class="row mb-3">
+                                <label for="nome" class="col-sm-3 col-form-label">Nome Completo</label>
+                                <div class="col-sm-9">
+                                    <input id="nome" type="text" th:field="*{nome}"
+                                           placeholder="Digite seu nome completo"
+                                           class="form-control" required>
+                                </div>
+                            </div>
+
+                            <!-- E-mail -->
+                            <div class="row mb-3">
+                                <label for="email" class="col-sm-3 col-form-label">E-mail</label>
+                                <div class="col-sm-9">
+                                    <input id="email" type="email" th:field="*{email}" placeholder="Digite seu e-mail"
+                                           class="form-control" required>
+                                </div>
+                            </div>
+
+                            <!-- Login -->
+                            <div class="row mb-3">
+                                <label for="login" class="col-sm-3 col-form-label">Login</label>
+                                <div class="col-sm-9">
+                                    <input id="login" type="text" th:field="*{userName}" placeholder="Escolha um login"
+                                           class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <!-- Tipo de Usuário -->
+                                <label for="tipoDeUsuario" class="col-sm-3 col-form-label">Tipo de Usuário</label>
+                                <div class="col-sm-9">
+                                    <select id="tipoDeUsuario" class="form-control" th:field="*{tipoDeUsuario}">
+                                        <option value="">Selecione</option>
+                                        <option th:each="d : ${T(br.com.alugamais.web.enums.TipoDeUsuario).values()}"
+                                                th:value="${d}"
+                                                th:text="${d}">Administrador
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Ativo (Switch) -->
+                            <div class="row mb-3">
+                                <label for="toggle" class="col-sm-3 col-form-label">Usuário Ativo</label>
+                                <div class="col-sm-9">
+                                    <div class="switch">
+                                        <input type="checkbox" id="toggle" th:checked="*{ativo}" name="ativo"/>
+                                        <label for="toggle" class="slider"></label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <input type="hidden" id="id" th:field="*{id}"/>
+
+                            <!-- Botão de Envio -->
+                            <div class="row mb-3 mt-4 text-center">
+                                <div class="col-sm-12">
+                                    <button type="submit" class="btn btn-primary">Cadastrar Usuário</button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+
+</body>
+</html>

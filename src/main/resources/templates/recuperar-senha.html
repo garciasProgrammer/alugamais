@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Recuperação de Senha</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Bootstrap CSS -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/css/style.css" rel="stylesheet">
+</head>
+
+<body class="d-flex align-items-center justify-content-center vh-100">
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-5 text-center">
+            <!-- Logo -->
+            <img src="/assets/img/logo.png" alt="Logo" height="120" class="mb-4">
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-5">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h3 class="text-center mb-3 mt-5 text-success">Recuperação de Senha</h3>
+                    <p class="text-muted text-center">
+                        Informe seu e-mail para receber uma nova senha. Você pode trocá-la em seu perfil assim que acessar novamente o sistema AlugaMais+.
+                    </p>
+
+                    <div th:replace="fragments/alert"></div>
+
+                    <!-- Formulário de Recuperação de Senha -->
+                    <form id="formRecuperacaoSenha" th:action="@{/usuario/recuperar-senha}" method="POST">
+
+                        <!-- Campo E-mail -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label">E-mail</label>
+                            <input id="email" type="email"  name="email" class="form-control"
+                                   placeholder="Digite seu e-mail" required>
+                        </div>
+
+                        <!-- Botão de Envio -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Recuperar Senha</button>
+                        </div>
+
+                        <!-- Link para Login -->
+                        <div class="text-center mt-3">
+                            <a href="/login" class="text-decoration-none">Voltar para o login</a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

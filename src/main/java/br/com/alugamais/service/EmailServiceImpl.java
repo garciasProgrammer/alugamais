@@ -23,7 +23,9 @@ public class EmailServiceImpl implements EmailService {
     EmailDao dao;
 
 
+    @Autowired
     private JavaMailSender emailSender;
+
     @Autowired
     private ResourceLoader resourceLoader;
 

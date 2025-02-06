@@ -5,24 +5,31 @@ import br.com.alugamais.dto.AlterarSenhaDTO;
 import br.com.alugamais.dto.UserInfoDTO;
 import br.com.alugamais.service.EmailService;
 import br.com.alugamais.service.UsuarioService;
+import br.com.alugamais.web.config.security.CustomUserDetails;
 import br.com.alugamais.web.domain.Email;
 import br.com.alugamais.web.domain.Usuario;
 import br.com.alugamais.web.enums.StatusEmail;
 import br.com.alugamais.web.util.CriptpgrafarSenhas;
 import br.com.alugamais.web.util.GeradorDeSenhaAleatoria;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
-@RequestMapping("/usuarios")
+@RequestMapping("/usuario")
 public class UsuarioController {
 
     @Autowired
@@ -36,14 +43,43 @@ public class UsuarioController {
     @Autowired
     EmailService emailService;
 
-    @GetMapping("/cadastrar")
-    public String cadastrar(Usuario usuario) {
+    @GetMapping("/perfil")
+    public String perfil(Usuario usuario, ModelMap model) {
 
+        String usuarioLogado = CustomUserDetails.getUsuarioLogado();
+        Usuario usuarioSistema = usuarioService.buscarPorUserName(usuarioLogado);
+        model.addAttribute("usuario", usuarioSistema);
+
+        AlterarSenhaDTO alterarSenhaDTO = new AlterarSenhaDTO();
+        alterarSenhaDTO.setId(usuarioSistema.getId());
+        alterarSenhaDTO.setNome(usuarioSistema.getNome());
+        alterarSenhaDTO.setUserName(usuarioSistema.getUserName());
+
+        model.addAttribute("alterarSenhaDTO", alterarSenhaDTO);
+
+
+        return "usuario/perfil";
+    }
+
+
+    @GetMapping("/cadastrar")
+    public String cadastrar(ModelMap model) {
+        model.addAttribute("novoUsuario", new Usuario());
         return "usuario/cadastro";
     }
 
     @PostMapping("/salvar")
-    public String salvar(@Valid @ModelAttribute("usuario") Usuario usuario, BindingResult result, RedirectAttributes attr) {
+    public String salvar(@Valid @ModelAttribute("novoUsuario") Usuario usuario, BindingResult result, RedirectAttributes attr) {
+
+        List<Usuario> validateEmail = usuarioService.buscarTodos();
+
+        for (Usuario user : validateEmail) {
+            if(user.getEmail().equals(usuario.getEmail())){
+                attr.addFlashAttribute("warning", "Este e-mail: "+ usuario.getEmail()+" já está em uso. Informe um novo e-mail.");
+
+                return "redirect:/usuario/cadastrar";
+            }
+        }
 
         String senhaInicial = GeradorDeSenhaAleatoria.senhaInicial();
         usuario.setPassword(cripotografiaDeSenha.encodeSenha(senhaInicial));
@@ -57,7 +93,7 @@ public class UsuarioController {
         enviaEmailComSenhaInicial(usuario.getEmail(), usuario.getNome().toUpperCase(), usuario.getUserName(), senhaInicial);
         attr.addFlashAttribute("success", "Usuário inserido com sucesso. Um E-mail com a sua senha inicial foi enviado para: " + usuario.getEmail());
 
-        return "redirect:/usuarios/cadastrar";
+        return "redirect:/usuario/cadastrar";
     }
 
     @GetMapping("/listar")
@@ -69,12 +105,13 @@ public class UsuarioController {
 
     @GetMapping("/editar/{id}")
     public String preEditar(@PathVariable("id") Long id, ModelMap model) {
-        model.addAttribute("usuario", usuarioService.buscarPorId(id));
+        Usuario novoUsuario = usuarioService.buscarPorId(id);
+        model.addAttribute("novoUsuario", novoUsuario);
         return "usuario/cadastro";
     }
 
     @PostMapping("/editar")
-    public String editar(@ModelAttribute("usuario") Usuario usuario, BindingResult result, RedirectAttributes attr) {
+    public String editar(@ModelAttribute("novoUsuario") Usuario usuario, BindingResult result, RedirectAttributes attr) {
 
         if (result.hasErrors()) {
             return "usuario/cadastro";
@@ -88,7 +125,25 @@ public class UsuarioController {
 
         usuarioService.editar(usuario);
         attr.addFlashAttribute("success", "Usuário editado com sucesso.");
-        return "redirect:/usuarios/cadastrar";
+        return "redirect:/usuario/cadastrar";
+    }
+
+    @PostMapping("/editar-perfil")
+    public String editarUsuarioPerfil(@ModelAttribute("usuario") Usuario usuario, BindingResult result, RedirectAttributes attr) {
+
+        if (result.hasErrors()) {
+            return "usuario/perfil";
+        }
+
+        Usuario usuarioExiste = usuarioService.buscarPorId(usuario.getId());
+
+        if (usuario.getPassword() == null || usuario.getPassword().isEmpty()) {
+            usuario.setPassword(usuarioExiste.getPassword());
+        }
+
+        usuarioService.editar(usuario);
+        attr.addFlashAttribute("success", "Perfil - Usuário editado com sucesso.");
+        return "redirect:/usuario/perfil";
     }
 
     @GetMapping("/excluir/{id}")
@@ -100,7 +155,7 @@ public class UsuarioController {
             usuarioService.excluir(id);
             attr.addFlashAttribute("success", "Usuário removido com sucesso.");
         }
-        return "redirect:/usuarios/listar";
+        return "redirect:/usuario/listar";
     }
 
 
@@ -175,26 +230,26 @@ public class UsuarioController {
     public String editarSenha(@ModelAttribute("alterarSenha") AlterarSenhaDTO alterarSenhaDTO, BindingResult result, RedirectAttributes attr) {
 
         if (result.hasErrors()) {
-            return "usuario/cadastro";
+            return "usuario/perfil";
         }
 
 
         Usuario usuarioExiste = usuarioService.buscarPorId(alterarSenhaDTO.getId());
         if (!passwordEncoder.matches(alterarSenhaDTO.getSenhaAtual(), usuarioExiste.getPassword())) {
             attr.addFlashAttribute("fail", "Senha atual não confere.");
-            return "redirect:/usuarios/senha/" + alterarSenhaDTO.getId();
+            return "redirect:/usuario/perfil/";
         }
         if (!alterarSenhaDTO.getNovaSenha().equals(alterarSenhaDTO.getConfirmaSenha())) {
-            attr.addFlashAttribute("fail", "A Nova é senha não é igual a confirmação.");
-            return "redirect:/usuarios/senha/" + alterarSenhaDTO.getId();
+            attr.addFlashAttribute("fail", "A Nova senha não é igual a confirmação.");
+            return "redirect:/usuario/perfil/";
         }
 
         usuarioService.updatePassword(alterarSenhaDTO.getId(), cripotografiaDeSenha.encodeSenha(alterarSenhaDTO.getNovaSenha()));
-        attr.addFlashAttribute("success", "Usuário editado com sucesso.");
-        return "redirect:/usuarios/cadastrar";
+        attr.addFlashAttribute("success", "Senha de perfil - usuário alterado com sucesso.");
+        return "redirect:/usuario/perfil";
     }
 
-    @GetMapping("/recuperar-senha")
+    @PostMapping("/recuperar-senha")
     public String recuperarSenha(@RequestParam("email") String email, RedirectAttributes attr) {
 
         Usuario usuario = usuarioService.findByEmail(email);
@@ -211,5 +266,51 @@ public class UsuarioController {
 
         return "redirect:/recuperar-senha";
     }
+
+    @PostMapping("/upload-imagem")
+    public String uploadImagem(@RequestParam("imagem") MultipartFile imagem, @RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
+        try {
+            Usuario usuario = usuarioService.buscarPorId(id);
+
+            if (usuario != null && !imagem.isEmpty()) {
+                byte[] bytes = imagem.getBytes();
+                usuario.setImagem(bytes); // Salvando a imagem no banco como BLOB
+
+                usuarioService.editar(usuario);
+                redirectAttributes.addFlashAttribute("mensagem", "Imagem atualizada com sucesso!");
+            }
+        } catch (IOException e) {
+            redirectAttributes.addFlashAttribute("erro", "Erro ao fazer upload da imagem.");
+        }
+
+        return "redirect:/usuario/perfil";
+    }
+
+    @PostMapping("/remover-imagem")
+    public String removerImagem(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
+        Usuario usuario = usuarioService.buscarPorId(id);
+
+        if (usuario != null) {
+            usuario.setImagem(null); // Remove a imagem
+            usuarioService.editar(usuario);
+            redirectAttributes.addFlashAttribute("mensagem", "Imagem removida com sucesso!");
+        }
+
+        return "redirect:/usuario/perfil";
+    }
+
+    @GetMapping("/imagem/download/{id}")
+    public ResponseEntity<byte[]> exibirImagem(@PathVariable Long id) {
+        Usuario usuario = usuarioService.buscarPorId(id);
+
+        if (usuario == null || usuario.getImagem() == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG) // Ou IMAGE_PNG conforme o tipo
+                .body(usuario.getImagem());
+    }
+
 
 }

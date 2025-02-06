@@ -53,7 +53,7 @@ public class HomeController {
         BigDecimal valorMensal = (BigDecimal) pagamentoService.getPagamentosAnoMes();
         List<Pagamento> listPgtos =  pagamentoService.getPagamentosRecebidos();
         List<AtividadeRecente> atividades = atividadeRecenteService.getAtividades();
-        Usuario usuario = usuarioService.buscarPorUserName(CustomUserDetails.getUsuarioLogado());
+
 
         model.addAttribute("imovelAtivo", ativos);
         model.addAttribute("porcentagemAtivo", String.format("%.2f%%", porcentagem));
@@ -63,8 +63,6 @@ public class HomeController {
         model.addAttribute("dataHora", LocalDateTime.now());
         model.addAttribute("atividades", atividades);
         model.addAttribute("usuarioLogado", CustomUserDetails.getUsuarioLogado().toUpperCase());
-        model.addAttribute("usuarioNome", CustomUserDetails.getNomeUsuarioLogado().toUpperCase());
-        model.addAttribute("tipoUsuario", usuario.getTipoDeUsuario().toString());
 
         return "home";
     }

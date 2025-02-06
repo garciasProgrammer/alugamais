@@ -110,6 +110,12 @@ public class ReportController {
         return gerarReciboAluguel(codigoPagamento);
     }
 
+    @GetMapping("/contrato/aluguel/{codigoContrato}")
+    @ResponseBody
+    public ResponseEntity<byte[]> getReportContratoALuguel(@PathVariable("codigoContrato") String codigoContrato) throws Exception {
+        return gerarContratoAluguel(codigoContrato);
+    }
+
     @GetMapping("/recibo/whats/aluguel/{codigoPagamento}")
     @ResponseBody
     public ResponseEntity<String> getReportReciboWhatsDiaria(@PathVariable("codigoPagamento") String codigoPagamento) throws Exception {
@@ -203,6 +209,33 @@ public class ReportController {
         // headers.setContentDispositionFormData("filename", "Recibo-Deposito-450.pdf");
         // Adiciona o código do pagamento como um cabeçalho personalizado
         headers.add("codigoPagamento", String.valueOf(pagamento.getId()));
+        return new ResponseEntity<>(reportContent, headers, HttpStatus.OK);
+    }
+
+    public ResponseEntity<byte[]> gerarContratoAluguel(String codigoContrato) throws Exception {
+        String tenant = TenantContext.getCurrentTenant();
+        InputStream jrxmlInputStream = null;
+        Resource jrxmlResource;
+        Map<String, Object> paramValue = new HashMap<>();
+        //pega os dados do pgto
+        Contrato contrato = contratoService.buscarPorId(Long.parseLong(codigoContrato));
+
+
+        jrxmlResource = resourceLoader.getResource("classpath:/reports/" + tenant + "/ContratoAluguel.jrxml");
+        jrxmlInputStream = jrxmlResource.getInputStream();
+        paramValue.put(JRParameter.REPORT_LOCALE, new Locale("pt", "BR"));
+
+        paramValue.put("codigoContrato", String.valueOf(contrato.getId()));
+        paramValue.put("valorPagoPorExtenso", String.valueOf(new ConverteValorParaExtenso(contrato.getValorAluguel())));
+        paramValue.put(JRParameter.REPORT_LOCALE, new Locale("pt", "BR"));
+        byte[] reportContent = reportService.generateReport(jrxmlInputStream, paramValue);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        // Para forçar o download do PDF em vez de exibi-lo no navegador, descomente a linha abaixo
+        // headers.setContentDispositionFormData("filename", "Recibo-Deposito-450.pdf");
+        // Adiciona o código do pagamento como um cabeçalho personalizado
+        headers.add("codigoPagamento", String.valueOf(contrato.getId()));
         return new ResponseEntity<>(reportContent, headers, HttpStatus.OK);
     }
 

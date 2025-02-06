@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<nav th:fragment="nav-sidebar">
+    <!-- ======= Sidebar ======= -->
+    <aside id="sidebar" class="sidebar">
+
+        <ul class="sidebar-nav" id="sidebar-nav">
+
+            <li class="nav-item">
+                <a class="nav-link " href="/home">
+                    <i class="bi bi-grid"></i>
+                    <span>Principal</span>
+                </a>
+            </li><!-- End Dashboard Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#cliente-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-people"></i><span>Clientes</span><i
+                        class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="cliente-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="/locatario/cadastrar">
+                            <i class="bi bi-circle"></i><span>Cadastro Cliente</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/locatario/listar">
+                            <i class="bi bi-circle"></i><span>Listar Cliente</span>
+                        </a>
+                    </li>
+                </ul>
+                <a class="nav-link collapsed" data-bs-target="#imoveis-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-house-add"></i><span>Imóvel</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="imoveis-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="/imovel/cadastrar">
+                            <i class="bi bi-circle"></i><span>Cadastro Imoveis</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/imovel/listar">
+                            <i class="bi bi-circle"></i><span>Listar Imoveis</span>
+                        </a>
+                    </li>
+                </ul>
+                <a class="nav-link collapsed" data-bs-target="#locador-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-person-plus"></i><span>Locador</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="locador-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="/locador/cadastrar">
+                            <i class="bi bi-circle"></i><span>Cadastro Locador</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/locador/listar">
+                            <i class="bi bi-circle"></i><span>Listar Locador</span>
+                        </a>
+                    </li>
+                </ul>
+                <a class="nav-link collapsed" data-bs-target="#contrato-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-file-earmark-text"></i><span>Contrato</span><i
+                        class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="contrato-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="/contrato/cadastrar">
+                            <i class="bi bi-circle"></i><span>Cadastro Contrato</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/contrato/listar">
+                            <i class="bi bi-circle"></i><span>Listar Contrato</span>
+                        </a>
+                    </li>
+                </ul>
+                <a class="nav-link collapsed" data-bs-target="#pagamentos-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-currency-dollar"></i><span>Pagamentos</span><i
+                        class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="pagamentos-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="/pagamento/cadastrar">
+                            <i class="bi bi-circle"></i><span>Cadastro Pagamento</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/pagamento/listar">
+                            <i class="bi bi-circle"></i><span>Listar Pagamento</span>
+                        </a>
+                    </li>
+                </ul>
+                <a class="nav-link collapsed" data-bs-target="#usuarios-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-person"></i><span>Usuário</span><i
+                        class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="usuarios-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="/usuario/cadastrar">
+                            <i class="bi bi-circle"></i><span>Cadastro Usuário</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/usuario/listar">
+                            <i class="bi bi-circle"></i><span>Listar Usuários</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <!-- End Blank Page Nav -->
+
+        </ul>
+        </ul>
+    </aside>
+    <!-- End Sidebar-->
+</nav>
+</body>
+</html>

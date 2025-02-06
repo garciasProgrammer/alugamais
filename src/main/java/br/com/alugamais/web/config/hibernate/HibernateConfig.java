@@ -35,7 +35,7 @@ public class HibernateConfig {
 
         // Criar e adicionar DataSources para cada tenant
 
-        dataSourcesMap.put("residencial-sofia", createDataSourceForTenant("jdbc:mysql://localhost:3306/wwflee_residencial_sofia?createDatabaseIfNotExist=true", "root", ""));
+        dataSourcesMap.put("residencial-sofia", createDataSourceForTenant("jdbc:mysql://localhost:3306/wwflee_residencial_sofia?createDatabaseIfNotExist=true", "wwflee_admin", "@Java123!"));
 
         return new TenantConnectionProvider(dataSourcesMap);
     }
@@ -56,7 +56,7 @@ public class HibernateConfig {
         em.getJpaPropertyMap().put(org.hibernate.cfg.Environment.DIALECT, "org.hibernate.dialect.MySQL8Dialect"); //dialeto para MySQL
         em.getJpaPropertyMap().put(org.hibernate.cfg.Environment.SHOW_SQL, "false");
         em.getJpaPropertyMap().put(org.hibernate.cfg.Environment.FORMAT_SQL, "false");
-        em.getJpaPropertyMap().put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, "update");
+        em.getJpaPropertyMap().put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, "none");
 
         return em;
     }

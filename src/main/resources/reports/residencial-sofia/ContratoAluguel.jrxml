@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.0.final using JasperReports Library version 6.21.0-4f56c4f36cd19e17675219a9ac4692d5f0f13b06  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ContratoAluguel" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7332d799-f7c2-4ac4-aa93-a7e1caf81009">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="residencial_sofia"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="codigoContrato" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select  lct.nome as cliente, 
+lct.cpf cliente_cpf, 
+lct.profissao as cliente_prof,
+lct.nacionalidade as cliente_nacion,
+e.bairro as cliente_bai,
+e.cep as cliente_cep, 
+e.cidade as cliente_cidade,
+lct.rg as cliente_rg,
+e.logradouro as cliente_lograd,
+e.numero as cliente_num,
+e.uf as cliente_uf,
+im.numero as imovel_num,
+im.descricao as imovel_descricao,
+con.valorAluguel,
+con.data_assinatura,
+con.meses,
+con.data_inicial,
+con.data_inicial 
+from contrato con left join locatario lct on con.cliente_id_fk = lct.id 
+left join imovel im on con.imovel_id_fk = im.id 
+left join locador lc on con.locador_id_fk = lc.id 
+left join endereco e on lct.endereco_id_fk = e.id 
+where con.id = $P{codigoContrato}]]>
+	</queryString>
+	<field name="cliente" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome"/>
+		<property name="com.jaspersoft.studio.field.label" value="cliente"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locatario"/>
+	</field>
+	<field name="cliente_cpf" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cpf"/>
+		<property name="com.jaspersoft.studio.field.label" value="cliente_cpf"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locatario"/>
+	</field>
+	<field name="cliente_prof" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="profissao"/>
+		<property name="com.jaspersoft.studio.field.label" value="cliente_prof"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locatario"/>
+	</field>
+	<field name="cliente_nacion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nacionalidade"/>
+		<property name="com.jaspersoft.studio.field.label" value="cliente_nacion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locatario"/>
+	</field>
+	<field name="cliente_bai" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bairro"/>
+		<property name="com.jaspersoft.studio.field.label" value="cliente_bai"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="endereco"/>
+	</field>
+	<field name="cliente_cep" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cep"/>
+		<property name="com.jaspersoft.studio.field.label" value="cliente_cep"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="endereco"/>
+	</field>
+	<field name="cliente_cidade" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cidade"/>
+		<property name="com.jaspersoft.studio.field.label" value="cliente_cidade"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="endereco"/>
+	</field>
+	<field name="cliente_rg" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="rg"/>
+		<property name="com.jaspersoft.studio.field.label" value="cliente_rg"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="locatario"/>
+	</field>
+	<field name="cliente_lograd" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="logradouro"/>
+		<property name="com.jaspersoft.studio.field.label" value="cliente_lograd"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="endereco"/>
+	</field>
+	<field name="cliente_num" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="numero"/>
+		<property name="com.jaspersoft.studio.field.label" value="cliente_num"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="endereco"/>
+	</field>
+	<field name="cliente_uf" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="uf"/>
+		<property name="com.jaspersoft.studio.field.label" value="cliente_uf"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="endereco"/>
+	</field>
+	<field name="imovel_num" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numero"/>
+		<property name="com.jaspersoft.studio.field.label" value="imovel_num"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="imovel"/>
+	</field>
+	<field name="imovel_descricao" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="descricao"/>
+		<property name="com.jaspersoft.studio.field.label" value="imovel_descricao"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="imovel"/>
+	</field>
+	<field name="valorAluguel" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="valorAluguel"/>
+		<property name="com.jaspersoft.studio.field.label" value="valorAluguel"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
+	</field>
+	<field name="data_assinatura" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="data_assinatura"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_assinatura"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
+	</field>
+	<field name="meses" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="meses"/>
+		<property name="com.jaspersoft.studio.field.label" value="meses"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
+	</field>
+	<field name="data_inicial" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="data_inicial"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_inicial"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
+	</field>
+	<field name="COLUMN_18" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="data_inicial"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_inicial"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
+	</field>
+	<title>
+		<band height="58" splitType="Stretch">
+			<staticText>
+				<reportElement x="7" y="10" width="540" height="30" uuid="8a5bb5c6-84a7-4727-b3b9-9cc2fd9eb3ca"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONTRATO DE LOCAÇÃO RESIDENCIAL]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="17"/>
+	</pageHeader>
+	<detail>
+		<band height="538" splitType="Stretch">
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="ElementGroupHeight" x="2" y="0" width="550" height="125" uuid="e4abcf6a-13dc-435f-a8b8-4003e74e4bda"/>
+				<textElement textAlignment="Justified" markup="styled">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<style isBold=\"true\" fontName=\"Times New Roman\">EDIRLEI DE SOUZA PORTELA</style>, brasileiro, solteiro, empresário, portador do RG nº 16514378 SSP/AM e inscrito no CPF/MF sob nº 519.890.692-15, residente e domiciliado à Rua Maria mansour, número 345, bairro: japim, Manaus/AM, doravante denominado <style isBold=\"true\" fontName=\"Times New Roman\">LOCADOR</style>.\n\n" +
+
+"<style isBold=\"true\" fontName=\"Times New Roman\">"+$F{cliente}.toUpperCase()+"</style>, "+$F{cliente_nacion}+", profissão "+$F{cliente_prof}+", portador do RG nº "+$F{cliente_rg}+" e inscrito no CPF/MF sob o nº "+$F{cliente_cpf}+", doravante denominado <style isBold=\"true\" fontName=\"Times New Roman\">LOCATÁRIO</style>, celebram o presente contrato de locação residencial, com as cláusulas e condições seguintes:\n\n" +
+
+"<style isBold=\"true\" fontName=\"Times New Roman\">1)</style> A LOCADORA cede para locação residencial ao LOCATÁRIO, o imóvel situado à Avenida Borba, nº 1290, Apartamento nº "+$F{imovel_num}+", Residencial Sofia, bairro Cachoeirinha, Manaus/AM, possuindo <style isBold=\"true\" fontName=\"Times New Roman\">"+$F{imovel_descricao}+"</style>.\n\n" +
+
+"<style isBold=\"true\" fontName=\"Times New Roman\">2)</style> A locação destina-se ao uso exclusivo como residência e domicílio do LOCATÁRIO.\n\n" +
+
+"<style isBold=\"true\" fontName=\"Times New Roman\">3)</style> O prazo de locação é de <style isBold=\"true\" fontName=\"Times New Roman\">"+$F{meses}+" meses</style>, iniciando-se no dia "+new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{data_inicial})+", limite de tempo em que o imóvel objeto do presente deverá ser restituído independentemente de qualquer notificação ou interpelação sob pena de caracterizar infração contratual.\n\n" +
+
+"<style isBold=\"true\" fontName=\"Times New Roman\">4)</style> O aluguel mensal será de <style isBold=\"true\" fontName=\"Times New Roman\">"+new java.text.DecimalFormat("R$ #,##0.00").format($F{valorAluguel})+"</style> e deverá ser pago até a data de seu vencimento, todo dia <style isBold=\"true\" fontName=\"Times New Roman\">"+new java.text.SimpleDateFormat("dd").format($F{data_inicial})+"</style> de cada mês, no local do endereço do LOCADOR ou a ser depositado na conta bancária do Locador ou pelo sistema <style isBold=\"true\" fontName=\"Times New Roman\">Pix</style>.\n\n" +
+
+"<style isBold=\"true\" fontName=\"Times New Roman\">5)</style> O aluguel será reajustado anualmente pela variação do <style isBold=\"true\" fontName=\"Times New Roman\">IGP-M</style>.\n\n" +
+
+"<style isBold=\"true\" fontName=\"Times New Roman\">6)</style> Havendo prorrogação tácita ou expressa do presente contrato, o mesmo será reajustado a preço de mercado sem qualquer relação com o patamar aqui pactuado.\n\n" +
+
+"<style isBold=\"true\" fontName=\"Times New Roman\">7)</style> Nas cobranças judiciais e extrajudiciais de aluguéis em atraso, os mesmos serão acrescidos de <style isBold=\"true\" fontName=\"Times New Roman\">juros de mora, atualização monetária e honorários advocatícios</style>, na base de <style isBold=\"true\" fontName=\"Times New Roman\">20% (vinte por cento)</style>.\n\n" +
+
+"<style isBold=\"true\" fontName=\"Times New Roman\">8)</style> O imóvel da presente locação destina-se ao uso exclusivo como residência e domicílio do LOCATÁRIO, não sendo permitida a <style isBold=\"true\" fontName=\"Times New Roman\">transferência, sublocação, cessão ou empréstimo</style> sem a prévia e expressa autorização da LOCADORA.\n\n" +
+
+"<style isBold=\"true\" fontName=\"Times New Roman\">9)</style> Além do aluguel, são de responsabilidade do LOCATÁRIO as despesas com <style isBold=\"true\" fontName=\"Times New Roman\">consumo de luz, água e imposto predial proporcional ao período do contrato</style>.\n\n" +
+
+"<style isBold=\"true\" fontName=\"Times New Roman\">10)</style> O LOCATÁRIO declara neste ato tomar conhecimento da existência de regras estabelecidas na <style isBold=\"true\" fontName=\"Times New Roman\">CONVENÇÃO DE CONDOMÍNIO</style> e compromete-se a respeitá-las.\n\n" +
+
+"<style isBold=\"true\" fontName=\"Times New Roman\">11)</style> Encerrada a locação, a entrega das chaves só será processada mediante exibição ao LOCADOR dos comprovantes de quitação das despesas e encargos da locação referidos nas cláusulas anteriores.\n\n" +
+
+"<style isBold=\"true\" fontName=\"Times New Roman\">12)</style> Fica facultado ao LOCADOR vistoriar o imóvel sempre que julgar necessário.\n\n" +
+
+"<style isBold=\"true\" fontName=\"Times New Roman\">13)</style> O LOCATÁRIO se obriga a comunicar por escrito ao LOCADOR, com antecedência mínima de <style isBold=\"true\" fontName=\"Times New Roman\">30 (trinta) dias</style>, sua intenção de devolver o imóvel antes do prazo aqui previsto.\n\n" +
+
+"<style isBold=\"true\" fontName=\"Times New Roman\">14)</style> O LOCATÁRIO assume o compromisso de solicitar à LOCADORA uma <style isBold=\"true\" fontName=\"Times New Roman\">vistoria 30 (trinta) dias antes</style> de desocupar o imóvel.\n\n" +
+
+"<style isBold=\"true\" fontName=\"Times New Roman\">15)</style> Quaisquer modificações no imóvel locado só poderão ser feitas com expressa autorização do LOCADOR.\n\n" +
+
+"<style isBold=\"true\" fontName=\"Times New Roman\">16)</style> Se no curso da locação ocorrer incêndio ou danos no prédio que demandem obras que impeçam o seu uso normal por mais de <style isBold=\"true\" fontName=\"Times New Roman\">30 (trinta) dias</style>, a relação locatícia será rescindida.\n\n" +
+
+"<style isBold=\"true\" fontName=\"Times New Roman\">17)</style> A título de <style isBold=\"true\" fontName=\"Times New Roman\">garantia locatícia</style>, o LOCATÁRIO pagará o valor de <style isBold=\"true\" fontName=\"Times New Roman\">"+new java.text.DecimalFormat("R$ #,##0.00").format($F{valorAluguel})+"</style>, equivalente a 1 (um) aluguel como caução.\n\n" +
+
+"<style isBold=\"true\" fontName=\"Times New Roman\">18)</style> A parte que infringir o contrato pagará <style isBold=\"true\" fontName=\"Times New Roman\">multa contratual</style> correspondente a <style isBold=\"true\" fontName=\"Times New Roman\">1 (uma) vez o valor do aluguel vigente</style>.\n\n"+
+"<style isBold=\"true\" fontName=\"Times New Roman\">19)</style> Se o LOCATÁRIO devolver o imóvel antes do vencimento do prazo ajustado, pagará multa compensatória equivalente a <style isBold=\"true\" fontName=\"Times New Roman\">02 (duas) vezes o valor do aluguel vigente</style>.\n\n" +
+
+"<style isBold=\"true\" fontName=\"Times New Roman\">20)</style> Permanecendo o LOCATÁRIO no imóvel após o prazo de desocupação voluntária, pagará aluguel pena arbitrado na notificação premonitória até a efetiva saída.\n\n" +
+
+"<style isBold=\"true\" fontName=\"Times New Roman\">21)</style> No caso do imóvel ser posto à venda, o LOCATÁRIO tem <style isBold=\"true\" fontName=\"Times New Roman\">preferência na aquisição</style>.\n\n" +
+
+"<style isBold=\"true\" fontName=\"Times New Roman\">22)</style> O LOCATÁRIO declara que recebe o imóvel em condições plenas de uso e se compromete a devolvê-lo nas mesmas condições.\n\n" +
+
+"<style isBold=\"true\" fontName=\"Times New Roman\">23)</style> Em caso de ausência, interdição, recuperação judicial, falência ou insolvência do LOCATÁRIO, suas obrigações se transferem aos seus herdeiros e/ou sucessores.\n\n" +
+
+"<style isBold=\"true\" fontName=\"Times New Roman\">24)</style> Fica eleito o foro da localização do imóvel para dirimir quaisquer dúvidas oriundas deste contrato.\n\n"
+
+]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="2" y="170" width="100" height="30" uuid="38364ea2-f63d-428d-b115-d56391dc105c"/>
+				<text><![CDATA[Locador]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="2" y="200" width="260" height="30" uuid="0dfbe256-f32e-4a4d-80f9-639111574415"/>
+				<text><![CDATA[________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="280" y="170" width="100" height="30" uuid="fe3b4432-79b3-412f-802c-99d2da4fb501"/>
+				<text><![CDATA[Locatário]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="280" y="200" width="260" height="30" uuid="60057b3e-b938-4ddd-ae67-6c4049f970ff"/>
+				<text><![CDATA[________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="260" width="100" height="30" uuid="7ee394f2-6296-4f13-aecd-e7b7d70f119a"/>
+				<text><![CDATA[Testemunhas:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="330" width="260" height="30" uuid="56093bc3-c4e7-4dfd-812b-e5c0c5aedc16"/>
+				<text><![CDATA[________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="2" y="300" width="100" height="30" uuid="efc932e8-5267-4b85-8739-9e327d8f8208"/>
+				<text><![CDATA[Nome]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="2" y="418" width="100" height="30" uuid="6994ecc0-1049-47f7-aacf-62e566e5649f"/>
+				<text><![CDATA[Nome]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="448" width="260" height="30" uuid="9db5f0cb-140b-4dfe-b151-65c1895170ea"/>
+				<text><![CDATA[________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="2" y="350" width="100" height="30" uuid="e54fa5f8-ee1c-42ec-b2bf-59e0136183ff"/>
+				<text><![CDATA[Cpf]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="380" width="260" height="30" uuid="7a826820-9cc1-4368-8e97-e50f60279c3e"/>
+				<text><![CDATA[________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="2" y="470" width="100" height="30" uuid="0f52ea9b-d0cd-429e-811e-6203438bc707"/>
+				<text><![CDATA[Cpf]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="500" width="260" height="30" uuid="9bb040e2-e1ba-4ae9-92a5-8bd72f835d1d"/>
+				<text><![CDATA[________________________________________]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement positionType="Float" x="410" y="134" width="100" height="30" uuid="ae06d93e-5cab-4d77-af47-31641364d7f4"/>
+				<textFieldExpression><![CDATA[$F{data_assinatura}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="304" y="134" width="100" height="30" uuid="1aa5bc5b-8894-4cbc-b96f-f2e0de2f8dc9"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Manaus,]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="50"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="50"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

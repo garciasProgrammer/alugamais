@@ -45,6 +45,11 @@ public class Usuario extends AbstractEntity<Long> {
     @Column (nullable = false, unique = false)
     private String email;
 
+    @Size(max = 100)
+    private String fone;
+
+    @Column (columnDefinition = "LONGBLOB")
+    private byte[] imagem;
 
 
 
